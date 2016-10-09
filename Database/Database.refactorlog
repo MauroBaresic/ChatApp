@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="b14e3cbd-0b18-4b44-8488-2f0b092bc7a3" ChangeDateTime="10/09/2016 16:59:07">
+    <Property Name="ElementName" Value="[dbo].[Users].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Users]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MessageId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="84c8b50f-5b8e-4af1-afb0-29da6d6bb385" ChangeDateTime="10/09/2016 16:59:24">
+    <Property Name="ElementName" Value="[dbo].[Messages].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Messages]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MessageId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2136bc04-4f86-462d-b2ba-1c5b19ac45bf" ChangeDateTime="10/09/2016 16:59:29">
+    <Property Name="ElementName" Value="[dbo].[Users].[MessageId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Users]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UserId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2f0dfcf8-c93a-4d27-adc7-012a0b437848" ChangeDateTime="10/09/2016 17:01:19">
+    <Property Name="ElementName" Value="[dbo].[Channels].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Channels]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ChannelId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3580651b-4e70-4969-996c-77da3b1e6028" ChangeDateTime="10/09/2016 20:04:13">
+    <Property Name="ElementName" Value="[dbo].[Messages].[ChannelID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Messages]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ChannelId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e9c6410d-c187-4537-bdc6-c502598d70cd" ChangeDateTime="10/09/2016 20:05:42">
+    <Property Name="ElementName" Value="[dbo].[Messages].[TimeStamp]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Messages]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TimeSent" />
+  </Operation>
+</Operations>
