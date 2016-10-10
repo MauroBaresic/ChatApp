@@ -63,12 +63,12 @@ namespace ClientApp
             if (this.InvokeRequired)
             {
                 this.BeginInvoke(new MethodInvoker(() => {
-                    this.tbxMessages.Text += $"{message}\r\n";
+                    this.tbxMessages.AppendText($"{message}\r\n");// += $"{message}\r\n";
                 }));
             }
             else
             {
-                this.tbxMessages.Text += $"{message}\r\n";
+                this.tbxMessages.AppendText($"{message}\r\n");// += $"{message}\r\n";
             }
         }
 
