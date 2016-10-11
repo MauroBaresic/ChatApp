@@ -202,5 +202,29 @@ namespace ClientApp
         {
             showPassword(this.tbxLoginPassword, false);
         }
+
+        private void btnWelcomeSignUp_Click(object sender, EventArgs e)
+        {
+            pnlRegistration.Visible = true;
+            pnlWelcome.Visible = false;
+        }
+
+        private void btnWelcomeLogIn_Click(object sender, EventArgs e)
+        {
+            pnlLogin.Visible = true;
+            pnlWelcome.Visible = false;
+        }
+
+        private void btnLoginCancel_Click(object sender, EventArgs e)
+        {
+            pnlLogin.Visible = false;
+            pnlWelcome.Visible = true;
+        }
+
+        private void btnCancelSignUp_Click(object sender, EventArgs e)
+        {
+            pnlRegistration.Visible = false;
+            pnlWelcome.Visible = true;
+        }
     }
 }
