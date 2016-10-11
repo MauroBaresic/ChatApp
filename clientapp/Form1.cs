@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,7 +15,9 @@ namespace ClientApp
 {
     public partial class Form1 : Form, IChatDialog
     {
+
         private ChatClient chatClient;
+
         public Form1()
         {
             InitializeComponent();
@@ -38,22 +39,37 @@ namespace ClientApp
 
         private async void btnRegister_Click(object sender, EventArgs e)
         {
-            string username = tbxUsername.Text;
-            if (string.IsNullOrEmpty(username))
+            string username = tbxRegisterUsername.Text;
+            string firstName = tbxFirstName.Text;
+            string lastName = tbxLastName.Text;
+            string password = tbxRegisterPassword.Text;
+            string confirmPassword = tbxConfirmPassword.Text;
+
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirmPassword))
             {
-                ShowErrorDialog("You must provide a username to register!");
+                ShowErrorDialog("You must fill in all the fields!");
+                return;
+            }
+
+            if (password != confirmPassword)
+            {
+                ShowErrorDialog("Passwords mismatch!");
                 return;
             }
             
+            //start progress bar
             pbrRegistering.Visible = true;
             lblRegistering.Visible = true;
             pnlRegistration.Visible = false;
 
+            bool registered = false;
             await Task.Run(() =>
             {
-                chatClient.Register(username);
+                registered = chatClient.Register(username);
             });
+            changeVisibilityOnClientRegistered(registered);
 
+            //hide progress bar
             pbrRegistering.Visible = false;
             lblRegistering.Visible = false;
         }
@@ -63,12 +79,12 @@ namespace ClientApp
             if (this.InvokeRequired)
             {
                 this.BeginInvoke(new MethodInvoker(() => {
-                    this.tbxMessages.AppendText($"{message}\r\n");// += $"{message}\r\n";
+                    this.tbxMessages.AppendText($"{message}\r\n");
                 }));
             }
             else
             {
-                this.tbxMessages.AppendText($"{message}\r\n");// += $"{message}\r\n";
+                this.tbxMessages.AppendText($"{message}\r\n");
             }
         }
 
@@ -76,25 +92,22 @@ namespace ClientApp
         {
             MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
-        public void Registered()
+        
+        private void changeVisibilityOnClientRegistered(bool registered)
         {
-            if (this.InvokeRequired)
+            if (registered)
             {
-                this.BeginInvoke(new MethodInvoker(this.changeVisibilityOnClientRegistered));
+                this.pnlChannelsAndUsers.Visible = true;
+                this.pnlMessageDialog.Visible = true;
+                this.pnlRegistration.Visible = false;
             }
             else
             {
-                this.changeVisibilityOnClientRegistered();
+                this.pnlRegistration.Visible = true;
             }
         }
 
-        private void changeVisibilityOnClientRegistered()
-        {
-            this.pnlChannelsAndUsers.Visible = true;
-            this.pnlMessageDialog.Visible = true;
-            this.pnlRegistration.Visible = false;
-        }
+        #region Message Sending
 
         private void btnSendMessage_Click(object sender, EventArgs e)
         {
@@ -129,5 +142,44 @@ namespace ClientApp
                 this.tbxMessage.Focus();
             }
         }
+
+        #endregion
+
+        #region ViewPassword
+
+        private void lblViewPass_MouseDown(object sender, MouseEventArgs e)
+        {
+            showPassword(this.tbxRegisterPassword, true);
+        }
+
+        private void lblViewPass_MouseUp(object sender, MouseEventArgs e)
+        {
+            showPassword(this.tbxRegisterPassword, false);
+        }
+
+        private void lblViewConfirmPass_MouseDown(object sender, MouseEventArgs e)
+        {
+            showPassword(this.tbxConfirmPassword, true);
+        }
+
+        private void lblViewConfirmPass_MouseUp(object sender, MouseEventArgs e)
+        {
+            showPassword(this.tbxConfirmPassword, false);
+        }
+
+        private void showPassword(TextBox textBox, bool visible)
+        {
+            switch (visible)
+            {
+                case true:
+                    textBox.UseSystemPasswordChar = false;
+                    break;
+                case false:
+                    textBox.UseSystemPasswordChar = true;
+                    break;
+            }
+        }
+
+        #endregion
     }
 }

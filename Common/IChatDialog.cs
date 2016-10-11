@@ -11,7 +11,5 @@ namespace Common
         void ShowMessage(string message);
 
         void ShowErrorDialog(string message);
-
-        void Registered();
     }
 }

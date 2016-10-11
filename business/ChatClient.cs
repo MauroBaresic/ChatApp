@@ -1,4 +1,5 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.ServiceModel;
 using System.Threading;
 using Common;
 using Model;
@@ -35,20 +36,40 @@ namespace Business
             remoteProxy = new DuplexChannelFactory<IChatService>(ctx, "ChatClientConfig").CreateChannel();
         }
 
-        public void Register(string username)
+        public bool Register(string username)
         {
-            var result = remoteProxy.RegisterUser(username);
-
-            switch (result)
+            try
             {
-                case 0:
-                    Username = username;
-                    _isRegistered = true;
-                    chatDialog.Registered();
-                    break;
-                case 1:
-                    chatDialog.ShowErrorDialog("Username already exists!");
-                    break;
+                var result = remoteProxy.RegisterUser(username);
+
+                switch (result)
+                {
+                    case 0:
+                        Username = username;
+                        _isRegistered = true;
+                        return true;
+                    case 1:
+                        chatDialog.ShowErrorDialog("Username already exists!");
+                        return false;
+                    default:
+                        return false;
+                }
+            }
+            catch (System.ServiceModel.CommunicationObjectFaultedException communicationObjectFaultedException)
+            {
+                var ctx = new InstanceContext(this);
+                remoteProxy = new DuplexChannelFactory<IChatService>(ctx, "ChatClientConfig").CreateChannel();
+                return false;
+            }
+            catch (System.TimeoutException timeoutException)
+            {
+                chatDialog.ShowErrorDialog(timeoutException.Message);
+                return false;
+            }
+            catch (System.ServiceModel.EndpointNotFoundException endpointNotFoundException)
+            {
+                chatDialog.ShowErrorDialog(endpointNotFoundException.Message);
+                return false;
             }
         }
 
