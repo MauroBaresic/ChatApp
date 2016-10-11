@@ -62,20 +62,20 @@ namespace ChatHost
             //    }
             //}
 
-            using (Model.ChatAppDBEntities context = new ChatAppDBEntities())
-            {
-                var users = context.Users.ToList();
-                foreach (User user in users)
-                {
-                    Console.WriteLine(user.UserId + "\t" + user.UserName);
-                }
+            //using (Model.ChatAppDBEntities context = new ChatAppDBEntities())
+            //{
+            //    var users = context.Users.ToList();
+            //    foreach (User user in users)
+            //    {
+            //        Console.WriteLine(user.UserId + "\t" + user.UserName);
+            //    }
 
-                var result = context.AllUsers();
-                foreach (string username in result)
-                {
-                    Console.WriteLine(username);
-                }
-            }
+            //    var result = context.AllUsers();
+            //    foreach (string username in result)
+            //    {
+            //        Console.WriteLine(username);
+            //    }
+            //}
 
 
 
@@ -83,7 +83,7 @@ namespace ChatHost
             {
                 host.Open();
 
-                var address = "";//
+                var address = "";
                 Console.WriteLine($"Up and running on {address}");
 
                 while (true)

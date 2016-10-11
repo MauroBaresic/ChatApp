@@ -1,5 +1,6 @@
 ﻿CREATE TABLE [dbo].[Channels]
 (
-	[ChannelId] INT IDENTITY(1,1) NOT NULL PRIMARY KEY, 
-    [ChannelName] NVARCHAR(50) NOT NULL
+	[ChannelId] BIGINT IDENTITY(1,1) NOT NULL, 
+    [ChannelName] NVARCHAR(50) NOT NULL,
+	CONSTRAINT [PK_Channels] PRIMARY KEY CLUSTERED ([ChannelId] ASC)
 )

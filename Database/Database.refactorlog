@@ -42,4 +42,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="TimeSent" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="95658e6e-a0d3-4eb2-a11b-680601b079bf" ChangeDateTime="10/11/2016 18:26:05">
+    <Property Name="ElementName" Value="[dbo].[Channels].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Channels]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ChannelId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f433b164-3fff-43fe-9d84-9faaec92bdf3" ChangeDateTime="10/11/2016 19:04:17">
+    <Property Name="ElementName" Value="[dbo].[ChannelMembers].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ChannelMembers]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ChannelId" />
+  </Operation>
 </Operations>

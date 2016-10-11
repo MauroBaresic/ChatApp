@@ -66,6 +66,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Channel.cs">
+      <DependentUpon>ChatAppModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ChatAppModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -81,11 +84,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChatAppModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Message.cs" />
-    <Compile Include="User.cs">
+    <Compile Include="Message.cs">
       <DependentUpon>ChatAppModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User.cs">
+      <DependentUpon>ChatAppModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChatAppDB.mdf">
@@ -97,8 +102,8 @@
     </Content>
     <Content Include="ChatAppModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ChatAppModel.Context.cs</LastGenOutput>
       <DependentUpon>ChatAppModel.edmx</DependentUpon>
+      <LastGenOutput>ChatAppModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="ChatAppModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -107,13 +112,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <EntityDeploy Include="ChatAppModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ChatAppModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
     <None Include="ChatAppModel.edmx.diagram">
       <DependentUpon>ChatAppModel.edmx</DependentUpon>
     </None>

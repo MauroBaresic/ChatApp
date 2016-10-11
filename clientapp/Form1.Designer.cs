@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnRegister = new System.Windows.Forms.Button();
             this.tbxMessages = new System.Windows.Forms.TextBox();
             this.btnSendMessage = new System.Windows.Forms.Button();
@@ -385,6 +386,7 @@
             this.Controls.Add(this.pbrRegistering);
             this.Controls.Add(this.pnlChannelsAndUsers);
             this.Controls.Add(this.pnlMessageDialog);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Form1";
             this.pnlRegistration.ResumeLayout(false);
