@@ -51,6 +51,12 @@ namespace ClientApp
                 return;
             }
 
+            if (password.Length < 8)
+            {
+                ShowErrorDialog("Password too short! Minimum length is 8 characters.");
+                return;
+            }
+
             if (password != confirmPassword)
             {
                 ShowErrorDialog("Passwords mismatch!");
@@ -181,5 +187,20 @@ namespace ClientApp
         }
 
         #endregion
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblViewLoginPass_MouseDown(object sender, MouseEventArgs e)
+        {
+            showPassword(this.tbxLoginPassword, true);
+        }
+
+        private void lblViewLoginPass_MouseUp(object sender, MouseEventArgs e)
+        {
+            showPassword(this.tbxLoginPassword, false);
+        }
     }
 }

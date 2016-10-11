@@ -31,15 +31,14 @@ namespace Business
         public ChatClient(IChatDialog inChatDialog)
         {
             this.chatDialog = inChatDialog;
-            
-            var ctx = new InstanceContext(this);
-            remoteProxy = new DuplexChannelFactory<IChatService>(ctx, "ChatClientConfig").CreateChannel();
         }
 
         public bool Register(string username)
         {
             try
             {
+                var ctx = new InstanceContext(this);
+                remoteProxy = new DuplexChannelFactory<IChatService>(ctx, "ChatClientConfig").CreateChannel();
                 var result = remoteProxy.RegisterUser(username);
 
                 switch (result)
@@ -57,8 +56,7 @@ namespace Business
             }
             catch (System.ServiceModel.CommunicationObjectFaultedException communicationObjectFaultedException)
             {
-                var ctx = new InstanceContext(this);
-                remoteProxy = new DuplexChannelFactory<IChatService>(ctx, "ChatClientConfig").CreateChannel();
+                chatDialog.ShowErrorDialog(communicationObjectFaultedException.Message);
                 return false;
             }
             catch (System.TimeoutException timeoutException)
@@ -69,6 +67,11 @@ namespace Business
             catch (System.ServiceModel.EndpointNotFoundException endpointNotFoundException)
             {
                 chatDialog.ShowErrorDialog(endpointNotFoundException.Message);
+                return false;
+            }
+            catch (Exception exception)
+            {
+                chatDialog.ShowErrorDialog(exception.Message);
                 return false;
             }
         }

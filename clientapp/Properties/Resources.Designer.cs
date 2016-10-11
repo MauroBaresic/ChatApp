@@ -71,21 +71,51 @@ namespace ClientApp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Icon icon_message {
+        internal static System.Drawing.Bitmap icon_logIn32 {
             get {
-                object obj = ResourceManager.GetObject("icon_message", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                object obj = ResourceManager.GetObject("icon_logIn32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icon_view {
+        internal static System.Drawing.Bitmap icon_logo128 {
             get {
-                object obj = ResourceManager.GetObject("icon_view", resourceCulture);
+                object obj = ResourceManager.GetObject("icon_logo128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_logOut32 {
+            get {
+                object obj = ResourceManager.GetObject("icon_logOut32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_signUp32 {
+            get {
+                object obj = ResourceManager.GetObject("icon_signUp32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_view16 {
+            get {
+                object obj = ResourceManager.GetObject("icon_view16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

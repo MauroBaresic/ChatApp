@@ -56,15 +56,21 @@
             this.pbrRegistering = new System.Windows.Forms.ProgressBar();
             this.lblRegistering = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblViewLoginPass = new System.Windows.Forms.Label();
             this.tbxLoginPassword = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tbxLoginUsername = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.btnLogin = new System.Windows.Forms.Button();
+            this.pnlWelcome = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.pnlRegistration.SuspendLayout();
             this.pnlMessageDialog.SuspendLayout();
             this.pnlChannelsAndUsers.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.pnlWelcome.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnRegister
@@ -127,7 +133,7 @@
             // 
             // lblViewConfirmPass
             // 
-            this.lblViewConfirmPass.Image = global::ClientApp.Properties.Resources.icon_view;
+            this.lblViewConfirmPass.Image = global::ClientApp.Properties.Resources.icon_logIn32;
             this.lblViewConfirmPass.Location = new System.Drawing.Point(244, 134);
             this.lblViewConfirmPass.Name = "lblViewConfirmPass";
             this.lblViewConfirmPass.Size = new System.Drawing.Size(16, 13);
@@ -138,7 +144,7 @@
             // 
             // lblViewPass
             // 
-            this.lblViewPass.Image = global::ClientApp.Properties.Resources.icon_view;
+            this.lblViewPass.Image = global::ClientApp.Properties.Resources.icon_logIn32;
             this.lblViewPass.Location = new System.Drawing.Point(244, 104);
             this.lblViewPass.Name = "lblViewPass";
             this.lblViewPass.Size = new System.Drawing.Size(16, 13);
@@ -322,6 +328,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.lblViewLoginPass);
             this.panel1.Controls.Add(this.tbxLoginPassword);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.tbxLoginUsername);
@@ -332,6 +339,17 @@
             this.panel1.Size = new System.Drawing.Size(254, 132);
             this.panel1.TabIndex = 5;
             // 
+            // lblViewLoginPass
+            // 
+            this.lblViewLoginPass.Image = ((System.Drawing.Image)(resources.GetObject("lblViewLoginPass.Image")));
+            this.lblViewLoginPass.Location = new System.Drawing.Point(209, 43);
+            this.lblViewLoginPass.Name = "lblViewLoginPass";
+            this.lblViewLoginPass.Size = new System.Drawing.Size(16, 13);
+            this.lblViewLoginPass.TabIndex = 12;
+            this.lblViewLoginPass.Text = " ";
+            this.lblViewLoginPass.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblViewLoginPass_MouseDown);
+            this.lblViewLoginPass.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lblViewLoginPass_MouseUp);
+            // 
             // tbxLoginPassword
             // 
             this.tbxLoginPassword.Location = new System.Drawing.Point(83, 40);
@@ -339,15 +357,16 @@
             this.tbxLoginPassword.Name = "tbxLoginPassword";
             this.tbxLoginPassword.Size = new System.Drawing.Size(120, 20);
             this.tbxLoginPassword.TabIndex = 3;
+            this.tbxLoginPassword.UseSystemPasswordChar = true;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(19, 43);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(58, 13);
+            this.label5.Size = new System.Drawing.Size(56, 13);
             this.label5.TabIndex = 2;
-            this.label5.Text = "Username:";
+            this.label5.Text = "Password:";
             // 
             // tbxLoginUsername
             // 
@@ -374,6 +393,46 @@
             this.btnLogin.TabIndex = 0;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            // 
+            // pnlWelcome
+            // 
+            this.pnlWelcome.Controls.Add(this.button1);
+            this.pnlWelcome.Controls.Add(this.label11);
+            this.pnlWelcome.Controls.Add(this.label10);
+            this.pnlWelcome.Location = new System.Drawing.Point(12, 12);
+            this.pnlWelcome.Name = "pnlWelcome";
+            this.pnlWelcome.Size = new System.Drawing.Size(685, 407);
+            this.pnlWelcome.TabIndex = 9;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(213, 215);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "button1";
+            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.Image = global::ClientApp.Properties.Resources.icon_logo128;
+            this.label11.Location = new System.Drawing.Point(268, 10);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(144, 123);
+            this.label11.TabIndex = 1;
+            this.label11.Text = " ";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label10.Location = new System.Drawing.Point(224, 152);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(225, 26);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "Welcome to ChatApp!";
             // 
             // Form1
             // 
@@ -381,6 +440,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(709, 431);
             this.Controls.Add(this.pnlRegistration);
+            this.Controls.Add(this.pnlWelcome);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblRegistering);
             this.Controls.Add(this.pbrRegistering);
@@ -397,6 +457,8 @@
             this.pnlChannelsAndUsers.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.pnlWelcome.ResumeLayout(false);
+            this.pnlWelcome.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -436,6 +498,11 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label lblViewPass;
         private System.Windows.Forms.Label lblViewConfirmPass;
+        private System.Windows.Forms.Label lblViewLoginPass;
+        private System.Windows.Forms.Panel pnlWelcome;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button button1;
     }
 }
 

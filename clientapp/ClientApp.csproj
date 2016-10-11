@@ -96,22 +96,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-view.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\icon-chatApp.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-message.ico" />
+    <None Include="Resources\icon_logo128.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-eye.png" />
+    <None Include="Resources\icon_logIn32.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-secret.png" />
+    <None Include="Resources\icon_logOut32.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon_view.png" />
+    <None Include="Resources\icon_signUp32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon_view16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
