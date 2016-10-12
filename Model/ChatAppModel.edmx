@@ -218,21 +218,7 @@
           <Property Name="ChannelId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ChannelName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="Self.ChannelMembers" FromRole="Channels" ToRole="Users" />
-          <NavigationProperty Name="Messages" Relationship="Self.ChannelMessages" FromRole="Channels" ToRole="Messages" />
-        </EntityType>
-        <EntityType Name="Message">
-          <Key>
-            <PropertyRef Name="MessageId" />
-          </Key>
-          <Property Name="MessageId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserId" Type="Int64" />
-          <Property Name="TimeSent" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Messages_Users" FromRole="Messages" ToRole="Users" />
-          <NavigationProperty Name="Channels" Relationship="Self.ChannelMessages" FromRole="Messages" ToRole="Channels" />
-          <NavigationProperty Name="Users" Relationship="Self.UserMessages" FromRole="Messages" ToRole="Users" />
-          <Property Name="SenderUserId" Type="Int64" />
-          <NavigationProperty Name="User1" Relationship="ChatAppDBModel.FK_Messages_Users1" FromRole="Message" ToRole="User" />
+          <NavigationProperty Name="Messages" Relationship="ChatAppDBModel.ChannelMessages" FromRole="Channel" ToRole="Message" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -244,58 +230,21 @@
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RegistrationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Messages" Relationship="Self.FK_Messages_Users" FromRole="Users" ToRole="Messages" />
           <NavigationProperty Name="Channels" Relationship="Self.ChannelMembers" FromRole="Users" ToRole="Channels" />
-          <NavigationProperty Name="Messages1" Relationship="Self.UserMessages" FromRole="Users" ToRole="Messages" />
-          <NavigationProperty Name="Messages2" Relationship="ChatAppDBModel.FK_Messages_Users1" FromRole="User" ToRole="Message" />
-        </EntityType>
-        <Association Name="FK_Messages_Users">
-          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
-          <End Role="Messages" Type="Self.Message" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="Messages">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+          <NavigationProperty Name="Messages" Relationship="ChatAppDBModel.FK_Messages_Users" FromRole="User" ToRole="Message" />
+          <NavigationProperty Name="UserMessages" Relationship="ChatAppDBModel.FK_UserMessages_Users" FromRole="User" ToRole="UserMessage" />
+          <NavigationProperty Name="UserMessages1" Relationship="ChatAppDBModel.FK_UserMessages_Users_Other" FromRole="User" ToRole="UserMessage" />
+          </EntityType>
         <Association Name="ChannelMembers">
           <End Role="Channels" Type="Self.Channel" Multiplicity="*" />
           <End Role="Users" Type="Self.User" Multiplicity="*" />
         </Association>
-        <Association Name="ChannelMessages">
-          <End Role="Channels" Type="Self.Channel" Multiplicity="*" />
-          <End Role="Messages" Type="Self.Message" Multiplicity="*" />
-        </Association>
-        <Association Name="UserMessages">
-          <End Role="Messages" Type="Self.Message" Multiplicity="*" />
-          <End Role="Users" Type="Self.User" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="ChatAppDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Channels" EntityType="Self.Channel" />
-          <EntitySet Name="Messages" EntityType="Self.Message" />
           <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK_Messages_Users" Association="Self.FK_Messages_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Messages" EntitySet="Messages" />
-          </AssociationSet>
           <AssociationSet Name="ChannelMembers" Association="Self.ChannelMembers">
             <End Role="Channels" EntitySet="Channels" />
             <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="ChannelMessages" Association="Self.ChannelMessages">
-            <End Role="Channels" EntitySet="Channels" />
-            <End Role="Messages" EntitySet="Messages" />
-          </AssociationSet>
-          <AssociationSet Name="UserMessages" Association="Self.UserMessages">
-            <End Role="Messages" EntitySet="Messages" />
-            <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Messages_Users1" Association="ChatAppDBModel.FK_Messages_Users1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Message" EntitySet="Messages" />
           </AssociationSet>
           <FunctionImport Name="AllChannels" ReturnType="Collection(ChatAppDBModel.AllChannels_Result)" />
           <FunctionImport Name="DirectMessages" ReturnType="Collection(ChatAppDBModel.DirectMessages_Result)">
@@ -310,19 +259,29 @@
             <Parameter Name="registrationDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="AllUsers" ReturnType="Collection(ChatAppDBModel.AllUsers_Result)" />
+          <EntitySet Name="Messages" EntityType="ChatAppDBModel.Message" />
+          <EntitySet Name="UserMessages" EntityType="ChatAppDBModel.UserMessage" />
+          <AssociationSet Name="FK_Messages_Users" Association="ChatAppDBModel.FK_Messages_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserMessages_Messages" Association="ChatAppDBModel.FK_UserMessages_Messages">
+            <End Role="Message" EntitySet="Messages" />
+            <End Role="UserMessage" EntitySet="UserMessages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserMessages_Users" Association="ChatAppDBModel.FK_UserMessages_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserMessage" EntitySet="UserMessages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserMessages_Users_Other" Association="ChatAppDBModel.FK_UserMessages_Users_Other">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserMessage" EntitySet="UserMessages" />
+          </AssociationSet>
+          <AssociationSet Name="ChannelMessages" Association="ChatAppDBModel.ChannelMessages">
+            <End Role="Channel" EntitySet="Channels" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_Messages_Users1">
-          <End Type="ChatAppDBModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="ChatAppDBModel.Message" Role="Message" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="Message">
-              <PropertyRef Name="SenderUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <ComplexType Name="AllChannels_Result">
           <Property Type="Int64" Name="ChannelId" Nullable="false" />
           <Property Type="String" Name="ChannelName" Nullable="false" MaxLength="50" />
@@ -337,6 +296,83 @@
           <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
         </ComplexType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="MessageId" />
+          </Key>
+          <Property Name="MessageId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SenderUserId" Type="Int64" />
+          <Property Name="TimeSent" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="ChatAppDBModel.FK_Messages_Users" FromRole="Message" ToRole="User" />
+          <NavigationProperty Name="UserMessages" Relationship="ChatAppDBModel.FK_UserMessages_Messages" FromRole="Message" ToRole="UserMessage" />
+          <NavigationProperty Name="Channels" Relationship="ChatAppDBModel.ChannelMessages" FromRole="Message" ToRole="Channel" />
+        </EntityType>
+        <EntityType Name="UserMessage">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="OtherUserId" />
+            <PropertyRef Name="MessageId" />
+          </Key>
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="OtherUserId" Type="Int64" Nullable="false" />
+          <Property Name="MessageId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Message" Relationship="ChatAppDBModel.FK_UserMessages_Messages" FromRole="UserMessage" ToRole="Message" />
+          <NavigationProperty Name="User" Relationship="ChatAppDBModel.FK_UserMessages_Users" FromRole="UserMessage" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="ChatAppDBModel.FK_UserMessages_Users_Other" FromRole="UserMessage" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Messages_Users">
+          <End Type="ChatAppDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="ChatAppDBModel.Message" Role="Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="SenderUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserMessages_Messages">
+          <End Type="ChatAppDBModel.Message" Role="Message" Multiplicity="1" />
+          <End Type="ChatAppDBModel.UserMessage" Role="UserMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Message">
+              <PropertyRef Name="MessageId" />
+            </Principal>
+            <Dependent Role="UserMessage">
+              <PropertyRef Name="MessageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserMessages_Users">
+          <End Type="ChatAppDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="ChatAppDBModel.UserMessage" Role="UserMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserMessage">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserMessages_Users_Other">
+          <End Type="ChatAppDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="ChatAppDBModel.UserMessage" Role="UserMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserMessage">
+              <PropertyRef Name="OtherUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ChannelMessages">
+          <End Type="ChatAppDBModel.Channel" Role="Channel" Multiplicity="*" />
+          <End Type="ChatAppDBModel.Message" Role="Message" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -348,16 +384,6 @@
               <MappingFragment StoreEntitySet="Channels">
                 <ScalarProperty Name="ChannelId" ColumnName="ChannelId" />
                 <ScalarProperty Name="ChannelName" ColumnName="ChannelName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Messages">
-            <EntityTypeMapping TypeName="ChatAppDBModel.Message">
-              <MappingFragment StoreEntitySet="Messages">
-                <ScalarProperty Name="SenderUserId" ColumnName="SenderUserId" />
-                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="TimeSent" ColumnName="TimeSent" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -376,22 +402,6 @@
           <AssociationSetMapping Name="ChannelMembers" TypeName="ChatAppDBModel.ChannelMembers" StoreEntitySet="ChannelMembers">
             <EndProperty Name="Channels">
               <ScalarProperty Name="ChannelId" ColumnName="ChannelId" />
-            </EndProperty>
-            <EndProperty Name="Users">
-              <ScalarProperty Name="UserId" ColumnName="UserId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="ChannelMessages" TypeName="ChatAppDBModel.ChannelMessages" StoreEntitySet="ChannelMessages">
-            <EndProperty Name="Channels">
-              <ScalarProperty Name="ChannelId" ColumnName="ChannelId" />
-            </EndProperty>
-            <EndProperty Name="Messages">
-              <ScalarProperty Name="MessageId" ColumnName="MessageId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="UserMessages" TypeName="ChatAppDBModel.UserMessages" StoreEntitySet="UserMessages">
-            <EndProperty Name="Messages">
-              <ScalarProperty Name="MessageId" ColumnName="MessageId" />
             </EndProperty>
             <EndProperty Name="Users">
               <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -424,6 +434,33 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="ChatAppDBModel.Message">
+              <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="TimeSent" ColumnName="TimeSent" />
+                <ScalarProperty Name="SenderUserId" ColumnName="SenderUserId" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserMessages">
+            <EntityTypeMapping TypeName="ChatAppDBModel.UserMessage">
+              <MappingFragment StoreEntitySet="UserMessages">
+                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+                <ScalarProperty Name="OtherUserId" ColumnName="OtherUserId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ChannelMessages" TypeName="ChatAppDBModel.ChannelMessages" StoreEntitySet="ChannelMessages">
+            <EndProperty Name="Message">
+              <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+            </EndProperty>
+            <EndProperty Name="Channel">
+              <ScalarProperty Name="ChannelId" ColumnName="ChannelId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

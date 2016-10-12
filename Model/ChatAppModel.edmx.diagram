@@ -6,13 +6,15 @@
     <edmx:Diagrams>
       <Diagram DiagramId="e00771992fba472fb912626090d45852" Name="Diagram1">
         <EntityTypeShape EntityType="ChatAppDBModel.Channel" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ChatAppDBModel.Message" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ChatAppDBModel.User" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="ChatAppDBModel.FK_Messages_Users" ManuallyRouted="false" />
         <AssociationConnector Association="ChatAppDBModel.ChannelMembers" ManuallyRouted="false" />
-        <AssociationConnector Association="ChatAppDBModel.ChannelMessages" ManuallyRouted="false" />
-        <AssociationConnector Association="ChatAppDBModel.UserMessages" ManuallyRouted="false" />
-        <AssociationConnector Association="ChatAppDBModel.FK_Messages_Users1" />
+        <EntityTypeShape EntityType="ChatAppDBModel.Message" Width="1.5" PointX="5.25" PointY="1.25" />
+        <EntityTypeShape EntityType="ChatAppDBModel.UserMessage" Width="1.5" PointX="7.5" PointY="1.375" />
+        <AssociationConnector Association="ChatAppDBModel.FK_Messages_Users" />
+        <AssociationConnector Association="ChatAppDBModel.FK_UserMessages_Messages" />
+        <AssociationConnector Association="ChatAppDBModel.FK_UserMessages_Users" />
+        <AssociationConnector Association="ChatAppDBModel.FK_UserMessages_Users_Other" />
+        <AssociationConnector Association="ChatAppDBModel.ChannelMessages" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

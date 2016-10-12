@@ -17,10 +17,10 @@ namespace Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.Messages = new HashSet<Message>();
             this.Channels = new HashSet<Channel>();
-            this.Messages1 = new HashSet<Message>();
-            this.Messages2 = new HashSet<Message>();
+            this.Messages = new HashSet<Message>();
+            this.UserMessages = new HashSet<UserMessage>();
+            this.UserMessages1 = new HashSet<UserMessage>();
         }
     
         public long UserId { get; set; }
@@ -31,12 +31,12 @@ namespace Model
         public System.DateTime RegistrationDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Message> Messages { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Channel> Channels { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Message> Messages1 { get; set; }
+        public virtual ICollection<Message> Messages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Message> Messages2 { get; set; }
+        public virtual ICollection<UserMessage> UserMessages { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserMessage> UserMessages1 { get; set; }
     }
 }

@@ -28,8 +28,9 @@ namespace Model
         }
     
         public virtual DbSet<Channel> Channels { get; set; }
-        public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<UserMessage> UserMessages { get; set; }
     
         public virtual ObjectResult<AllChannels_Result> AllChannels()
         {
