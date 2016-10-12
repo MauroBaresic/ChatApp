@@ -34,6 +34,9 @@
             this.btnSendMessage = new System.Windows.Forms.Button();
             this.tbxMessage = new System.Windows.Forms.TextBox();
             this.pnlRegistration = new System.Windows.Forms.Panel();
+            this.btnCancelSignUp = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.lblViewConfirmPass = new System.Windows.Forms.Label();
             this.lblViewPass = new System.Windows.Forms.Label();
             this.tbxFirstName = new System.Windows.Forms.TextBox();
@@ -56,6 +59,9 @@
             this.pbrRegistering = new System.Windows.Forms.ProgressBar();
             this.lblRegistering = new System.Windows.Forms.Label();
             this.pnlLogin = new System.Windows.Forms.Panel();
+            this.btnLoginCancel = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
             this.lblViewLoginPass = new System.Windows.Forms.Label();
             this.tbxLoginPassword = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -63,16 +69,10 @@
             this.label6 = new System.Windows.Forms.Label();
             this.btnLogin = new System.Windows.Forms.Button();
             this.pnlWelcome = new System.Windows.Forms.Panel();
+            this.btnWelcomeLogIn = new System.Windows.Forms.Button();
             this.btnWelcomeSignUp = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.btnWelcomeLogIn = new System.Windows.Forms.Button();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.btnCancelSignUp = new System.Windows.Forms.Button();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.btnLoginCancel = new System.Windows.Forms.Button();
             this.pnlRegistration.SuspendLayout();
             this.pnlMessageDialog.SuspendLayout();
             this.pnlChannelsAndUsers.SuspendLayout();
@@ -142,6 +142,35 @@
             this.pnlRegistration.Name = "pnlRegistration";
             this.pnlRegistration.Size = new System.Drawing.Size(685, 407);
             this.pnlRegistration.TabIndex = 4;
+            // 
+            // btnCancelSignUp
+            // 
+            this.btnCancelSignUp.Location = new System.Drawing.Point(289, 376);
+            this.btnCancelSignUp.Name = "btnCancelSignUp";
+            this.btnCancelSignUp.Size = new System.Drawing.Size(75, 23);
+            this.btnCancelSignUp.TabIndex = 14;
+            this.btnCancelSignUp.Text = "Cancel";
+            this.btnCancelSignUp.UseVisualStyleBackColor = true;
+            this.btnCancelSignUp.Click += new System.EventHandler(this.btnCancelSignUp_Click);
+            // 
+            // label13
+            // 
+            this.label13.Image = global::ClientApp.Properties.Resources.icon_logo128;
+            this.label13.Location = new System.Drawing.Point(268, 30);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(144, 123);
+            this.label13.TabIndex = 13;
+            this.label13.Text = " ";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label12.Location = new System.Drawing.Point(227, 160);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(223, 26);
+            this.label12.TabIndex = 12;
+            this.label12.Text = "Create a new account";
             // 
             // lblViewConfirmPass
             // 
@@ -354,6 +383,35 @@
             this.pnlLogin.Size = new System.Drawing.Size(685, 407);
             this.pnlLogin.TabIndex = 5;
             // 
+            // btnLoginCancel
+            // 
+            this.btnLoginCancel.Location = new System.Drawing.Point(268, 315);
+            this.btnLoginCancel.Name = "btnLoginCancel";
+            this.btnLoginCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnLoginCancel.TabIndex = 16;
+            this.btnLoginCancel.Text = "Cancel";
+            this.btnLoginCancel.UseVisualStyleBackColor = true;
+            this.btnLoginCancel.Click += new System.EventHandler(this.btnLoginCancel_Click);
+            // 
+            // label14
+            // 
+            this.label14.Image = global::ClientApp.Properties.Resources.icon_logo128;
+            this.label14.Location = new System.Drawing.Point(268, 30);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(144, 123);
+            this.label14.TabIndex = 15;
+            this.label14.Text = " ";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label15.Location = new System.Drawing.Point(299, 160);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(65, 26);
+            this.label15.TabIndex = 14;
+            this.label15.Text = "Login";
+            // 
             // lblViewLoginPass
             // 
             this.lblViewLoginPass.Image = ((System.Drawing.Image)(resources.GetObject("lblViewLoginPass.Image")));
@@ -421,10 +479,23 @@
             this.pnlWelcome.Size = new System.Drawing.Size(685, 407);
             this.pnlWelcome.TabIndex = 9;
             // 
+            // btnWelcomeLogIn
+            // 
+            this.btnWelcomeLogIn.Image = global::ClientApp.Properties.Resources.icon_logIn32;
+            this.btnWelcomeLogIn.Location = new System.Drawing.Point(250, 264);
+            this.btnWelcomeLogIn.Name = "btnWelcomeLogIn";
+            this.btnWelcomeLogIn.Size = new System.Drawing.Size(75, 71);
+            this.btnWelcomeLogIn.TabIndex = 3;
+            this.btnWelcomeLogIn.Text = "Log In";
+            this.btnWelcomeLogIn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnWelcomeLogIn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnWelcomeLogIn.UseVisualStyleBackColor = true;
+            this.btnWelcomeLogIn.Click += new System.EventHandler(this.btnWelcomeLogIn_Click);
+            // 
             // btnWelcomeSignUp
             // 
             this.btnWelcomeSignUp.Image = global::ClientApp.Properties.Resources.icon_signUp32;
-            this.btnWelcomeSignUp.Location = new System.Drawing.Point(251, 264);
+            this.btnWelcomeSignUp.Location = new System.Drawing.Point(350, 264);
             this.btnWelcomeSignUp.Name = "btnWelcomeSignUp";
             this.btnWelcomeSignUp.Size = new System.Drawing.Size(75, 71);
             this.btnWelcomeSignUp.TabIndex = 2;
@@ -447,91 +518,20 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label10.Location = new System.Drawing.Point(224, 160);
+            this.label10.Location = new System.Drawing.Point(224, 171);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(225, 26);
             this.label10.TabIndex = 0;
             this.label10.Text = "Welcome to ChatApp!";
-            // 
-            // btnWelcomeLogIn
-            // 
-            this.btnWelcomeLogIn.Image = global::ClientApp.Properties.Resources.icon_logIn32;
-            this.btnWelcomeLogIn.Location = new System.Drawing.Point(350, 264);
-            this.btnWelcomeLogIn.Name = "btnWelcomeLogIn";
-            this.btnWelcomeLogIn.Size = new System.Drawing.Size(75, 71);
-            this.btnWelcomeLogIn.TabIndex = 3;
-            this.btnWelcomeLogIn.Text = "Log In";
-            this.btnWelcomeLogIn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnWelcomeLogIn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnWelcomeLogIn.UseVisualStyleBackColor = true;
-            this.btnWelcomeLogIn.Click += new System.EventHandler(this.btnWelcomeLogIn_Click);
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label12.Location = new System.Drawing.Point(227, 160);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(223, 26);
-            this.label12.TabIndex = 12;
-            this.label12.Text = "Create a new account";
-            // 
-            // label13
-            // 
-            this.label13.Image = global::ClientApp.Properties.Resources.icon_logo128;
-            this.label13.Location = new System.Drawing.Point(268, 30);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(144, 123);
-            this.label13.TabIndex = 13;
-            this.label13.Text = " ";
-            // 
-            // btnCancelSignUp
-            // 
-            this.btnCancelSignUp.Location = new System.Drawing.Point(289, 376);
-            this.btnCancelSignUp.Name = "btnCancelSignUp";
-            this.btnCancelSignUp.Size = new System.Drawing.Size(75, 23);
-            this.btnCancelSignUp.TabIndex = 14;
-            this.btnCancelSignUp.Text = "Cancel";
-            this.btnCancelSignUp.UseVisualStyleBackColor = true;
-            this.btnCancelSignUp.Click += new System.EventHandler(this.btnCancelSignUp_Click);
-            // 
-            // label14
-            // 
-            this.label14.Image = global::ClientApp.Properties.Resources.icon_logo128;
-            this.label14.Location = new System.Drawing.Point(268, 30);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(144, 123);
-            this.label14.TabIndex = 15;
-            this.label14.Text = " ";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label15.Location = new System.Drawing.Point(299, 160);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(65, 26);
-            this.label15.TabIndex = 14;
-            this.label15.Text = "Login";
-            // 
-            // btnLoginCancel
-            // 
-            this.btnLoginCancel.Location = new System.Drawing.Point(268, 315);
-            this.btnLoginCancel.Name = "btnLoginCancel";
-            this.btnLoginCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnLoginCancel.TabIndex = 16;
-            this.btnLoginCancel.Text = "Cancel";
-            this.btnLoginCancel.UseVisualStyleBackColor = true;
-            this.btnLoginCancel.Click += new System.EventHandler(this.btnLoginCancel_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(709, 431);
+            this.Controls.Add(this.pnlWelcome);
             this.Controls.Add(this.pnlRegistration);
             this.Controls.Add(this.pnlLogin);
-            this.Controls.Add(this.pnlWelcome);
             this.Controls.Add(this.lblRegistering);
             this.Controls.Add(this.pbrRegistering);
             this.Controls.Add(this.pnlChannelsAndUsers);

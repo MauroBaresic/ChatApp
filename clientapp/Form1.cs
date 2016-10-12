@@ -32,6 +32,30 @@ namespace ClientApp
 
             pbrRegistering.Visible = false;
             lblRegistering.Visible = false;
+
+            var foreColor = ChatAppColors.ForeColor;
+            btnWelcomeSignUp.ForeColor = foreColor;
+            btnWelcomeLogIn.ForeColor = foreColor;
+            btnCancelSignUp.ForeColor = foreColor;
+            btnLogin.ForeColor = foreColor;
+            btnLoginCancel.ForeColor = foreColor;
+            btnRegister.ForeColor = foreColor;
+            btnSendMessage.ForeColor = foreColor;
+            label1.ForeColor = foreColor;
+            label2.ForeColor = foreColor;
+            label3.ForeColor = foreColor;
+            label4.ForeColor = foreColor;
+            label5.ForeColor = foreColor;
+            label6.ForeColor = foreColor;
+            label7.ForeColor = foreColor;
+            label8.ForeColor = foreColor;
+            label9.ForeColor = foreColor;
+            label10.ForeColor = foreColor;
+            label11.ForeColor = foreColor;
+            label12.ForeColor = foreColor;
+            label13.ForeColor = foreColor;
+            label14.ForeColor = foreColor;
+            label15.ForeColor = foreColor;
         }
 
         private void OnFormClosing(object sender, FormClosingEventArgs formClosingEventArgs)
