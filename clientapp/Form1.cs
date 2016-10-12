@@ -27,6 +27,8 @@ namespace ClientApp
 
             pnlChannelsAndUsers.Visible = false;
             pnlMessageDialog.Visible = false;
+            pnlLogin.Visible = false;
+            pnlRegistration.Visible = false;
 
             pbrRegistering.Visible = false;
             lblRegistering.Visible = false;
@@ -57,7 +59,7 @@ namespace ClientApp
                 return;
             }
 
-            if (password != confirmPassword)
+            if (!password.Equals(confirmPassword))
             {
                 ShowErrorDialog("Passwords mismatch!");
                 return;
@@ -71,7 +73,7 @@ namespace ClientApp
             bool registered = false;
             await Task.Run(() =>
             {
-                registered = chatClient.Register(username);
+                registered = chatClient.Register(username, password, firstName, lastName);
             });
             changeVisibilityOnClientRegistered(registered);
 

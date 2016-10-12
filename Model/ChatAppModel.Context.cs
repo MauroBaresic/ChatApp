@@ -31,9 +31,52 @@ namespace Model
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<User> Users { get; set; }
     
-        public virtual ObjectResult<string> AllUsers()
+        public virtual ObjectResult<AllChannels_Result> AllChannels()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("AllUsers");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<AllChannels_Result>("AllChannels");
+        }
+    
+        public virtual ObjectResult<DirectMessages_Result> DirectMessages(string username, string usernameOther)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var usernameOtherParameter = usernameOther != null ?
+                new ObjectParameter("usernameOther", usernameOther) :
+                new ObjectParameter("usernameOther", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DirectMessages_Result>("DirectMessages", usernameParameter, usernameOtherParameter);
+        }
+    
+        public virtual int RegisterUser(string username, string firstname, string lastname, string password, Nullable<System.DateTime> registrationDate)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var firstnameParameter = firstname != null ?
+                new ObjectParameter("firstname", firstname) :
+                new ObjectParameter("firstname", typeof(string));
+    
+            var lastnameParameter = lastname != null ?
+                new ObjectParameter("lastname", lastname) :
+                new ObjectParameter("lastname", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("password", password) :
+                new ObjectParameter("password", typeof(string));
+    
+            var registrationDateParameter = registrationDate.HasValue ?
+                new ObjectParameter("registrationDate", registrationDate) :
+                new ObjectParameter("registrationDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RegisterUser", usernameParameter, firstnameParameter, lastnameParameter, passwordParameter, registrationDateParameter);
+        }
+    
+        public virtual ObjectResult<AllUsers_Result> AllUsers()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<AllUsers_Result>("AllUsers");
         }
     }
 }

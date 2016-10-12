@@ -12,6 +12,7 @@
         <AssociationConnector Association="ChatAppDBModel.ChannelMembers" ManuallyRouted="false" />
         <AssociationConnector Association="ChatAppDBModel.ChannelMessages" ManuallyRouted="false" />
         <AssociationConnector Association="ChatAppDBModel.UserMessages" ManuallyRouted="false" />
+        <AssociationConnector Association="ChatAppDBModel.FK_Messages_Users1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

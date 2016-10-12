@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel;
 using Model;
+using Model.ViewModels;
 
 namespace Business
 {
@@ -14,15 +15,15 @@ namespace Business
         private static List<User> _registeredUsers = new List<User>();
         private static Dictionary<User, IChatServiceCallback> _userCallbacks = new Dictionary<User, IChatServiceCallback>();
 
-        public int RegisterUser(string username)
+        public int RegisterUser(User user)
         {
-            if (_registeredUsers.Exists(x => x.UserName.Equals(username, StringComparison.OrdinalIgnoreCase)))
+            if (_registeredUsers.Exists(x => x.UserName.Equals(user.UserName, StringComparison.OrdinalIgnoreCase)))//TODO provjeriti u bazi
             {
                 return 1;
             }
 
-            var user = new User() {UserName = username, RegistrationDate = DateTime.UtcNow};
-            _registeredUsers.Add(user);
+            user.RegistrationDate = DateTime.UtcNow;
+            _registeredUsers.Add(user);//TODO spremiti usera u bazu
             _userCallbacks.Add(user, OperationContext.Current.GetCallbackChannel<IChatServiceCallback>());
 
             NotifyAllUsers($"{user.UserName} joined #ChatApp!");
@@ -44,6 +45,49 @@ namespace Business
                 _userCallbacks.Remove(user);
 
                 NotifyAllUsers($"{user.UserName} left the conversation.");
+            }
+        }
+
+        public List<Channel> GetAllChannels()
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                var listChannels = context.AllChannels().ToList();
+                List<Channel> allChannels =
+                    listChannels.Select(x => new Channel() {ChannelId = x.ChannelId, ChannelName = x.ChannelName})
+                        .ToList();
+                return allChannels;
+            }
+        }
+
+        public List<MessageVM> GetChannelMessages(int channelId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserVM> GetAllUsers()
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                var listUsers = context.AllUsers().ToList();
+                List<UserVM> allUsers =
+                    listUsers.Select(
+                        x => new UserVM() {UserName = x.UserName, FirstName = x.FirstName, LastName = x.LastName})
+                        .ToList();
+                return allUsers;
+            }
+        }
+
+        public List<MessageVM> GetDirectMessages(string username, string usernameOther)
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                var listMessages = context.DirectMessages(username, usernameOther).ToList();
+                List<MessageVM> messages =
+                    listMessages.Select(
+                        x => new MessageVM() {Content = x.Content, TimeSent = x.TimeSent, SenderUsername = x.UserName})
+                        .ToList();
+                return messages;
             }
         }
 

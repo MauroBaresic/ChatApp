@@ -20,6 +20,7 @@ namespace Model
             this.Messages = new HashSet<Message>();
             this.Channels = new HashSet<Channel>();
             this.Messages1 = new HashSet<Message>();
+            this.Messages2 = new HashSet<Message>();
         }
     
         public long UserId { get; set; }
@@ -35,5 +36,7 @@ namespace Model
         public virtual ICollection<Channel> Channels { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Message> Messages1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Message> Messages2 { get; set; }
     }
 }

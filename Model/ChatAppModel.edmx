@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ChatAppDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ChatAppDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ChannelMembers">
           <Key>
             <PropertyRef Name="ChannelId" />
@@ -34,15 +34,17 @@
           </Key>
           <Property Name="MessageId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="UserId" Type="bigint" />
+          <Property Name="SenderUserId" Type="bigint" />
           <Property Name="TimeSent" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="UserMessages">
           <Key>
             <PropertyRef Name="UserId" />
+            <PropertyRef Name="OtherUserId" />
             <PropertyRef Name="MessageId" />
           </Key>
           <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="OtherUserId" Type="bigint" Nullable="false" />
           <Property Name="MessageId" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
@@ -112,7 +114,7 @@
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="Messages">
-              <PropertyRef Name="UserId" />
+              <PropertyRef Name="SenderUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -140,7 +142,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserMessages_Users_Other">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserMessages" Type="Self.UserMessages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserMessages">
+              <PropertyRef Name="OtherUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AllChannels" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="AllUsers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="DirectMessages" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
+          <Parameter Name="usernameOther" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="RegisterUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
+          <Parameter Name="firstname" Type="nvarchar" Mode="In" />
+          <Parameter Name="lastname" Type="nvarchar" Mode="In" />
+          <Parameter Name="password" Type="nvarchar" Mode="In" />
+          <Parameter Name="registrationDate" Type="datetime" Mode="In" />
+        </Function>
         <EntityContainer Name="ChatAppDBModelStoreContainer">
           <EntitySet Name="ChannelMembers" EntityType="Self.ChannelMembers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChannelMessages" EntityType="Self.ChannelMessages" Schema="dbo" store:Type="Tables" />
@@ -176,9 +202,12 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="UserMessages" EntitySet="UserMessages" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserMessages_Users_Other" Association="Self.FK_UserMessages_Users_Other">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserMessages" EntitySet="UserMessages" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ChatAppDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -202,6 +231,8 @@
           <NavigationProperty Name="User" Relationship="Self.FK_Messages_Users" FromRole="Messages" ToRole="Users" />
           <NavigationProperty Name="Channels" Relationship="Self.ChannelMessages" FromRole="Messages" ToRole="Channels" />
           <NavigationProperty Name="Users" Relationship="Self.UserMessages" FromRole="Messages" ToRole="Users" />
+          <Property Name="SenderUserId" Type="Int64" />
+          <NavigationProperty Name="User1" Relationship="ChatAppDBModel.FK_Messages_Users1" FromRole="Message" ToRole="User" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -216,6 +247,7 @@
           <NavigationProperty Name="Messages" Relationship="Self.FK_Messages_Users" FromRole="Users" ToRole="Messages" />
           <NavigationProperty Name="Channels" Relationship="Self.ChannelMembers" FromRole="Users" ToRole="Channels" />
           <NavigationProperty Name="Messages1" Relationship="Self.UserMessages" FromRole="Users" ToRole="Messages" />
+          <NavigationProperty Name="Messages2" Relationship="ChatAppDBModel.FK_Messages_Users1" FromRole="User" ToRole="Message" />
         </EntityType>
         <Association Name="FK_Messages_Users">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
@@ -261,8 +293,50 @@
             <End Role="Messages" EntitySet="Messages" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
-          <FunctionImport Name="AllUsers" ReturnType="Collection(String)" />
+          <AssociationSet Name="FK_Messages_Users1" Association="ChatAppDBModel.FK_Messages_Users1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <FunctionImport Name="AllChannels" ReturnType="Collection(ChatAppDBModel.AllChannels_Result)" />
+          <FunctionImport Name="DirectMessages" ReturnType="Collection(ChatAppDBModel.DirectMessages_Result)">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="usernameOther" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="RegisterUser">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="firstname" Mode="In" Type="String" />
+            <Parameter Name="lastname" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+            <Parameter Name="registrationDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="AllUsers" ReturnType="Collection(ChatAppDBModel.AllUsers_Result)" />
         </EntityContainer>
+        <Association Name="FK_Messages_Users1">
+          <End Type="ChatAppDBModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="ChatAppDBModel.Message" Role="Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="SenderUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="AllChannels_Result">
+          <Property Type="Int64" Name="ChannelId" Nullable="false" />
+          <Property Type="String" Name="ChannelName" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="DirectMessages_Result">
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Content" Nullable="false" />
+          <Property Type="DateTime" Name="TimeSent" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="AllUsers_Result">
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -280,9 +354,9 @@
           <EntitySetMapping Name="Messages">
             <EntityTypeMapping TypeName="ChatAppDBModel.Message">
               <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="SenderUserId" ColumnName="SenderUserId" />
                 <ScalarProperty Name="MessageId" ColumnName="MessageId" />
                 <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="TimeSent" ColumnName="TimeSent" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -323,7 +397,33 @@
               <ScalarProperty Name="UserId" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="AllUsers" FunctionName="ChatAppDBModel.Store.AllUsers" />
+          <FunctionImportMapping FunctionImportName="AllChannels" FunctionName="ChatAppDBModel.Store.AllChannels">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ChatAppDBModel.AllChannels_Result">
+                <ScalarProperty Name="ChannelId" ColumnName="ChannelId" />
+                <ScalarProperty Name="ChannelName" ColumnName="ChannelName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DirectMessages" FunctionName="ChatAppDBModel.Store.DirectMessages">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ChatAppDBModel.DirectMessages_Result">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="TimeSent" ColumnName="TimeSent" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="RegisterUser" FunctionName="ChatAppDBModel.Store.RegisterUser" />
+          <FunctionImportMapping FunctionImportName="AllUsers" FunctionName="ChatAppDBModel.Store.AllUsers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ChatAppDBModel.AllUsers_Result">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

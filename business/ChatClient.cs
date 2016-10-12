@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading;
 using Common;
@@ -15,7 +16,8 @@ namespace Business
         private bool _isRegistered = false;
         private string _username = "";
 
-        //private Dictionary<string, List<Message>> 
+        private Dictionary<string, List<Message>> _directMessages = new Dictionary<string, List<Message>>();
+        private Dictionary<long, List<Message>> _channelMessages = new Dictionary<long, List<Message>>();
 
         public string Username
         {
@@ -33,13 +35,21 @@ namespace Business
             this.chatDialog = inChatDialog;
         }
 
-        public bool Register(string username)
+        public bool Register(string username, string password, string firstName, string lastName)
         {
             try
             {
                 var ctx = new InstanceContext(this);
                 remoteProxy = new DuplexChannelFactory<IChatService>(ctx, "ChatClientConfig").CreateChannel();
-                var result = remoteProxy.RegisterUser(username);
+
+                var user = new User()
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Password = password,
+                    UserName = username
+                };
+                var result = remoteProxy.RegisterUser(user);
 
                 switch (result)
                 {

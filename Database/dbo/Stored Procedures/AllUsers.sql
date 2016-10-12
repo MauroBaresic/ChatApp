@@ -2,5 +2,5 @@
 AS
 BEGIN
 	SET NOCOUNT ON
-	SELECT [UserName] FROM [dbo].[Users]
+	SELECT [UserName], [FirstName], [LastName] FROM [dbo].[Users]
 END
