@@ -17,10 +17,13 @@ namespace Business
         int RegisterUser(User user);
 
         [OperationContract]
+        int LoginUser(User user);
+
+        [OperationContract]
         void ReceiveUserMessage(string channel, string username, string userMessage);
 
         [OperationContract]
-        void CloseConnection(string username);
+        void UserStateChanged(string username, int stateId);
 
         [OperationContract]
         List<Channel> GetAllChannels();

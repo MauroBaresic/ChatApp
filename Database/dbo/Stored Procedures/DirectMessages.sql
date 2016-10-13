@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[DirectMessages]	
 	@username nvarchar(50),
-	@usernameOther nvarchar(50)
+	@usernameOther nvarchar(50),
+	@topN int = 100
 AS
 BEGIN
 	SET NOCOUNT ON
@@ -12,11 +13,12 @@ BEGIN
 
 	IF @userId is not null AND @otherUserId is not null
 	BEGIN
-		SELECT [dbo].[Users].[UserName], [dbo].[Messages].[Content], [dbo].[Messages].[TimeSent] 
+		SELECT TOP (@topN) ISNULL([dbo].[Users].[UserName], '') as [UserName], [dbo].[Messages].[Content], [dbo].[Messages].[TimeSent] 
 		FROM [dbo].[UserMessages]
 		JOIN [dbo].[Messages] ON [dbo].[UserMessages].[MessageId] = [dbo].[Messages].[MessageId]
-		JOIN [dbo].[Users] ON [dbo].[Messages].[SenderUserId] = [dbo].[Users].[UserId]
+		LEFT OUTER JOIN [dbo].[Users] ON [dbo].[Messages].[SenderUserId] = [dbo].[Users].[UserId]
 		WHERE ([dbo].[UserMessages].[UserId] = @userId AND [dbo].[UserMessages].[OtherUserId] = @otherUserId) 
 			OR ([dbo].[UserMessages].[UserId] = @otherUserId AND [dbo].[UserMessages].[OtherUserId] = @userId)
+		ORDER BY [dbo].[Messages].[TimeSent] DESC
 	END
 END

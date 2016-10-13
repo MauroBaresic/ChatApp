@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading;
 using Common;
+using Common.Enums;
 using Model;
 
 namespace Business
@@ -90,7 +91,7 @@ namespace Business
         {
             if (_isRegistered)
             {
-                remoteProxy.CloseConnection(Username);
+                remoteProxy.UserStateChanged(Username, (int) UserStateEnum.Offline);
             }
         }
 
@@ -102,6 +103,11 @@ namespace Business
         public void NotifyAllUsers(string message)
         {
             this.chatDialog.ShowMessage(message);
+        }
+
+        public void NotifyUserChangedState(string username, int stateId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

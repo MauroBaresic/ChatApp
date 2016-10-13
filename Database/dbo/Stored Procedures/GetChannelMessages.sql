@@ -9,4 +9,5 @@ BEGIN
 	JOIN [dbo].[Messages] ON [dbo].[ChannelMessages].[MessageId] = [dbo].[Messages].[MessageId]
 	LEFT OUTER JOIN [dbo].[Users] ON [dbo].[Messages].[SenderUserId] = [dbo].[Users].[UserId]
 	WHERE [dbo].[ChannelMessages].[ChannelId] = @channelId
+	ORDER BY [dbo].[Messages].[TimeSent] DESC
 END

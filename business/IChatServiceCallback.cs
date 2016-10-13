@@ -12,6 +12,7 @@ namespace Business
         [OperationContract(IsOneWay = true)]
         void NotifyAllUsers(string message);
 
-
+        [OperationContract(IsOneWay = true)]
+        void NotifyUserChangedState(string username, int stateId);
     }
 }
