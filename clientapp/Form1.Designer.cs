@@ -170,9 +170,9 @@
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label12.Location = new System.Drawing.Point(227, 160);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(223, 26);
+            this.label12.Size = new System.Drawing.Size(230, 26);
             this.label12.TabIndex = 12;
-            this.label12.Text = "Create a new account";
+            this.label12.Text = "Create a New Account";
             // 
             // lblViewConfirmPass
             // 
@@ -244,9 +244,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(226, 338);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(93, 13);
+            this.label7.Size = new System.Drawing.Size(94, 13);
             this.label7.TabIndex = 4;
-            this.label7.Text = "Confirm password:";
+            this.label7.Text = "Confirm Password:";
             // 
             // tbxRegisterPassword
             // 
