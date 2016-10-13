@@ -414,7 +414,7 @@
             // 
             // lblViewLoginPass
             // 
-            this.lblViewLoginPass.Image = ((System.Drawing.Image)(resources.GetObject("lblViewLoginPass.Image")));
+            this.lblViewLoginPass.Image = global::ClientApp.Properties.Resources.icon_view16;
             this.lblViewLoginPass.Location = new System.Drawing.Point(430, 262);
             this.lblViewLoginPass.Name = "lblViewLoginPass";
             this.lblViewLoginPass.Size = new System.Drawing.Size(16, 13);
@@ -485,7 +485,7 @@
             this.btnWelcomeLogIn.Location = new System.Drawing.Point(250, 264);
             this.btnWelcomeLogIn.Name = "btnWelcomeLogIn";
             this.btnWelcomeLogIn.Size = new System.Drawing.Size(75, 71);
-            this.btnWelcomeLogIn.TabIndex = 3;
+            this.btnWelcomeLogIn.TabIndex = 2;
             this.btnWelcomeLogIn.Text = "Log In";
             this.btnWelcomeLogIn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnWelcomeLogIn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -498,7 +498,7 @@
             this.btnWelcomeSignUp.Location = new System.Drawing.Point(350, 264);
             this.btnWelcomeSignUp.Name = "btnWelcomeSignUp";
             this.btnWelcomeSignUp.Size = new System.Drawing.Size(75, 71);
-            this.btnWelcomeSignUp.TabIndex = 2;
+            this.btnWelcomeSignUp.TabIndex = 3;
             this.btnWelcomeSignUp.Text = "Sign Up";
             this.btnWelcomeSignUp.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnWelcomeSignUp.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
@@ -530,15 +530,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(709, 431);
             this.Controls.Add(this.pnlWelcome);
-            this.Controls.Add(this.pnlRegistration);
             this.Controls.Add(this.pnlLogin);
+            this.Controls.Add(this.pnlRegistration);
             this.Controls.Add(this.lblRegistering);
             this.Controls.Add(this.pbrRegistering);
             this.Controls.Add(this.pnlChannelsAndUsers);
             this.Controls.Add(this.pnlMessageDialog);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "ChatApp";
             this.pnlRegistration.ResumeLayout(false);
             this.pnlRegistration.PerformLayout();
             this.pnlMessageDialog.ResumeLayout(false);
