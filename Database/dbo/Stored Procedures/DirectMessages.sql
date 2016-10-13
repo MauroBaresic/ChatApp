@@ -12,7 +12,7 @@ BEGIN
 
 	IF @userId is not null AND @otherUserId is not null
 	BEGIN
-		SELECT [dbo].[Users].UserName, [dbo].[Messages].[Content], [dbo].[Messages].[TimeSent] 
+		SELECT [dbo].[Users].[UserName], [dbo].[Messages].[Content], [dbo].[Messages].[TimeSent] 
 		FROM [dbo].[UserMessages]
 		JOIN [dbo].[Messages] ON [dbo].[UserMessages].[MessageId] = [dbo].[Messages].[MessageId]
 		JOIN [dbo].[Users] ON [dbo].[Messages].[SenderUserId] = [dbo].[Users].[UserId]

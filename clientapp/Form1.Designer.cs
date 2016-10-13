@@ -84,6 +84,8 @@
             // 
             this.btnRegister.AutoSize = true;
             this.btnRegister.Location = new System.Drawing.Point(370, 376);
+            this.btnRegister.MaximumSize = new System.Drawing.Size(75, 23);
+            this.btnRegister.MinimumSize = new System.Drawing.Size(75, 23);
             this.btnRegister.Name = "btnRegister";
             this.btnRegister.Size = new System.Drawing.Size(75, 23);
             this.btnRegister.TabIndex = 0;
@@ -529,9 +531,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(709, 431);
+            this.Controls.Add(this.pnlRegistration);
             this.Controls.Add(this.pnlWelcome);
             this.Controls.Add(this.pnlLogin);
-            this.Controls.Add(this.pnlRegistration);
             this.Controls.Add(this.lblRegistering);
             this.Controls.Add(this.pbrRegistering);
             this.Controls.Add(this.pnlChannelsAndUsers);

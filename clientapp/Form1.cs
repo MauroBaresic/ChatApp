@@ -33,10 +33,17 @@ namespace ClientApp
             pbrRegistering.Visible = false;
             lblRegistering.Visible = false;
 
+            this.BackColor = ChatAppColors.BackColor;
+            
             var foreColor = ChatAppColors.ForeColor;
-            setForeColor(foreColor, label1, label2, label3, label4, label5, label6, label7, label8, label9, label10, label11, label12, label13, label4, label5
-                ,tbxRegisterPassword, tbxConfirmPassword, tbxFirstName, tbxLastName, tbxLoginPassword, tbxLoginUsername, tbxMessage, tbxMessages, tbxRegisterUsername,
+            setForeColor(foreColor, label1, label2, label3, label4, label5, label6, label7, label8, label9, label10, label11, label12, label13, label14, label15,
+                tbxRegisterPassword, tbxConfirmPassword, tbxFirstName, tbxLastName, tbxLoginPassword, tbxLoginUsername, tbxMessage, tbxMessages, tbxRegisterUsername,
                 btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage);
+
+            var backColor = ChatAppColors.ControlBackColor;
+            setBackColor(backColor, btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage);
+
+            setButtonStyle(FlatStyle.Flat, btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage);
         }
 
         private void setForeColor(Color foreColor, params Control[] controls)
@@ -44,6 +51,22 @@ namespace ClientApp
             foreach (var control in controls)
             {
                 control.ForeColor = foreColor;
+            }
+        }
+
+        private void setBackColor(Color backColor, params Control[] controls)
+        {
+            foreach (var control in controls)
+            {
+                control.BackColor = backColor;
+            }
+        }
+
+        private void setButtonStyle(dynamic style, params ButtonBase[] buttons)
+        {
+            foreach (var button in buttons)
+            {
+                button.FlatStyle = style;
             }
         }
 

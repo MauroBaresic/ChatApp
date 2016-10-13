@@ -10,5 +10,9 @@ namespace ClientApp
     public static class ChatAppColors
     {
         public static Color ForeColor => Color.FromArgb(67, 84, 97);
+
+        public static Color BackColor => Color.White;
+
+        public static Color ControlBackColor => Color.AliceBlue;
     }
 }
