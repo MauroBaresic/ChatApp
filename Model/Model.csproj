@@ -90,6 +90,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChatAppModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ChatAppRepository.cs" />
     <Compile Include="DirectMessages_Result.cs">
       <DependentUpon>ChatAppModel.tt</DependentUpon>
     </Compile>

@@ -51,7 +51,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.pnlMessageDialog = new System.Windows.Forms.Panel();
             this.cbxEnterSendsMessage = new System.Windows.Forms.CheckBox();
-            this.pnlChannelsAndUsers = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.lbxChannels = new System.Windows.Forms.ListBox();
             this.lbxUsers = new System.Windows.Forms.ListBox();
@@ -73,9 +72,9 @@
             this.btnWelcomeSignUp = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.btnLogOut = new System.Windows.Forms.Button();
             this.pnlRegistration.SuspendLayout();
             this.pnlMessageDialog.SuspendLayout();
-            this.pnlChannelsAndUsers.SuspendLayout();
             this.pnlLogin.SuspendLayout();
             this.pnlWelcome.SuspendLayout();
             this.SuspendLayout();
@@ -96,7 +95,7 @@
             // 
             // tbxMessages
             // 
-            this.tbxMessages.Location = new System.Drawing.Point(18, 3);
+            this.tbxMessages.Location = new System.Drawing.Point(135, 73);
             this.tbxMessages.Multiline = true;
             this.tbxMessages.Name = "tbxMessages";
             this.tbxMessages.ReadOnly = true;
@@ -106,7 +105,7 @@
             // 
             // btnSendMessage
             // 
-            this.btnSendMessage.Location = new System.Drawing.Point(376, 188);
+            this.btnSendMessage.Location = new System.Drawing.Point(493, 258);
             this.btnSendMessage.Name = "btnSendMessage";
             this.btnSendMessage.Size = new System.Drawing.Size(75, 23);
             this.btnSendMessage.TabIndex = 2;
@@ -116,7 +115,7 @@
             // 
             // tbxMessage
             // 
-            this.tbxMessage.Location = new System.Drawing.Point(18, 190);
+            this.tbxMessage.Location = new System.Drawing.Point(135, 260);
             this.tbxMessage.Name = "tbxMessage";
             this.tbxMessage.Size = new System.Drawing.Size(352, 20);
             this.tbxMessage.TabIndex = 3;
@@ -285,19 +284,24 @@
             // 
             // pnlMessageDialog
             // 
+            this.pnlMessageDialog.Controls.Add(this.label3);
+            this.pnlMessageDialog.Controls.Add(this.btnLogOut);
+            this.pnlMessageDialog.Controls.Add(this.lbxUsers);
+            this.pnlMessageDialog.Controls.Add(this.lbxChannels);
             this.pnlMessageDialog.Controls.Add(this.cbxEnterSendsMessage);
+            this.pnlMessageDialog.Controls.Add(this.label2);
             this.pnlMessageDialog.Controls.Add(this.tbxMessage);
             this.pnlMessageDialog.Controls.Add(this.btnSendMessage);
             this.pnlMessageDialog.Controls.Add(this.tbxMessages);
-            this.pnlMessageDialog.Location = new System.Drawing.Point(123, 12);
+            this.pnlMessageDialog.Location = new System.Drawing.Point(12, 12);
             this.pnlMessageDialog.Name = "pnlMessageDialog";
-            this.pnlMessageDialog.Size = new System.Drawing.Size(473, 253);
+            this.pnlMessageDialog.Size = new System.Drawing.Size(685, 407);
             this.pnlMessageDialog.TabIndex = 5;
             // 
             // cbxEnterSendsMessage
             // 
             this.cbxEnterSendsMessage.AutoSize = true;
-            this.cbxEnterSendsMessage.Location = new System.Drawing.Point(18, 217);
+            this.cbxEnterSendsMessage.Location = new System.Drawing.Point(135, 287);
             this.cbxEnterSendsMessage.Name = "cbxEnterSendsMessage";
             this.cbxEnterSendsMessage.Size = new System.Drawing.Size(172, 17);
             this.cbxEnterSendsMessage.TabIndex = 4;
@@ -305,21 +309,10 @@
             this.cbxEnterSendsMessage.UseVisualStyleBackColor = true;
             this.cbxEnterSendsMessage.CheckedChanged += new System.EventHandler(this.cbxEnterSendsMessage_CheckedChanged);
             // 
-            // pnlChannelsAndUsers
-            // 
-            this.pnlChannelsAndUsers.Controls.Add(this.label3);
-            this.pnlChannelsAndUsers.Controls.Add(this.lbxChannels);
-            this.pnlChannelsAndUsers.Controls.Add(this.lbxUsers);
-            this.pnlChannelsAndUsers.Controls.Add(this.label2);
-            this.pnlChannelsAndUsers.Location = new System.Drawing.Point(12, 12);
-            this.pnlChannelsAndUsers.Name = "pnlChannelsAndUsers";
-            this.pnlChannelsAndUsers.Size = new System.Drawing.Size(104, 407);
-            this.pnlChannelsAndUsers.TabIndex = 6;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 174);
+            this.label3.Location = new System.Drawing.Point(576, 243);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(37, 13);
             this.label3.TabIndex = 3;
@@ -328,7 +321,7 @@
             // lbxChannels
             // 
             this.lbxChannels.FormattingEnabled = true;
-            this.lbxChannels.Location = new System.Drawing.Point(3, 16);
+            this.lbxChannels.Location = new System.Drawing.Point(517, 122);
             this.lbxChannels.Name = "lbxChannels";
             this.lbxChannels.Size = new System.Drawing.Size(95, 95);
             this.lbxChannels.TabIndex = 2;
@@ -336,7 +329,7 @@
             // lbxUsers
             // 
             this.lbxUsers.FormattingEnabled = true;
-            this.lbxUsers.Location = new System.Drawing.Point(6, 193);
+            this.lbxUsers.Location = new System.Drawing.Point(576, 262);
             this.lbxUsers.Name = "lbxUsers";
             this.lbxUsers.Size = new System.Drawing.Size(95, 95);
             this.lbxUsers.TabIndex = 1;
@@ -344,7 +337,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 0);
+            this.label2.Location = new System.Drawing.Point(517, 106);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(54, 13);
             this.label2.TabIndex = 0;
@@ -526,18 +519,29 @@
             this.label10.TabIndex = 0;
             this.label10.Text = "Welcome to ChatApp!";
             // 
+            // btnLogOut
+            // 
+            this.btnLogOut.Image = global::ClientApp.Properties.Resources.icon_logOut32;
+            this.btnLogOut.Location = new System.Drawing.Point(596, 16);
+            this.btnLogOut.Name = "btnLogOut";
+            this.btnLogOut.Size = new System.Drawing.Size(75, 71);
+            this.btnLogOut.TabIndex = 5;
+            this.btnLogOut.Text = "Log Out";
+            this.btnLogOut.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnLogOut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnLogOut.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(709, 431);
-            this.Controls.Add(this.pnlRegistration);
+            this.Controls.Add(this.pnlMessageDialog);
             this.Controls.Add(this.pnlWelcome);
+            this.Controls.Add(this.pnlRegistration);
             this.Controls.Add(this.pnlLogin);
             this.Controls.Add(this.lblRegistering);
             this.Controls.Add(this.pbrRegistering);
-            this.Controls.Add(this.pnlChannelsAndUsers);
-            this.Controls.Add(this.pnlMessageDialog);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "ChatApp";
@@ -545,8 +549,6 @@
             this.pnlRegistration.PerformLayout();
             this.pnlMessageDialog.ResumeLayout(false);
             this.pnlMessageDialog.PerformLayout();
-            this.pnlChannelsAndUsers.ResumeLayout(false);
-            this.pnlChannelsAndUsers.PerformLayout();
             this.pnlLogin.ResumeLayout(false);
             this.pnlLogin.PerformLayout();
             this.pnlWelcome.ResumeLayout(false);
@@ -566,7 +568,6 @@
         private System.Windows.Forms.TextBox tbxRegisterUsername;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnlMessageDialog;
-        private System.Windows.Forms.Panel pnlChannelsAndUsers;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ListBox lbxChannels;
         private System.Windows.Forms.ListBox lbxUsers;
@@ -602,6 +603,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btnLoginCancel;
+        private System.Windows.Forms.Button btnLogOut;
     }
 }
 

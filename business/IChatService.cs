@@ -29,6 +29,9 @@ namespace Business
         List<Channel> GetAllChannels();
 
         [OperationContract]
+        List<UserVM> GetChannelMembers(int channelId);
+
+        [OperationContract]
         List<MessageVM> GetChannelMessages(int channelId);
 
         [OperationContract]

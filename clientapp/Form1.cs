@@ -24,8 +24,7 @@ namespace ClientApp
             chatClient = new ChatClient(this);
 
             this.FormClosing += OnFormClosing;
-
-            pnlChannelsAndUsers.Visible = false;
+            
             pnlMessageDialog.Visible = false;
             pnlLogin.Visible = false;
             pnlRegistration.Visible = false;
@@ -38,12 +37,12 @@ namespace ClientApp
             var foreColor = ChatAppColors.ForeColor;
             setForeColor(foreColor, label1, label2, label3, label4, label5, label6, label7, label8, label9, label10, label11, label12, label13, label14, label15,
                 tbxRegisterPassword, tbxConfirmPassword, tbxFirstName, tbxLastName, tbxLoginPassword, tbxLoginUsername, tbxMessage, tbxMessages, tbxRegisterUsername,
-                btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage);
+                btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage, btnLogOut);
 
             var backColor = ChatAppColors.ControlBackColor;
-            setBackColor(backColor, btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage);
+            setBackColor(backColor, btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage, btnLogOut);
 
-            setButtonStyle(FlatStyle.Flat, btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage);
+            setButtonStyle(FlatStyle.Flat, btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage, btnLogOut);
         }
 
         private void setForeColor(Color foreColor, params Control[] controls)
@@ -116,6 +115,16 @@ namespace ClientApp
             //hide progress bar
             pbrRegistering.Visible = false;
             lblRegistering.Visible = false;
+
+            if (registered)
+            {
+                
+            }
+        }
+
+        private void setUp()
+        {
+            
         }
 
         public void ShowMessage(string message)
@@ -141,7 +150,6 @@ namespace ClientApp
         {
             if (registered)
             {
-                this.pnlChannelsAndUsers.Visible = true;
                 this.pnlMessageDialog.Visible = true;
                 this.pnlRegistration.Visible = false;
             }

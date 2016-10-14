@@ -52,13 +52,13 @@ namespace Business
                 };
                 var result = remoteProxy.RegisterUser(user);
 
-                switch (result)
+                switch ((RegistrationEnum)result)
                 {
-                    case 0:
+                    case RegistrationEnum.Successful:
                         Username = username;
                         _isRegistered = true;
                         return true;
-                    case 1:
+                    case RegistrationEnum.UsernameAlreadyExists:
                         chatDialog.ShowErrorDialog("Username already exists!");
                         return false;
                     default:

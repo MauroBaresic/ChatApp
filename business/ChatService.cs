@@ -14,6 +14,7 @@ namespace Business
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerCall)]
     public class ChatService : IChatService
     {
+        private ChatAppRepository _repository = new ChatAppRepository();
         private static Dictionary<User, IChatServiceCallback> _userCallbacks = new Dictionary<User, IChatServiceCallback>();
 
         private static List<UserVM> _registeredUsers;
@@ -31,15 +32,7 @@ namespace Business
 
         private List<UserVM> getAllUsersList()
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
-            {
-                var listUsers = context.AllUsers().ToList();
-                List<UserVM> allUsers =
-                    listUsers.Select(
-                        x => new UserVM() { UserName = x.UserName, FirstName = x.FirstName, LastName = x.LastName })
-                        .ToList();
-                return allUsers;
-            }
+            return _repository.GetAllUsers();
         }
 
         public int RegisterUser(User user)
@@ -50,13 +43,8 @@ namespace Business
             }
 
             user.RegistrationDate = DateTime.UtcNow;
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
-            {
-                context.RegisterUser(user.UserName, user.FirstName, user.LastName, user.Password, user.RegistrationDate);
+            _repository.RegisterUser(user);
 
-                //context.Users.Add(user);
-                //context.SaveChanges();
-            }
             _registeredUsers.Add(new UserVM() {UserName = user.UserName, FirstName = user.FirstName, LastName = user.LastName, StateId = (int)UserStateEnum.Online});
             _userCallbacks.Add(user, OperationContext.Current.GetCallbackChannel<IChatServiceCallback>());
 
@@ -125,27 +113,17 @@ namespace Business
 
         public List<Channel> GetAllChannels()
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
-            {
-                var listChannels = context.AllChannels().ToList();
-                List<Channel> allChannels =
-                    listChannels.Select(x => new Channel() {ChannelId = x.ChannelId, ChannelName = x.ChannelName})
-                        .ToList();
-                return allChannels;
-            }
+            return _repository.GetAllChannels();
+        }
+
+        public List<UserVM> GetChannelMembers(int channelId)
+        {
+            return _repository.GetChannelMembers(channelId);
         }
 
         public List<MessageVM> GetChannelMessages(int channelId)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
-            {
-                var listMessages = context.GetChannelMessages(channelId, 100).ToList();
-                List<MessageVM> messages =
-                    listMessages.Select(
-                        x => new MessageVM() { Content = x.Content, TimeSent = x.TimeSent, SenderUsername = x.UserName })
-                        .ToList();
-                return messages;
-            }
+            return _repository.GetChannelMessages(channelId);
         }
 
         public List<UserVM> GetAllUsers()
@@ -155,15 +133,7 @@ namespace Business
 
         public List<MessageVM> GetDirectMessages(string username, string usernameOther)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
-            {
-                var listMessages = context.DirectMessages(username, usernameOther, 100).ToList();
-                List<MessageVM> messages =
-                    listMessages.Select(
-                        x => new MessageVM() {Content = x.Content, TimeSent = x.TimeSent, SenderUsername = x.UserName})
-                        .ToList();
-                return messages;
-            }
+            return _repository.GetDirectMessages(username, usernameOther);
         }
 
         public void NotifyAllUsers(string message)
@@ -173,6 +143,5 @@ namespace Business
                 chatServiceCallback.NotifyAllUsers(message);
             }
         }
-
     }
 }

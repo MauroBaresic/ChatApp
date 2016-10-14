@@ -1,0 +1,92 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Common;
+using Model.ViewModels;
+
+namespace Model
+{
+    public class ChatAppRepository
+    {
+        public List<UserVM> GetAllUsers()
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                var listUsers = context.AllUsers().ToList();
+                return getUserVMs(listUsers);
+            }
+        }
+
+        public void RegisterUser(User user)
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                context.RegisterUser(user.UserName, user.FirstName, user.LastName, user.Password, user.RegistrationDate);
+
+                //context.Users.Add(user);
+                //context.SaveChanges();
+            }
+        }
+
+        public List<Channel> GetAllChannels()
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                var listChannels = context.AllChannels().ToList();
+                List<Channel> allChannels =
+                    listChannels.Select(x => new Channel() { ChannelId = x.ChannelId, ChannelName = x.ChannelName })
+                        .ToList();
+                return allChannels;
+            }
+        }
+
+        public List<UserVM> GetChannelMembers(int channelId)
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                var membersList = context.GetChannelMembers(channelId).ToList();
+                return getUserVMs(membersList);
+            }
+        }
+
+        public List<MessageVM> GetChannelMessages(int channelId)
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                var listMessages = context.GetChannelMessages(channelId, 100).ToList();
+                return getMessageVMs(listMessages);
+            }
+        }
+
+        public List<MessageVM> GetDirectMessages(string username, string usernameOther)
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                var listMessages = context.DirectMessages(username, usernameOther, 100).ToList();
+                return getMessageVMs(listMessages);
+            }
+        }
+
+        private List<UserVM> getUserVMs(dynamic usersList)
+        {
+            List<UserVM> userVMs = new List<UserVM>();
+            foreach (var user in usersList)
+            {
+                userVMs.Add(new UserVM() { UserName = user.UserName, LastName = user.LastName, FirstName = user.FirstName });
+            }
+            return userVMs;
+        }
+
+        private List<MessageVM> getMessageVMs(dynamic messageList)
+        {
+            List<MessageVM> messageVMs = new List<MessageVM>();
+            foreach (var message in messageList)
+            {
+                messageVMs.Add(new MessageVM() { Content = message.Content, TimeSent = message.TimeSent, SenderUsername = message.UserName });
+            }
+            return messageVMs;
+        }
+    }
+}
