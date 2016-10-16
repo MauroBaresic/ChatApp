@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[GetChannelMembers]
-	@channelId INT
+	@channelId BIGINT
 AS
 BEGIN
 	SET NOCOUNT ON

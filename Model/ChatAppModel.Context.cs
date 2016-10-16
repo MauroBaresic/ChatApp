@@ -42,43 +42,13 @@ namespace Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<AllUsers_Result>("AllUsers");
         }
     
-        public virtual ObjectResult<DirectMessages_Result> DirectMessages(string username, string usernameOther, Nullable<int> topN)
-        {
-            var usernameParameter = username != null ?
-                new ObjectParameter("username", username) :
-                new ObjectParameter("username", typeof(string));
-    
-            var usernameOtherParameter = usernameOther != null ?
-                new ObjectParameter("usernameOther", usernameOther) :
-                new ObjectParameter("usernameOther", typeof(string));
-    
-            var topNParameter = topN.HasValue ?
-                new ObjectParameter("topN", topN) :
-                new ObjectParameter("topN", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DirectMessages_Result>("DirectMessages", usernameParameter, usernameOtherParameter, topNParameter);
-        }
-    
-        public virtual ObjectResult<GetChannelMembers_Result> GetChannelMembers(Nullable<int> channelId)
-        {
-            var channelIdParameter = channelId.HasValue ?
-                new ObjectParameter("channelId", channelId) :
-                new ObjectParameter("channelId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetChannelMembers_Result>("GetChannelMembers", channelIdParameter);
-        }
-    
-        public virtual ObjectResult<GetChannelMessages_Result> GetChannelMessages(Nullable<long> channelId, Nullable<int> topN)
+        public virtual ObjectResult<GetChannelMembers_Result> GetChannelMembers(Nullable<long> channelId)
         {
             var channelIdParameter = channelId.HasValue ?
                 new ObjectParameter("channelId", channelId) :
                 new ObjectParameter("channelId", typeof(long));
     
-            var topNParameter = topN.HasValue ?
-                new ObjectParameter("topN", topN) :
-                new ObjectParameter("topN", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetChannelMessages_Result>("GetChannelMessages", channelIdParameter, topNParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetChannelMembers_Result>("GetChannelMembers", channelIdParameter);
         }
     
         public virtual int RegisterUser(string username, string firstname, string lastname, string password, Nullable<System.DateTime> registrationDate)
@@ -130,6 +100,88 @@ namespace Model
                 new ObjectParameter("username", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetUserCredentials_Result>("GetUserCredentials", usernameParameter);
+        }
+    
+        public virtual int DeleteChannelUserMessages(Nullable<long> channelId, string username)
+        {
+            var channelIdParameter = channelId.HasValue ?
+                new ObjectParameter("channelId", channelId) :
+                new ObjectParameter("channelId", typeof(long));
+    
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteChannelUserMessages", channelIdParameter, usernameParameter);
+        }
+    
+        public virtual int DeleteMessage(string username, Nullable<long> messageId)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var messageIdParameter = messageId.HasValue ?
+                new ObjectParameter("messageId", messageId) :
+                new ObjectParameter("messageId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteMessage", usernameParameter, messageIdParameter);
+        }
+    
+        public virtual int DeleteUserMessages(string username, string usernameOther)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var usernameOtherParameter = usernameOther != null ?
+                new ObjectParameter("usernameOther", usernameOther) :
+                new ObjectParameter("usernameOther", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteUserMessages", usernameParameter, usernameOtherParameter);
+        }
+    
+        public virtual int UpdateMessage(Nullable<long> messageId, string content)
+        {
+            var messageIdParameter = messageId.HasValue ?
+                new ObjectParameter("messageId", messageId) :
+                new ObjectParameter("messageId", typeof(long));
+    
+            var contentParameter = content != null ?
+                new ObjectParameter("content", content) :
+                new ObjectParameter("content", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateMessage", messageIdParameter, contentParameter);
+        }
+    
+        public virtual ObjectResult<DirectMessages_Result> DirectMessages(string username, string usernameOther, Nullable<int> topN)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var usernameOtherParameter = usernameOther != null ?
+                new ObjectParameter("usernameOther", usernameOther) :
+                new ObjectParameter("usernameOther", typeof(string));
+    
+            var topNParameter = topN.HasValue ?
+                new ObjectParameter("topN", topN) :
+                new ObjectParameter("topN", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DirectMessages_Result>("DirectMessages", usernameParameter, usernameOtherParameter, topNParameter);
+        }
+    
+        public virtual ObjectResult<GetChannelMessages_Result> GetChannelMessages(Nullable<long> channelId, Nullable<int> topN)
+        {
+            var channelIdParameter = channelId.HasValue ?
+                new ObjectParameter("channelId", channelId) :
+                new ObjectParameter("channelId", typeof(long));
+    
+            var topNParameter = topN.HasValue ?
+                new ObjectParameter("topN", topN) :
+                new ObjectParameter("topN", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetChannelMessages_Result>("GetChannelMessages", channelIdParameter, topNParameter);
         }
     }
 }

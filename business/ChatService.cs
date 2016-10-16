@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.ServiceModel;
 using Common;
 using Common.Enums;
+using Common.ViewModels;
 using Model;
-using Model.ViewModels;
 
 namespace Business
 {
@@ -72,18 +72,41 @@ namespace Business
                 var credentials = context.GetUserCredentials(user.UserName).ToList().FirstOrDefault();
                 if (credentials != null)
                 {
-                    if (credentials.UserName.Equals(user.UserName, StringComparison.OrdinalIgnoreCase) && credentials.Password.Equals(user.Password))
+                    if (!(credentials.UserName.Equals(user.UserName, StringComparison.OrdinalIgnoreCase) && credentials.Password.Equals(user.Password)))
                     {
-                        
+                        return (int)LoginEnum.WrongUsernameOrPassword;
                     }
+                }
+                else
+                {
+                    return (int)LoginEnum.WrongUsernameOrPassword;
                 }
             }
 
+            var authUser = RegisteredUsers.FirstOrDefault(x => x.UserName.Equals(user.UserName, StringComparison.OrdinalIgnoreCase));
+            if (authUser != null)
+            {
+                authUser.StateId = (int) UserStateEnum.Online;
+                user.FirstName = authUser.FirstName;
+                user.LastName = authUser.LastName;
+                _userCallbacks.Add(user, OperationContext.Current.GetCallbackChannel<IChatServiceCallback>());
+            }
+            else
+            {
+                return (int)LoginEnum.WrongUsernameOrPassword;
+            }
             return (int)LoginEnum.Successful;
         }
 
-        public void ReceiveUserMessage(string channel, string username, string userMessage)
+        public void ReceiveUserMessage(string username, string usernameOther, string userMessage)
         {
+
+            NotifyAllUsers($"{username} [{DateTime.UtcNow.ToShortTimeString()}] : {userMessage}");
+        }
+
+        public void ReceiveChannelMessage(long channelId, string username, string userMessage)
+        {
+
             NotifyAllUsers($"{username} [{DateTime.UtcNow.ToShortTimeString()}] : {userMessage}");
         }
 
@@ -116,12 +139,12 @@ namespace Business
             return _repository.GetAllChannels();
         }
 
-        public List<UserVM> GetChannelMembers(int channelId)
+        public List<UserVM> GetChannelMembers(long channelId)
         {
             return _repository.GetChannelMembers(channelId);
         }
 
-        public List<MessageVM> GetChannelMessages(int channelId)
+        public List<MessageVM> GetChannelMessages(long channelId)
         {
             return _repository.GetChannelMessages(channelId);
         }

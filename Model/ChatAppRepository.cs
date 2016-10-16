@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common;
-using Model.ViewModels;
+using Common.ViewModels;
 
 namespace Model
 {
@@ -42,7 +42,7 @@ namespace Model
             }
         }
 
-        public List<UserVM> GetChannelMembers(int channelId)
+        public List<UserVM> GetChannelMembers(long channelId)
         {
             using (ChatAppDBEntities context = new ChatAppDBEntities())
             {
@@ -51,7 +51,7 @@ namespace Model
             }
         }
 
-        public List<MessageVM> GetChannelMessages(int channelId)
+        public List<MessageVM> GetChannelMessages(long channelId)
         {
             using (ChatAppDBEntities context = new ChatAppDBEntities())
             {
@@ -84,9 +84,14 @@ namespace Model
             List<MessageVM> messageVMs = new List<MessageVM>();
             foreach (var message in messageList)
             {
-                messageVMs.Add(new MessageVM() { Content = message.Content, TimeSent = message.TimeSent, SenderUsername = message.UserName });
+                messageVMs.Add(new MessageVM() {MessageId = message.MessageId, Content = message.Content, TimeSent = message.TimeSent, SenderUsername = message.UserName });
             }
             return messageVMs;
+        }
+
+        public void StoreUserMessage()
+        {
+            
         }
     }
 }

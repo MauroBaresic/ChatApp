@@ -4,7 +4,7 @@
 AS
 BEGIN
 	SET NOCOUNT ON
-	SELECT TOP (@topN) ISNULL([dbo].[Users].[UserName], '') as [UserName], [dbo].[Messages].[Content], [dbo].[Messages].[TimeSent] 
+	SELECT TOP (@topN) ISNULL([dbo].[Users].[UserName], '') as [UserName], [dbo].[Messages].[MessageId], [dbo].[Messages].[Content], [dbo].[Messages].[TimeSent] 
 	FROM [dbo].[ChannelMessages]
 	JOIN [dbo].[Messages] ON [dbo].[ChannelMessages].[MessageId] = [dbo].[Messages].[MessageId]
 	LEFT OUTER JOIN [dbo].[Users] ON [dbo].[Messages].[SenderUserId] = [dbo].[Users].[UserId]

@@ -5,8 +5,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel;
+using Common.ViewModels;
 using Model;
-using Model.ViewModels;
 
 namespace Business
 {
@@ -20,7 +20,10 @@ namespace Business
         int LoginUser(User user);
 
         [OperationContract]
-        void ReceiveUserMessage(string channel, string username, string userMessage);
+        void ReceiveUserMessage(string username, string usernameOther, string userMessage);
+
+        [OperationContract]
+        void ReceiveChannelMessage(long channelId, string username, string userMessage);
 
         [OperationContract]
         void UserStateChanged(string username, int stateId);
@@ -29,10 +32,10 @@ namespace Business
         List<Channel> GetAllChannels();
 
         [OperationContract]
-        List<UserVM> GetChannelMembers(int channelId);
+        List<UserVM> GetChannelMembers(long channelId);
 
         [OperationContract]
-        List<MessageVM> GetChannelMessages(int channelId);
+        List<MessageVM> GetChannelMessages(long channelId);
 
         [OperationContract]
         List<UserVM> GetAllUsers();

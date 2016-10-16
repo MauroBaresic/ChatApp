@@ -156,13 +156,25 @@
         </Association>
         <Function Name="AllChannels" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="AllUsers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="DeleteChannelUserMessages" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="channelId" Type="bigint" Mode="In" />
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="DeleteMessage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
+          <Parameter Name="messageId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="DeleteUserMessages" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
+          <Parameter Name="usernameOther" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="DirectMessages" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="username" Type="nvarchar" Mode="In" />
           <Parameter Name="usernameOther" Type="nvarchar" Mode="In" />
           <Parameter Name="topN" Type="int" Mode="In" />
         </Function>
         <Function Name="GetChannelMembers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="channelId" Type="int" Mode="In" />
+          <Parameter Name="channelId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="GetChannelMessages" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="channelId" Type="bigint" Mode="In" />
@@ -182,6 +194,10 @@
           <Parameter Name="content" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="senderUserId" Type="bigint" Mode="In" />
           <Parameter Name="timeSent" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="UpdateMessage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="messageId" Type="bigint" Mode="In" />
+          <Parameter Name="content" Type="nvarchar(max)" Mode="In" />
         </Function>
         <EntityContainer Name="ChatAppDBModelStoreContainer">
           <EntitySet Name="ChannelMembers" EntityType="Self.ChannelMembers" Schema="dbo" store:Type="Tables" />
@@ -286,17 +302,8 @@
           </AssociationSet>
           <FunctionImport Name="AllChannels" ReturnType="Collection(ChatAppDBModel.AllChannels_Result)" />
           <FunctionImport Name="AllUsers" ReturnType="Collection(ChatAppDBModel.AllUsers_Result)" />
-          <FunctionImport Name="DirectMessages" ReturnType="Collection(ChatAppDBModel.DirectMessages_Result)">
-            <Parameter Name="username" Mode="In" Type="String" />
-            <Parameter Name="usernameOther" Mode="In" Type="String" />
-            <Parameter Name="topN" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="GetChannelMembers" ReturnType="Collection(ChatAppDBModel.GetChannelMembers_Result)">
-          <Parameter Name="channelId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="GetChannelMessages" ReturnType="Collection(ChatAppDBModel.GetChannelMessages_Result)">
-            <Parameter Name="channelId" Mode="In" Type="Int64" />
-            <Parameter Name="topN" Mode="In" Type="Int32" />
+          <Parameter Name="channelId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="RegisterUser">
             <Parameter Name="username" Mode="In" Type="String" />
@@ -311,7 +318,32 @@
             <Parameter Name="timeSent" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="GetUserCredentials" ReturnType="Collection(ChatAppDBModel.GetUserCredentials_Result)">
+          <Parameter Name="username" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteChannelUserMessages">
+            <Parameter Name="channelId" Mode="In" Type="Int64" />
             <Parameter Name="username" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteMessage">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="messageId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteUserMessages">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="usernameOther" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateMessage">
+            <Parameter Name="messageId" Mode="In" Type="Int64" />
+            <Parameter Name="content" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DirectMessages" ReturnType="Collection(ChatAppDBModel.DirectMessages_Result)">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="usernameOther" Mode="In" Type="String" />
+            <Parameter Name="topN" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetChannelMessages" ReturnType="Collection(ChatAppDBModel.GetChannelMessages_Result)">
+            <Parameter Name="channelId" Mode="In" Type="Int64" />
+            <Parameter Name="topN" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="Message">
@@ -400,24 +432,26 @@
           <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
         </ComplexType>
-        <ComplexType Name="DirectMessages_Result">
-          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Content" Nullable="false" />
-          <Property Type="DateTime" Name="TimeSent" Nullable="false" Precision="23" />
-        </ComplexType>
         <ComplexType Name="GetChannelMembers_Result">
           <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
         </ComplexType>
-        <ComplexType Name="GetChannelMessages_Result">
-          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="Content" Nullable="false" />
-          <Property Type="DateTime" Name="TimeSent" Nullable="false" Precision="23" />
-        </ComplexType>
         <ComplexType Name="GetUserCredentials_Result">
           <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" />
           <Property Type="String" Name="Password" Nullable="false" MaxLength="40" />
+        </ComplexType>
+        <ComplexType Name="DirectMessages_Result">
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="MessageId" Nullable="false" />
+          <Property Type="String" Name="Content" Nullable="false" />
+          <Property Type="DateTime" Name="TimeSent" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GetChannelMessages_Result">
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="MessageId" Nullable="false" />
+          <Property Type="String" Name="Content" Nullable="false" />
+          <Property Type="DateTime" Name="TimeSent" Nullable="false" Precision="23" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -497,30 +531,12 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="DirectMessages" FunctionName="ChatAppDBModel.Store.DirectMessages">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ChatAppDBModel.DirectMessages_Result">
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="TimeSent" ColumnName="TimeSent" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetChannelMembers" FunctionName="ChatAppDBModel.Store.GetChannelMembers">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ChatAppDBModel.GetChannelMembers_Result">
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetChannelMessages" FunctionName="ChatAppDBModel.Store.GetChannelMessages">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ChatAppDBModel.GetChannelMessages_Result">
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="TimeSent" ColumnName="TimeSent" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -531,6 +547,30 @@
               <ComplexTypeMapping TypeName="ChatAppDBModel.GetUserCredentials_Result">
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DeleteChannelUserMessages" FunctionName="ChatAppDBModel.Store.DeleteChannelUserMessages" />
+          <FunctionImportMapping FunctionImportName="DeleteMessage" FunctionName="ChatAppDBModel.Store.DeleteMessage" />
+          <FunctionImportMapping FunctionImportName="DeleteUserMessages" FunctionName="ChatAppDBModel.Store.DeleteUserMessages" />
+          <FunctionImportMapping FunctionImportName="UpdateMessage" FunctionName="ChatAppDBModel.Store.UpdateMessage" />
+          <FunctionImportMapping FunctionImportName="DirectMessages" FunctionName="ChatAppDBModel.Store.DirectMessages">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ChatAppDBModel.DirectMessages_Result">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="TimeSent" ColumnName="TimeSent" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetChannelMessages" FunctionName="ChatAppDBModel.Store.GetChannelMessages">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ChatAppDBModel.GetChannelMessages_Result">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="TimeSent" ColumnName="TimeSent" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

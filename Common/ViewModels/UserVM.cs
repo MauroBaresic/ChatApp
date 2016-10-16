@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Common;
-using Common.Enums;
+﻿using Common.Enums;
 
-namespace Model.ViewModels
+namespace Common.ViewModels
 {
     public class UserVM
     {
@@ -17,5 +11,10 @@ namespace Model.ViewModels
         public string LastName { get; set; }
 
         public int StateId { get; set; } = (int) UserStateEnum.Offline;
+
+        public override string ToString()
+        {
+            return UserName;
+        }
     }
 }

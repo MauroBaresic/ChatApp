@@ -115,8 +115,6 @@
     <Compile Include="UserMessage.cs">
       <DependentUpon>ChatAppModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\MessageVM.cs" />
-    <Compile Include="ViewModels\UserVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChatAppDB.mdf">

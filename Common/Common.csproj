@@ -43,9 +43,13 @@
     <Compile Include="Enums\LoginEnum.cs" />
     <Compile Include="IChatClient.cs" />
     <Compile Include="IChatDialog.cs" />
+    <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Enums\RegistrationEnum.cs" />
     <Compile Include="Enums\UserStateEnum.cs" />
+    <Compile Include="ViewModels\ChannelVM.cs" />
+    <Compile Include="ViewModels\MessageVM.cs" />
+    <Compile Include="ViewModels\UserVM.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

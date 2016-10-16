@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Threading;
 using Business;
 using Common;
+using Common.ViewModels;
 
 namespace ClientApp
 {
@@ -25,19 +26,25 @@ namespace ClientApp
 
             this.FormClosing += OnFormClosing;
             
-            pnlMessageDialog.Visible = false;
+            //pnlMessageDialog.Visible = false;
             pnlLogin.Visible = false;
             pnlRegistration.Visible = false;
 
+            lblNotification.Visible = false;
             pbrRegistering.Visible = false;
             lblRegistering.Visible = false;
+
+            lbxChannels.DataSource = null;
+            lbxChannels.DataSource = new List<ChannelVM>() {new ChannelVM() {ChannelName = "c1", ChannelId = 1}, new ChannelVM() {ChannelName = "c2", ChannelId = 2}, new ChannelVM() {ChannelName = "c3", ChannelId = 3} };
+            lbxChannels.ClearSelected();
 
             this.BackColor = ChatAppColors.BackColor;
             
             var foreColor = ChatAppColors.ForeColor;
-            setForeColor(foreColor, label1, label2, label3, label4, label5, label6, label7, label8, label9, label10, label11, label12, label13, label14, label15,
-                tbxRegisterPassword, tbxConfirmPassword, tbxFirstName, tbxLastName, tbxLoginPassword, tbxLoginUsername, tbxMessage, tbxMessages, tbxRegisterUsername,
-                btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage, btnLogOut);
+            setForeColor(foreColor, lblNotification, lblRegistering, label1, label2, label3, label4, label5, label6, label7, label8, label9, label10, label11, label12, label13, label14, label15,
+                tbxRegisterPassword, tbxConfirmPassword, tbxFirstName, tbxLastName, tbxLoginPassword, tbxLoginUsername, tbxMessage, tbxRegisterUsername,
+                btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage, btnLogOut,
+                cbxEnterSendsMessage, lbxChannels, lbxUsers, mlbxMessages);
 
             var backColor = ChatAppColors.ControlBackColor;
             setBackColor(backColor, btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage, btnLogOut);
@@ -110,7 +117,6 @@ namespace ClientApp
             {
                 registered = chatClient.Register(username, password, firstName, lastName);
             });
-            changeVisibilityOnClientRegistered(registered);
 
             //hide progress bar
             pbrRegistering.Visible = false;
@@ -118,13 +124,26 @@ namespace ClientApp
 
             if (registered)
             {
-                
+                this.pnlMessageDialog.Visible = true;
+                this.pnlRegistration.Visible = false;
+                setUp();
+            }
+            else
+            {
+                this.pnlRegistration.Visible = true;
             }
         }
 
         private void setUp()
         {
-            
+            lbxUsers.DataSource = null;
+            lbxUsers.DataSource = chatClient.GetAllUsersList();
+
+            lbxChannels.DataSource = null;
+            lbxChannels.DataSource = chatClient.GetAllChannelsList();
+
+            lblNotification.Text = "Select a channel or a user to start conversation.";
+            lblNotification.Visible = true;
         }
 
         public void ShowMessage(string message)
@@ -132,12 +151,12 @@ namespace ClientApp
             if (this.InvokeRequired)
             {
                 this.BeginInvoke(new MethodInvoker(() => {
-                    this.tbxMessages.AppendText($"{message}\r\n");
+                    this.mlbxMessages.Items.Add(message);
                 }));
             }
             else
             {
-                this.tbxMessages.AppendText($"{message}\r\n");
+                this.mlbxMessages.Items.Add(message);
             }
         }
 
@@ -146,19 +165,6 @@ namespace ClientApp
             MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         
-        private void changeVisibilityOnClientRegistered(bool registered)
-        {
-            if (registered)
-            {
-                this.pnlMessageDialog.Visible = true;
-                this.pnlRegistration.Visible = false;
-            }
-            else
-            {
-                this.pnlRegistration.Visible = true;
-            }
-        }
-
         #region Message Sending
 
         private void btnSendMessage_Click(object sender, EventArgs e)
@@ -234,9 +240,42 @@ namespace ClientApp
 
         #endregion
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private async void btnLogin_Click(object sender, EventArgs e)
         {
+            string username = tbxLoginUsername.Text;
+            string password = tbxLoginPassword.Text;
 
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                ShowErrorDialog("You must fill in all the fields!");
+                return;
+            }
+
+            //start progress bar
+            pbrRegistering.Visible = true;
+            lblRegistering.Visible = true;
+            pnlLogin.Visible = false;
+
+            bool registered = false;
+            await Task.Run(() =>
+            {
+                registered = chatClient.Login(username, password);
+            });
+
+            //hide progress bar
+            pbrRegistering.Visible = false;
+            lblRegistering.Visible = false;
+
+            if (registered)
+            {
+                this.pnlMessageDialog.Visible = true;
+                this.pnlLogin.Visible = false;
+                setUp();
+            }
+            else
+            {
+                this.pnlLogin.Visible = true;
+            }
         }
 
         private void lblViewLoginPass_MouseDown(object sender, MouseEventArgs e)
@@ -272,5 +311,65 @@ namespace ClientApp
             pnlRegistration.Visible = false;
             pnlWelcome.Visible = true;
         }
+
+        private void btnLogOut_Click(object sender, EventArgs e)
+        {
+            chatClient.LogOut();
+            pnlMessageDialog.Visible = false;
+            pnlLogin.Visible = true;
+        }
+
+        private void lbxChannels_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.SuppressKeyPress = true;
+        }
+
+        private void lbxUsers_KeyDown(object sender, KeyEventArgs e)
+        {
+            e.SuppressKeyPress = true;
+        }
+        
+        private void lbxChannels_MouseClick(object sender, MouseEventArgs e)
+        {
+            int index = this.lbxChannels.IndexFromPoint(e.X, e.Y);
+
+            if (index != ListBox.NoMatches &&
+                index != 65535)
+            {
+                var channel = this.lbxChannels.Items[index] as ChannelVM;
+                if (channel != null)
+                {
+                    setMessages(channel.ChannelName, channel.ChannelId);
+                }
+            }
+        }
+
+        private void setMessages(string channelName, long channelId)
+        {
+            chatClient.GetChannelMessages(channelId);
+            lblNotification.Text = channelName;
+        }
+        private void lbxUsers_MouseClick(object sender, MouseEventArgs e)
+        {
+            int index = this.lbxUsers.IndexFromPoint(e.X, e.Y);
+
+            if (index != ListBox.NoMatches &&
+                index != 65535)
+            {
+                var user = this.lbxUsers.Items[index] as UserVM;
+                if (user != null)
+                {
+                    setMessages(user.UserName);
+                }
+            }
+        }
+
+        private void setMessages(string usernameOther)
+        {
+            chatClient.GetUserMessages(usernameOther);
+            lblNotification.Text = usernameOther;
+        }
+
+        
     }
 }

@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnRegister = new System.Windows.Forms.Button();
-            this.tbxMessages = new System.Windows.Forms.TextBox();
             this.btnSendMessage = new System.Windows.Forms.Button();
             this.tbxMessage = new System.Windows.Forms.TextBox();
             this.pnlRegistration = new System.Windows.Forms.Panel();
@@ -50,10 +49,11 @@
             this.tbxRegisterUsername = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlMessageDialog = new System.Windows.Forms.Panel();
-            this.cbxEnterSendsMessage = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.lbxChannels = new System.Windows.Forms.ListBox();
+            this.btnLogOut = new System.Windows.Forms.Button();
             this.lbxUsers = new System.Windows.Forms.ListBox();
+            this.lbxChannels = new System.Windows.Forms.ListBox();
+            this.cbxEnterSendsMessage = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.pbrRegistering = new System.Windows.Forms.ProgressBar();
             this.lblRegistering = new System.Windows.Forms.Label();
@@ -72,7 +72,8 @@
             this.btnWelcomeSignUp = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.btnLogOut = new System.Windows.Forms.Button();
+            this.lblNotification = new System.Windows.Forms.Label();
+            this.mlbxMessages = new ClientApp.MultiLineListBox();
             this.pnlRegistration.SuspendLayout();
             this.pnlMessageDialog.SuspendLayout();
             this.pnlLogin.SuspendLayout();
@@ -93,19 +94,9 @@
             this.btnRegister.UseVisualStyleBackColor = true;
             this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
             // 
-            // tbxMessages
-            // 
-            this.tbxMessages.Location = new System.Drawing.Point(135, 73);
-            this.tbxMessages.Multiline = true;
-            this.tbxMessages.Name = "tbxMessages";
-            this.tbxMessages.ReadOnly = true;
-            this.tbxMessages.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbxMessages.Size = new System.Drawing.Size(352, 165);
-            this.tbxMessages.TabIndex = 1;
-            // 
             // btnSendMessage
             // 
-            this.btnSendMessage.Location = new System.Drawing.Point(493, 258);
+            this.btnSendMessage.Location = new System.Drawing.Point(485, 358);
             this.btnSendMessage.Name = "btnSendMessage";
             this.btnSendMessage.Size = new System.Drawing.Size(75, 23);
             this.btnSendMessage.TabIndex = 2;
@@ -115,7 +106,7 @@
             // 
             // tbxMessage
             // 
-            this.tbxMessage.Location = new System.Drawing.Point(135, 260);
+            this.tbxMessage.Location = new System.Drawing.Point(127, 361);
             this.tbxMessage.Name = "tbxMessage";
             this.tbxMessage.Size = new System.Drawing.Size(352, 20);
             this.tbxMessage.TabIndex = 3;
@@ -284,6 +275,8 @@
             // 
             // pnlMessageDialog
             // 
+            this.pnlMessageDialog.Controls.Add(this.lblNotification);
+            this.pnlMessageDialog.Controls.Add(this.mlbxMessages);
             this.pnlMessageDialog.Controls.Add(this.label3);
             this.pnlMessageDialog.Controls.Add(this.btnLogOut);
             this.pnlMessageDialog.Controls.Add(this.lbxUsers);
@@ -292,16 +285,57 @@
             this.pnlMessageDialog.Controls.Add(this.label2);
             this.pnlMessageDialog.Controls.Add(this.tbxMessage);
             this.pnlMessageDialog.Controls.Add(this.btnSendMessage);
-            this.pnlMessageDialog.Controls.Add(this.tbxMessages);
             this.pnlMessageDialog.Location = new System.Drawing.Point(12, 12);
             this.pnlMessageDialog.Name = "pnlMessageDialog";
             this.pnlMessageDialog.Size = new System.Drawing.Size(685, 407);
             this.pnlMessageDialog.TabIndex = 5;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 136);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(37, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Users:";
+            // 
+            // btnLogOut
+            // 
+            this.btnLogOut.Image = global::ClientApp.Properties.Resources.icon_logOut32;
+            this.btnLogOut.Location = new System.Drawing.Point(607, 334);
+            this.btnLogOut.Name = "btnLogOut";
+            this.btnLogOut.Size = new System.Drawing.Size(75, 71);
+            this.btnLogOut.TabIndex = 5;
+            this.btnLogOut.Text = "Log Out";
+            this.btnLogOut.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnLogOut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnLogOut.UseVisualStyleBackColor = true;
+            this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
+            // 
+            // lbxUsers
+            // 
+            this.lbxUsers.FormattingEnabled = true;
+            this.lbxUsers.Location = new System.Drawing.Point(3, 155);
+            this.lbxUsers.Name = "lbxUsers";
+            this.lbxUsers.Size = new System.Drawing.Size(95, 251);
+            this.lbxUsers.TabIndex = 1;
+            this.lbxUsers.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbxUsers_MouseClick);
+            this.lbxUsers.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxUsers_KeyDown);
+            // 
+            // lbxChannels
+            // 
+            this.lbxChannels.FormattingEnabled = true;
+            this.lbxChannels.Location = new System.Drawing.Point(3, 32);
+            this.lbxChannels.Name = "lbxChannels";
+            this.lbxChannels.Size = new System.Drawing.Size(95, 95);
+            this.lbxChannels.TabIndex = 2;
+            this.lbxChannels.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbxChannels_MouseClick);
+            this.lbxChannels.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxChannels_KeyDown);
+            // 
             // cbxEnterSendsMessage
             // 
             this.cbxEnterSendsMessage.AutoSize = true;
-            this.cbxEnterSendsMessage.Location = new System.Drawing.Point(135, 287);
+            this.cbxEnterSendsMessage.Location = new System.Drawing.Point(127, 387);
             this.cbxEnterSendsMessage.Name = "cbxEnterSendsMessage";
             this.cbxEnterSendsMessage.Size = new System.Drawing.Size(172, 17);
             this.cbxEnterSendsMessage.TabIndex = 4;
@@ -309,35 +343,10 @@
             this.cbxEnterSendsMessage.UseVisualStyleBackColor = true;
             this.cbxEnterSendsMessage.CheckedChanged += new System.EventHandler(this.cbxEnterSendsMessage_CheckedChanged);
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(576, 243);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(37, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Users:";
-            // 
-            // lbxChannels
-            // 
-            this.lbxChannels.FormattingEnabled = true;
-            this.lbxChannels.Location = new System.Drawing.Point(517, 122);
-            this.lbxChannels.Name = "lbxChannels";
-            this.lbxChannels.Size = new System.Drawing.Size(95, 95);
-            this.lbxChannels.TabIndex = 2;
-            // 
-            // lbxUsers
-            // 
-            this.lbxUsers.FormattingEnabled = true;
-            this.lbxUsers.Location = new System.Drawing.Point(576, 262);
-            this.lbxUsers.Name = "lbxUsers";
-            this.lbxUsers.Size = new System.Drawing.Size(95, 95);
-            this.lbxUsers.TabIndex = 1;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(517, 106);
+            this.label2.Location = new System.Drawing.Point(3, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(54, 13);
             this.label2.TabIndex = 0;
@@ -519,17 +528,25 @@
             this.label10.TabIndex = 0;
             this.label10.Text = "Welcome to ChatApp!";
             // 
-            // btnLogOut
+            // lblNotification
             // 
-            this.btnLogOut.Image = global::ClientApp.Properties.Resources.icon_logOut32;
-            this.btnLogOut.Location = new System.Drawing.Point(596, 16);
-            this.btnLogOut.Name = "btnLogOut";
-            this.btnLogOut.Size = new System.Drawing.Size(75, 71);
-            this.btnLogOut.TabIndex = 5;
-            this.btnLogOut.Text = "Log Out";
-            this.btnLogOut.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnLogOut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnLogOut.UseVisualStyleBackColor = true;
+            this.lblNotification.AutoSize = true;
+            this.lblNotification.Location = new System.Drawing.Point(124, 0);
+            this.lblNotification.Name = "lblNotification";
+            this.lblNotification.Size = new System.Drawing.Size(70, 13);
+            this.lblNotification.TabIndex = 8;
+            this.lblNotification.Text = "lblNotification";
+            // 
+            // mlbxMessages
+            // 
+            this.mlbxMessages.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.mlbxMessages.FormattingEnabled = true;
+            this.mlbxMessages.Location = new System.Drawing.Point(127, 16);
+            this.mlbxMessages.Name = "mlbxMessages";
+            this.mlbxMessages.ScrollAlwaysVisible = true;
+            this.mlbxMessages.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.mlbxMessages.Size = new System.Drawing.Size(433, 331);
+            this.mlbxMessages.TabIndex = 7;
             // 
             // Form1
             // 
@@ -537,9 +554,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(709, 431);
             this.Controls.Add(this.pnlMessageDialog);
+            this.Controls.Add(this.pnlLogin);
             this.Controls.Add(this.pnlWelcome);
             this.Controls.Add(this.pnlRegistration);
-            this.Controls.Add(this.pnlLogin);
             this.Controls.Add(this.lblRegistering);
             this.Controls.Add(this.pbrRegistering);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -561,7 +578,6 @@
         #endregion
 
         private System.Windows.Forms.Button btnRegister;
-        private System.Windows.Forms.TextBox tbxMessages;
         private System.Windows.Forms.Button btnSendMessage;
         private System.Windows.Forms.TextBox tbxMessage;
         private System.Windows.Forms.Panel pnlRegistration;
@@ -604,6 +620,8 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btnLoginCancel;
         private System.Windows.Forms.Button btnLogOut;
+        private MultiLineListBox mlbxMessages;
+        private System.Windows.Forms.Label lblNotification;
     }
 }
 

@@ -5,15 +5,15 @@
 AS
 BEGIN
 	SET NOCOUNT ON
-	DECLARE @userId INT;
-	DECLARE @otherUserId INT;
+	DECLARE @userId BIGINT;
+	DECLARE @otherUserId BIGINT;
 
 	SET @userId = (SELECT TOP 1 [UserId] FROM [dbo].[Users] WHERE [UserName] = @username);
 	SET @otherUserId = (SELECT TOP 1 [UserId] FROM [dbo].[Users] WHERE [UserName] = @usernameOther);
 
 	IF @userId is not null AND @otherUserId is not null
 	BEGIN
-		SELECT TOP (@topN) ISNULL([dbo].[Users].[UserName], '') as [UserName], [dbo].[Messages].[Content], [dbo].[Messages].[TimeSent] 
+		SELECT TOP (@topN) ISNULL([dbo].[Users].[UserName], '') as [UserName], [dbo].[Messages].[MessageId], [dbo].[Messages].[Content], [dbo].[Messages].[TimeSent] 
 		FROM [dbo].[UserMessages]
 		JOIN [dbo].[Messages] ON [dbo].[UserMessages].[MessageId] = [dbo].[Messages].[MessageId]
 		LEFT OUTER JOIN [dbo].[Users] ON [dbo].[Messages].[SenderUserId] = [dbo].[Users].[UserId]

@@ -14,6 +14,7 @@ namespace Model
     public partial class GetChannelMessages_Result
     {
         public string UserName { get; set; }
+        public long MessageId { get; set; }
         public string Content { get; set; }
         public System.DateTime TimeSent { get; set; }
     }
