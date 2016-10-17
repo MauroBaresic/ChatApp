@@ -196,6 +196,11 @@
           <Parameter Name="channelId" Type="bigint" Mode="In" />
           <Parameter Name="timeSent" Type="datetime" Mode="In" />
         </Function>
+        <Function Name="StoreMessage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="content" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="senderUserId" Type="bigint" Mode="In" />
+          <Parameter Name="timeSent" Type="datetime" Mode="In" />
+        </Function>
         <Function Name="StoreUserMessage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="content" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="username" Type="nvarchar" Mode="In" />
@@ -357,6 +362,11 @@
             <Parameter Name="content" Mode="In" Type="String" />
             <Parameter Name="username" Mode="In" Type="String" />
             <Parameter Name="usernameOther" Mode="In" Type="String" />
+            <Parameter Name="timeSent" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="StoreMessage">
+            <Parameter Name="content" Mode="In" Type="String" />
+            <Parameter Name="senderUserId" Mode="In" Type="Int64" />
             <Parameter Name="timeSent" Mode="In" Type="DateTime" />
           </FunctionImport>
         </EntityContainer>
@@ -589,6 +599,7 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="StoreChannelMessage" FunctionName="ChatAppDBModel.Store.StoreChannelMessage" />
           <FunctionImportMapping FunctionImportName="StoreUserMessage" FunctionName="ChatAppDBModel.Store.StoreUserMessage" />
+          <FunctionImportMapping FunctionImportName="StoreMessage" FunctionName="ChatAppDBModel.Store.StoreMessage" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

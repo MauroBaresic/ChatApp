@@ -208,5 +208,22 @@ namespace Model
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("StoreUserMessage", contentParameter, usernameParameter, usernameOtherParameter, timeSentParameter);
         }
+    
+        public virtual int StoreMessage(string content, Nullable<long> senderUserId, Nullable<System.DateTime> timeSent)
+        {
+            var contentParameter = content != null ?
+                new ObjectParameter("content", content) :
+                new ObjectParameter("content", typeof(string));
+    
+            var senderUserIdParameter = senderUserId.HasValue ?
+                new ObjectParameter("senderUserId", senderUserId) :
+                new ObjectParameter("senderUserId", typeof(long));
+    
+            var timeSentParameter = timeSent.HasValue ?
+                new ObjectParameter("timeSent", timeSent) :
+                new ObjectParameter("timeSent", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("StoreMessage", contentParameter, senderUserIdParameter, timeSentParameter);
+        }
     }
 }

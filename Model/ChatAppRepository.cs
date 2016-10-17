@@ -89,12 +89,19 @@ namespace Model
             return messageVMs;
         }
 
+        public void StoreMessage(string userMessage, DateTime timeSent)
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                context.StoreMessage(userMessage, null, timeSent);
+            }
+        }
+
         public long StoreUserMessage(string username, string usernameOther, string userMessage, DateTime timeSent)
         {
             using (ChatAppDBEntities context = new ChatAppDBEntities())
             {
-                var result = context.StoreUserMessage(userMessage, username, usernameOther, timeSent).FirstOrDefault();
-                return result ?? 0;
+                return context.StoreUserMessage(userMessage, username, usernameOther, timeSent).FirstOrDefault() ?? 0;
             }
         }
 

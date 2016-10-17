@@ -48,7 +48,9 @@ namespace Business
             _registeredUsers.Add(new UserVM() {UserName = user.UserName, FirstName = user.FirstName, LastName = user.LastName, StateId = (int)UserStateEnum.Online});
             _userCallbacks.Add(user, OperationContext.Current.GetCallbackChannel<IChatServiceCallback>());
 
-            //NotifyAllUsers($"{user.UserName} joined #ChatApp!");
+            var message = new MessageVM() { Content = $"{user.UserName} joined #ChatApp!", SenderUsername = "", MessageId = 0, TimeSent = DateTime.UtcNow };
+            _repository.StoreMessage(message.Content, message.TimeSent);
+            NotifyAllUsers(message);
 
             return (int)RegistrationEnum.Successful;
         }
