@@ -196,11 +196,6 @@
           <Parameter Name="channelId" Type="bigint" Mode="In" />
           <Parameter Name="timeSent" Type="datetime" Mode="In" />
         </Function>
-        <Function Name="StoreMessage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="content" Type="nvarchar(max)" Mode="In" />
-          <Parameter Name="senderUserId" Type="bigint" Mode="In" />
-          <Parameter Name="timeSent" Type="datetime" Mode="In" />
-        </Function>
         <Function Name="StoreUserMessage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="content" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="username" Type="nvarchar" Mode="In" />
@@ -352,21 +347,16 @@
             <Parameter Name="channelId" Mode="In" Type="Int64" />
             <Parameter Name="topN" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="StoreChannelMessage" ReturnType="Collection(Int64)">
-            <Parameter Name="content" Mode="In" Type="String" />
-            <Parameter Name="username" Mode="In" Type="String" />
-            <Parameter Name="channelId" Mode="In" Type="Int64" />
-            <Parameter Name="timeSent" Mode="In" Type="DateTime" />
-          </FunctionImport>
           <FunctionImport Name="StoreUserMessage" ReturnType="Collection(Int64)">
             <Parameter Name="content" Mode="In" Type="String" />
             <Parameter Name="username" Mode="In" Type="String" />
             <Parameter Name="usernameOther" Mode="In" Type="String" />
             <Parameter Name="timeSent" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <FunctionImport Name="StoreMessage">
+          <FunctionImport Name="StoreChannelMessage" ReturnType="Collection(Int64)">
             <Parameter Name="content" Mode="In" Type="String" />
-            <Parameter Name="senderUserId" Mode="In" Type="Int64" />
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="channelId" Mode="In" Type="Int64" />
             <Parameter Name="timeSent" Mode="In" Type="DateTime" />
           </FunctionImport>
         </EntityContainer>
@@ -597,9 +587,8 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="StoreChannelMessage" FunctionName="ChatAppDBModel.Store.StoreChannelMessage" />
           <FunctionImportMapping FunctionImportName="StoreUserMessage" FunctionName="ChatAppDBModel.Store.StoreUserMessage" />
-          <FunctionImportMapping FunctionImportName="StoreMessage" FunctionName="ChatAppDBModel.Store.StoreMessage" />
+          <FunctionImportMapping FunctionImportName="StoreChannelMessage" FunctionName="ChatAppDBModel.Store.StoreChannelMessage" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

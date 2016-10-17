@@ -49,7 +49,7 @@ namespace Business
             _userCallbacks.Add(user, OperationContext.Current.GetCallbackChannel<IChatServiceCallback>());
 
             var message = new MessageVM() { Content = $"{user.UserName} joined #ChatApp!", SenderUsername = "", MessageId = 0, TimeSent = DateTime.UtcNow };
-            _repository.StoreMessage(message.Content, message.TimeSent);
+            _repository.StoreChannelMessage(1L, message.SenderUsername, message.Content, message.TimeSent);
             NotifyAllUsers(message);
 
             return (int)RegistrationEnum.Successful;
@@ -165,11 +165,14 @@ namespace Business
             return _repository.GetDirectMessages(username, usernameOther);
         }
 
-        public void NotifyAllUsers(MessageVM message)
+        public void NotifyAllUsers(MessageVM message, int channelId, Dictionary<string, int> usernameDict = null)
         {
-            foreach (IChatServiceCallback chatServiceCallback in _userCallbacks.Values)
+            foreach (var userCallback in _userCallbacks)
             {
-                chatServiceCallback.NotifyAllUsers(message);
+                if(usernameDict == null || usernameDict.ContainsKey(userCallback.Key.UserName))
+                {
+                    userCallback.Value.NotifyAllUsers(message, channelId);
+                }
             }
         }
     }

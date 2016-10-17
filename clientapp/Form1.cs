@@ -132,6 +132,11 @@ namespace ClientApp
 
         private void setUp()
         {
+            mlbxMessages.Items.Clear();
+            tbxMessage.Text = "";
+            tbxMessage.Enabled = false;
+            btnSendMessage.Enabled = false;
+
             lbxUsers.DataSource = null;
             lbxUsers.DataSource = chatClient.GetAllUsersList();
             lbxUsers.ClearSelected();
@@ -140,7 +145,7 @@ namespace ClientApp
             lbxChannels.DataSource = chatClient.GetAllChannelsList();
             lbxChannels.ClearSelected();
 
-            lblNotification.Text = "Select a channel or a user to start conversation.";
+            lblNotification.Text = "Select a channel or a user to start the conversation.";
             lblNotification.Visible = true;
         }
 
@@ -346,6 +351,9 @@ namespace ClientApp
         {
             showMessages(chatClient.GetChannelMessages(channelId));
             lblNotification.Text = channelName;
+            tbxMessage.Enabled = true;
+            btnSendMessage.Enabled = true;
+            chatClient.SetEndChannel(channelId);
         }
 
         private void lbxUsers_MouseClick(object sender, MouseEventArgs e)
@@ -367,11 +375,15 @@ namespace ClientApp
         {
             showMessages(chatClient.GetUserMessages(usernameOther));
             lblNotification.Text = usernameOther;
+            tbxMessage.Enabled = true;
+            btnSendMessage.Enabled = true;
+            chatClient.SetEndUser(usernameOther);
         }
 
         private void showMessages(List<MessageVM> messages)
         {
             this.mlbxMessages.Items.Clear();
+            messages.Sort();
             foreach (var message in messages)
             {
                 this.mlbxMessages.Items.Add(message);

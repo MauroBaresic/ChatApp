@@ -61,6 +61,16 @@ namespace ClientApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap edit16 {
+            get {
+                object obj = ResourceManager.GetObject("edit16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon icon_chatApp {
@@ -116,6 +126,16 @@ namespace ClientApp.Properties {
         internal static System.Drawing.Bitmap icon_view16 {
             get {
                 object obj = ResourceManager.GetObject("icon_view16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap search16 {
+            get {
+                object obj = ResourceManager.GetObject("search16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

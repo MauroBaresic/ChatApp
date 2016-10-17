@@ -2,7 +2,7 @@
 
 namespace Common.ViewModels
 {
-    public class MessageVM
+    public class MessageVM : IComparable<MessageVM>
     {
         public long MessageId { get; set; }
 
@@ -11,6 +11,13 @@ namespace Common.ViewModels
         public string SenderUsername { get; set; }
 
         public DateTime TimeSent { get; set; }
+
+        public int CompareTo(MessageVM other)
+        {
+            if (other == null) return 1;
+
+            return this.TimeSent.CompareTo(other.TimeSent);
+        }
 
         public override string ToString()
         {

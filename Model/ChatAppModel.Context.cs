@@ -167,27 +167,6 @@ namespace Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetChannelMessages_Result>("GetChannelMessages", channelIdParameter, topNParameter);
         }
     
-        public virtual ObjectResult<Nullable<long>> StoreChannelMessage(string content, string username, Nullable<long> channelId, Nullable<System.DateTime> timeSent)
-        {
-            var contentParameter = content != null ?
-                new ObjectParameter("content", content) :
-                new ObjectParameter("content", typeof(string));
-    
-            var usernameParameter = username != null ?
-                new ObjectParameter("username", username) :
-                new ObjectParameter("username", typeof(string));
-    
-            var channelIdParameter = channelId.HasValue ?
-                new ObjectParameter("channelId", channelId) :
-                new ObjectParameter("channelId", typeof(long));
-    
-            var timeSentParameter = timeSent.HasValue ?
-                new ObjectParameter("timeSent", timeSent) :
-                new ObjectParameter("timeSent", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("StoreChannelMessage", contentParameter, usernameParameter, channelIdParameter, timeSentParameter);
-        }
-    
         public virtual ObjectResult<Nullable<long>> StoreUserMessage(string content, string username, string usernameOther, Nullable<System.DateTime> timeSent)
         {
             var contentParameter = content != null ?
@@ -209,21 +188,25 @@ namespace Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("StoreUserMessage", contentParameter, usernameParameter, usernameOtherParameter, timeSentParameter);
         }
     
-        public virtual int StoreMessage(string content, Nullable<long> senderUserId, Nullable<System.DateTime> timeSent)
+        public virtual ObjectResult<Nullable<long>> StoreChannelMessage(string content, string username, Nullable<long> channelId, Nullable<System.DateTime> timeSent)
         {
             var contentParameter = content != null ?
                 new ObjectParameter("content", content) :
                 new ObjectParameter("content", typeof(string));
     
-            var senderUserIdParameter = senderUserId.HasValue ?
-                new ObjectParameter("senderUserId", senderUserId) :
-                new ObjectParameter("senderUserId", typeof(long));
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var channelIdParameter = channelId.HasValue ?
+                new ObjectParameter("channelId", channelId) :
+                new ObjectParameter("channelId", typeof(long));
     
             var timeSentParameter = timeSent.HasValue ?
                 new ObjectParameter("timeSent", timeSent) :
                 new ObjectParameter("timeSent", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("StoreMessage", contentParameter, senderUserIdParameter, timeSentParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("StoreChannelMessage", contentParameter, usernameParameter, channelIdParameter, timeSentParameter);
         }
     }
 }

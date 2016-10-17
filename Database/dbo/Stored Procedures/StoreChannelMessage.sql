@@ -10,13 +10,10 @@ BEGIN
 
 	SET @userId = (SELECT TOP 1 [UserId] FROM [dbo].[Users] WHERE [UserName] = @username);
 
-	IF  @userId is not null 
-	BEGIN
-		INSERT INTO [dbo].[Messages] ([Content], [SenderUserId], [TimeSent]) VALUES (@content, @userId, @timeSent);
-		DECLARE @messageId BIGINT;
-		SET @messageId = (SELECT CAST(scope_identity() AS BIGINT));
-		INSERT INTO [dbo].[ChannelMessages] ([ChannelId], [MessageId]) VALUES (@channelId, @messageId);
-		SELECT @messageId;
-	END
+	INSERT INTO [dbo].[Messages] ([Content], [SenderUserId], [TimeSent]) VALUES (@content, @userId, @timeSent);
+	DECLARE @messageId BIGINT;
+	SET @messageId = (SELECT CAST(scope_identity() AS BIGINT));
+	INSERT INTO [dbo].[ChannelMessages] ([ChannelId], [MessageId]) VALUES (@channelId, @messageId);
+	SELECT @messageId;
 RETURN 0
 END

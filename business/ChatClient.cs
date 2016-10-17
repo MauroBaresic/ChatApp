@@ -214,11 +214,38 @@ namespace Business
             }
         }
 
+        private bool sendToChannel = true;
+        private string _endUsername = "";
+        public void SetEndUser(string username)
+        {
+            _endUsername = username;
+            sendToChannel = false;
+        }
+
+        private long _endChannel = 1L;
+        public void SetEndChannel(long channelId)
+        {
+            _endChannel = channelId;
+            sendToChannel = true;
+        }
+
         public void SendMessage(string message)
+        {
+            if (sendToChannel)
+            {
+                sendChannelMessage(message);
+            }
+            else
+            {
+                sendUserMessage(message);
+            }
+        }
+
+        private void sendUserMessage(string message)
         {
             try
             {
-                remoteProxy.ReceiveUserMessage(Username, Username, message);
+                remoteProxy.ReceiveUserMessage(Username, _endUsername, message);
             }
             catch (Exception exception)
             {
@@ -226,11 +253,11 @@ namespace Business
             }
         }
 
-        public void SendChannelMessage(string message)
+        private void sendChannelMessage(string message)
         {
             try
             {
-                remoteProxy.ReceiveUserMessage("general", Username, message);
+                remoteProxy.ReceiveChannelMessage(_endChannel, Username, message);
             }
             catch (Exception exception)
             {

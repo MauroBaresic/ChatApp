@@ -49,6 +49,9 @@
             this.tbxRegisterUsername = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlMessageDialog = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.lblNotification = new System.Windows.Forms.Label();
+            this.mlbxMessages = new ClientApp.MultiLineListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnLogOut = new System.Windows.Forms.Button();
             this.lbxUsers = new System.Windows.Forms.ListBox();
@@ -72,8 +75,8 @@
             this.btnWelcomeSignUp = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.lblNotification = new System.Windows.Forms.Label();
-            this.mlbxMessages = new ClientApp.MultiLineListBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.btnEditMessage = new System.Windows.Forms.Button();
             this.pnlRegistration.SuspendLayout();
             this.pnlMessageDialog.SuspendLayout();
             this.pnlLogin.SuspendLayout();
@@ -96,7 +99,7 @@
             // 
             // btnSendMessage
             // 
-            this.btnSendMessage.Location = new System.Drawing.Point(485, 358);
+            this.btnSendMessage.Location = new System.Drawing.Point(485, 359);
             this.btnSendMessage.Name = "btnSendMessage";
             this.btnSendMessage.Size = new System.Drawing.Size(75, 23);
             this.btnSendMessage.TabIndex = 2;
@@ -275,6 +278,9 @@
             // 
             // pnlMessageDialog
             // 
+            this.pnlMessageDialog.Controls.Add(this.btnEditMessage);
+            this.pnlMessageDialog.Controls.Add(this.button2);
+            this.pnlMessageDialog.Controls.Add(this.button1);
             this.pnlMessageDialog.Controls.Add(this.lblNotification);
             this.pnlMessageDialog.Controls.Add(this.mlbxMessages);
             this.pnlMessageDialog.Controls.Add(this.label3);
@@ -289,6 +295,37 @@
             this.pnlMessageDialog.Name = "pnlMessageDialog";
             this.pnlMessageDialog.Size = new System.Drawing.Size(685, 407);
             this.pnlMessageDialog.TabIndex = 5;
+            // 
+            // button1
+            // 
+            this.button1.Image = global::ClientApp.Properties.Resources.edit16;
+            this.button1.Location = new System.Drawing.Point(536, 5);
+            this.button1.Margin = new System.Windows.Forms.Padding(0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(24, 24);
+            this.button1.TabIndex = 9;
+            this.button1.Text = " ";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // lblNotification
+            // 
+            this.lblNotification.AutoSize = true;
+            this.lblNotification.Location = new System.Drawing.Point(124, 16);
+            this.lblNotification.Name = "lblNotification";
+            this.lblNotification.Size = new System.Drawing.Size(70, 13);
+            this.lblNotification.TabIndex = 8;
+            this.lblNotification.Text = "lblNotification";
+            // 
+            // mlbxMessages
+            // 
+            this.mlbxMessages.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.mlbxMessages.FormattingEnabled = true;
+            this.mlbxMessages.Location = new System.Drawing.Point(127, 32);
+            this.mlbxMessages.Name = "mlbxMessages";
+            this.mlbxMessages.ScrollAlwaysVisible = true;
+            this.mlbxMessages.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.mlbxMessages.Size = new System.Drawing.Size(433, 318);
+            this.mlbxMessages.TabIndex = 7;
             // 
             // label3
             // 
@@ -528,25 +565,27 @@
             this.label10.TabIndex = 0;
             this.label10.Text = "Welcome to ChatApp!";
             // 
-            // lblNotification
+            // button2
             // 
-            this.lblNotification.AutoSize = true;
-            this.lblNotification.Location = new System.Drawing.Point(124, 0);
-            this.lblNotification.Name = "lblNotification";
-            this.lblNotification.Size = new System.Drawing.Size(70, 13);
-            this.lblNotification.TabIndex = 8;
-            this.lblNotification.Text = "lblNotification";
+            this.button2.Image = global::ClientApp.Properties.Resources.edit16;
+            this.button2.Location = new System.Drawing.Point(509, 5);
+            this.button2.Margin = new System.Windows.Forms.Padding(0);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(24, 24);
+            this.button2.TabIndex = 10;
+            this.button2.Text = " ";
+            this.button2.UseVisualStyleBackColor = true;
             // 
-            // mlbxMessages
+            // btnEditMessage
             // 
-            this.mlbxMessages.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.mlbxMessages.FormattingEnabled = true;
-            this.mlbxMessages.Location = new System.Drawing.Point(127, 16);
-            this.mlbxMessages.Name = "mlbxMessages";
-            this.mlbxMessages.ScrollAlwaysVisible = true;
-            this.mlbxMessages.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.mlbxMessages.Size = new System.Drawing.Size(433, 331);
-            this.mlbxMessages.TabIndex = 7;
+            this.btnEditMessage.Image = global::ClientApp.Properties.Resources.edit16;
+            this.btnEditMessage.Location = new System.Drawing.Point(482, 5);
+            this.btnEditMessage.Margin = new System.Windows.Forms.Padding(0);
+            this.btnEditMessage.Name = "btnEditMessage";
+            this.btnEditMessage.Size = new System.Drawing.Size(24, 24);
+            this.btnEditMessage.TabIndex = 11;
+            this.btnEditMessage.Text = " ";
+            this.btnEditMessage.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -622,6 +661,9 @@
         private System.Windows.Forms.Button btnLogOut;
         private MultiLineListBox mlbxMessages;
         private System.Windows.Forms.Label lblNotification;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnEditMessage;
+        private System.Windows.Forms.Button button2;
     }
 }
 
