@@ -26,18 +26,14 @@ namespace ClientApp
 
             this.FormClosing += OnFormClosing;
             
-            //pnlMessageDialog.Visible = false;
+            pnlMessageDialog.Visible = false;
             pnlLogin.Visible = false;
             pnlRegistration.Visible = false;
 
             lblNotification.Visible = false;
             pbrRegistering.Visible = false;
             lblRegistering.Visible = false;
-
-            lbxChannels.DataSource = null;
-            lbxChannels.DataSource = new List<ChannelVM>() {new ChannelVM() {ChannelName = "c1", ChannelId = 1}, new ChannelVM() {ChannelName = "c2", ChannelId = 2}, new ChannelVM() {ChannelName = "c3", ChannelId = 3} };
-            lbxChannels.ClearSelected();
-
+            
             this.BackColor = ChatAppColors.BackColor;
             
             var foreColor = ChatAppColors.ForeColor;
@@ -138,15 +134,17 @@ namespace ClientApp
         {
             lbxUsers.DataSource = null;
             lbxUsers.DataSource = chatClient.GetAllUsersList();
+            lbxUsers.ClearSelected();
 
             lbxChannels.DataSource = null;
             lbxChannels.DataSource = chatClient.GetAllChannelsList();
+            lbxChannels.ClearSelected();
 
             lblNotification.Text = "Select a channel or a user to start conversation.";
             lblNotification.Visible = true;
         }
 
-        public void ShowMessage(string message)
+        public void ShowMessage(MessageVM message)
         {
             if (this.InvokeRequired)
             {
@@ -346,9 +344,10 @@ namespace ClientApp
 
         private void setMessages(string channelName, long channelId)
         {
-            chatClient.GetChannelMessages(channelId);
+            showMessages(chatClient.GetChannelMessages(channelId));
             lblNotification.Text = channelName;
         }
+
         private void lbxUsers_MouseClick(object sender, MouseEventArgs e)
         {
             int index = this.lbxUsers.IndexFromPoint(e.X, e.Y);
@@ -366,10 +365,17 @@ namespace ClientApp
 
         private void setMessages(string usernameOther)
         {
-            chatClient.GetUserMessages(usernameOther);
+            showMessages(chatClient.GetUserMessages(usernameOther));
             lblNotification.Text = usernameOther;
         }
 
-        
+        private void showMessages(List<MessageVM> messages)
+        {
+            this.mlbxMessages.Items.Clear();
+            foreach (var message in messages)
+            {
+                this.mlbxMessages.Items.Add(message);
+            }
+        }
     }
 }

@@ -48,7 +48,7 @@ namespace Business
             _registeredUsers.Add(new UserVM() {UserName = user.UserName, FirstName = user.FirstName, LastName = user.LastName, StateId = (int)UserStateEnum.Online});
             _userCallbacks.Add(user, OperationContext.Current.GetCallbackChannel<IChatServiceCallback>());
 
-            NotifyAllUsers($"{user.UserName} joined #ChatApp!");
+            //NotifyAllUsers($"{user.UserName} joined #ChatApp!");
 
             return (int)RegistrationEnum.Successful;
         }
@@ -100,14 +100,18 @@ namespace Business
 
         public void ReceiveUserMessage(string username, string usernameOther, string userMessage)
         {
-
-            NotifyAllUsers($"{username} [{DateTime.UtcNow.ToShortTimeString()}] : {userMessage}");
+            DateTime utcNow = DateTime.UtcNow;
+            var messageId = _repository.StoreUserMessage(username, usernameOther, userMessage, utcNow);
+            
+            NotifyAllUsers(new MessageVM() { Content = userMessage, MessageId = messageId, SenderUsername = username, TimeSent = utcNow });
         }
 
         public void ReceiveChannelMessage(long channelId, string username, string userMessage)
         {
+            DateTime utcNow = DateTime.UtcNow;
+            var messageId = _repository.StoreChannelMessage(channelId, username, userMessage, utcNow);
 
-            NotifyAllUsers($"{username} [{DateTime.UtcNow.ToShortTimeString()}] : {userMessage}");
+            NotifyAllUsers(new MessageVM() { Content = userMessage, MessageId = messageId, SenderUsername = username, TimeSent = utcNow });
         }
 
         public void UserStateChanged(string username, int stateId)
@@ -129,7 +133,7 @@ namespace Business
                 }
                 user.StateId = stateId;
 
-                NotifyAllUsers($"{user.UserName} left the conversation.");
+                //NotifyAllUsers($"{user.UserName} left the conversation.");
                 
             }
         }
@@ -159,7 +163,7 @@ namespace Business
             return _repository.GetDirectMessages(username, usernameOther);
         }
 
-        public void NotifyAllUsers(string message)
+        public void NotifyAllUsers(MessageVM message)
         {
             foreach (IChatServiceCallback chatServiceCallback in _userCallbacks.Values)
             {

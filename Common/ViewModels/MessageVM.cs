@@ -14,7 +14,7 @@ namespace Common.ViewModels
 
         public override string ToString()
         {
-            return Content;
+            return $"{SenderUsername} [{TimeSent.ToLocalTime().ToShortTimeString()}] : {Content}";
         }
     }
 }

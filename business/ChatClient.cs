@@ -218,11 +218,11 @@ namespace Business
         {
             try
             {
-                remoteProxy.ReceiveUserMessage("general", Username, message);
+                remoteProxy.ReceiveUserMessage(Username, Username, message);
             }
             catch (Exception exception)
             {
-                //
+                chatDialog.ShowErrorDialog(exception.Message);
             }
         }
 
@@ -234,11 +234,11 @@ namespace Business
             }
             catch (Exception exception)
             {
-                //
+                chatDialog.ShowErrorDialog(exception.Message);
             }
         }
 
-        public void NotifyAllUsers(string message)
+        public void NotifyAllUsers(MessageVM message)
         {
             this.chatDialog.ShowMessage(message);
         }
