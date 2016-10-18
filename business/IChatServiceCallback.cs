@@ -11,7 +11,10 @@ namespace Business
     public interface IChatServiceCallback
     {
         [OperationContract(IsOneWay = true)]
-        void NotifyAllUsers(MessageVM message);
+        void NotifyUser(string usernameOther, MessageVM message);
+
+        [OperationContract(IsOneWay = true)]
+        void NotifyAllChannelUsers(long channelId, MessageVM message);
 
         [OperationContract(IsOneWay = true)]
         void NotifyUserChangedState(string username, int stateId);

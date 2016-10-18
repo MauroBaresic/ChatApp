@@ -19,8 +19,8 @@ namespace Business
         private bool _isRegistered = false;
         private string _username = "";
 
-        private Dictionary<string, List<Message>> _directMessages = new Dictionary<string, List<Message>>();
-        private Dictionary<long, List<Message>> _channelMessages = new Dictionary<long, List<Message>>();
+        private Dictionary<string, MessageContainer> _directMessages = new Dictionary<string, MessageContainer>();
+        private Dictionary<long, MessageContainer> _channelMessages = new Dictionary<long, MessageContainer>();
 
         public string Username
         {
@@ -265,9 +265,43 @@ namespace Business
             }
         }
 
-        public void NotifyAllUsers(MessageVM message)
+        //public void NotifyAllUsers(MessageVM message)
+        //{
+        //    this.chatDialog.ShowMessage(message);
+        //}
+
+        public void NotifyUser(string usernameOther, MessageVM message)
         {
-            this.chatDialog.ShowMessage(message);
+            lock (_directMessages)
+            {
+                if (_directMessages.ContainsKey(usernameOther))
+                {
+                    _directMessages[usernameOther].AddMessage(message);
+                    //TODO notify new message
+                }
+                else // get existing messages
+                {
+                    _directMessages.Add(usernameOther, new MessageContainer(GetUserMessages(usernameOther)));
+                    //TODO noitfy new conversation
+                }
+            }
+        }
+
+        public void NotifyAllChannelUsers(long channelId, MessageVM message)
+        {
+            lock (_channelMessages)
+            {
+                if (_channelMessages.ContainsKey(channelId))
+                {
+                    _channelMessages[channelId].AddMessage(message);
+                    //TODO notify new message
+                }
+                else // get existing messages
+                {
+                    _channelMessages.Add(channelId, new MessageContainer(GetChannelMessages(channelId)));
+                    //TODO noitfy new conversation
+                }
+            }
         }
 
         public void NotifyUserChangedState(string username, int stateId)
