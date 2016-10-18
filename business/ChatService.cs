@@ -50,7 +50,7 @@ namespace Business
 
             var message = new MessageVM() { Content = $"{user.UserName} joined #ChatApp!", SenderUsername = "", MessageId = 0, TimeSent = DateTime.UtcNow };
             _repository.StoreChannelMessage(1L, message.SenderUsername, message.Content, message.TimeSent);
-            NotifyAllUsers(message);
+            NotifyChannelUsers(message, 1L);
 
             return (int)RegistrationEnum.Successful;
         }
@@ -105,7 +105,7 @@ namespace Business
             DateTime utcNow = DateTime.UtcNow;
             var messageId = _repository.StoreUserMessage(username, usernameOther, userMessage, utcNow);
             
-            NotifyAllUsers(new MessageVM() { Content = userMessage, MessageId = messageId, SenderUsername = username, TimeSent = utcNow });
+            NotifyUser(new MessageVM() { Content = userMessage, MessageId = messageId, SenderUsername = username, TimeSent = utcNow }, username, usernameOther);
         }
 
         public void ReceiveChannelMessage(long channelId, string username, string userMessage)
@@ -113,7 +113,7 @@ namespace Business
             DateTime utcNow = DateTime.UtcNow;
             var messageId = _repository.StoreChannelMessage(channelId, username, userMessage, utcNow);
 
-            NotifyAllUsers(new MessageVM() { Content = userMessage, MessageId = messageId, SenderUsername = username, TimeSent = utcNow });
+            NotifyChannelUsers(new MessageVM() { Content = userMessage, MessageId = messageId, SenderUsername = username, TimeSent = utcNow }, channelId);
         }
 
         public void UserStateChanged(string username, int stateId)
@@ -165,13 +165,29 @@ namespace Business
             return _repository.GetDirectMessages(username, usernameOther);
         }
 
-        public void NotifyAllUsers(MessageVM message, int channelId, Dictionary<string, int> usernameDict = null)
+        public void NotifyUser(MessageVM message, string username, string usernameOther)
         {
             foreach (var userCallback in _userCallbacks)
             {
-                if(usernameDict == null || usernameDict.ContainsKey(userCallback.Key.UserName))
+                if (userCallback.Key.UserName == username)
                 {
-                    userCallback.Value.NotifyAllUsers(message, channelId);
+                    userCallback.Value.NotifyUser(usernameOther, message);
+                }
+                else if (userCallback.Key.UserName == usernameOther)
+                {
+                    userCallback.Value.NotifyUser(username, message);
+                }
+            }
+        }
+
+        public void NotifyChannelUsers(MessageVM message, long channelId)
+        {
+            Dictionary<string, string> users = GetChannelMembers(channelId).ToDictionary(x=>x.UserName, y=>y.UserName);
+            foreach (var userCallback in _userCallbacks)
+            {
+                if (channelId == 1L || users.ContainsKey(userCallback.Key.UserName))
+                {
+                    userCallback.Value.NotifyAllChannelUsers(channelId, message);
                 }
             }
         }

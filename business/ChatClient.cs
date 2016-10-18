@@ -192,6 +192,24 @@ namespace Business
 
         public List<MessageVM> GetUserMessages(string usernameOther)
         {
+            if (!_directMessages.ContainsKey(usernameOther))
+            {
+                _directMessages.Add(usernameOther, new MessageContainer(getDirectMessages(usernameOther)));
+            }
+            return _directMessages[usernameOther].Messages;
+        }
+
+        public List<MessageVM> GetChannelMessages(long channelId)
+        {
+            if (!_channelMessages.ContainsKey(channelId))
+            {
+                _channelMessages.Add(channelId, new MessageContainer(getMessagesInChannel(channelId)));
+            }
+            return _channelMessages[channelId].Messages;
+        }
+
+        private List<MessageVM> getDirectMessages(string usernameOther)
+        {
             try
             {
                 return remoteProxy.GetDirectMessages(Username, usernameOther);
@@ -202,7 +220,7 @@ namespace Business
             }
         }
 
-        public List<MessageVM> GetChannelMessages(long channelId)
+        private List<MessageVM> getMessagesInChannel(long channelId)
         {
             try
             {
@@ -222,7 +240,7 @@ namespace Business
             sendToChannel = false;
         }
 
-        private long _endChannel = 1L;
+        private long _endChannel = 0L;
         public void SetEndChannel(long channelId)
         {
             _endChannel = channelId;
@@ -265,11 +283,6 @@ namespace Business
             }
         }
 
-        //public void NotifyAllUsers(MessageVM message)
-        //{
-        //    this.chatDialog.ShowMessage(message);
-        //}
-
         public void NotifyUser(string usernameOther, MessageVM message)
         {
             lock (_directMessages)
@@ -281,9 +294,17 @@ namespace Business
                 }
                 else // get existing messages
                 {
-                    _directMessages.Add(usernameOther, new MessageContainer(GetUserMessages(usernameOther)));
+                    _directMessages.Add(usernameOther, new MessageContainer(getDirectMessages(usernameOther)));
                     //TODO noitfy new conversation
                 }
+            }
+            if (!sendToChannel && _endUsername == usernameOther)
+            {
+                chatDialog.ShowMessage(message);
+            }
+            else
+            {
+                //TODO notify
             }
         }
 
@@ -298,9 +319,17 @@ namespace Business
                 }
                 else // get existing messages
                 {
-                    _channelMessages.Add(channelId, new MessageContainer(GetChannelMessages(channelId)));
+                    _channelMessages.Add(channelId, new MessageContainer(getMessagesInChannel(channelId)));
                     //TODO noitfy new conversation
                 }
+            }
+            if (sendToChannel && _endChannel == channelId)
+            {
+                chatDialog.ShowMessage(message);
+            }
+            else
+            {
+                //TODO notify
             }
         }
 
