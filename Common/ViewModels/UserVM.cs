@@ -1,8 +1,9 @@
-﻿using Common.Enums;
+﻿using System;
+using Common.Enums;
 
 namespace Common.ViewModels
 {
-    public class UserVM
+    public class UserVM : IComparable<UserVM>
     {
         public string UserName { get; set; }
 
@@ -11,6 +12,13 @@ namespace Common.ViewModels
         public string LastName { get; set; }
 
         public int StateId { get; set; } = (int) UserStateEnum.Offline;
+
+        public int CompareTo(UserVM other)
+        {
+            if (other == null) return 1;
+
+            return this.UserName.CompareTo(other.UserName);
+        }
 
         public override string ToString()
         {

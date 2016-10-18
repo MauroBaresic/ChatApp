@@ -49,9 +49,12 @@
             this.tbxRegisterUsername = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlMessageDialog = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnSelectUser = new System.Windows.Forms.Button();
+            this.btnCloseConversation = new System.Windows.Forms.Button();
+            this.btnEditMessage = new System.Windows.Forms.Button();
+            this.btnDeleteMessage = new System.Windows.Forms.Button();
+            this.btnDeleteConversation = new System.Windows.Forms.Button();
             this.lblNotification = new System.Windows.Forms.Label();
-            this.mlbxMessages = new ClientApp.MultiLineListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnLogOut = new System.Windows.Forms.Button();
             this.lbxUsers = new System.Windows.Forms.ListBox();
@@ -75,8 +78,7 @@
             this.btnWelcomeSignUp = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.btnEditMessage = new System.Windows.Forms.Button();
+            this.mlbxMessages = new ClientApp.MultiLineListBox();
             this.pnlRegistration.SuspendLayout();
             this.pnlMessageDialog.SuspendLayout();
             this.pnlLogin.SuspendLayout();
@@ -278,9 +280,11 @@
             // 
             // pnlMessageDialog
             // 
+            this.pnlMessageDialog.Controls.Add(this.btnSelectUser);
+            this.pnlMessageDialog.Controls.Add(this.btnCloseConversation);
             this.pnlMessageDialog.Controls.Add(this.btnEditMessage);
-            this.pnlMessageDialog.Controls.Add(this.button2);
-            this.pnlMessageDialog.Controls.Add(this.button1);
+            this.pnlMessageDialog.Controls.Add(this.btnDeleteMessage);
+            this.pnlMessageDialog.Controls.Add(this.btnDeleteConversation);
             this.pnlMessageDialog.Controls.Add(this.lblNotification);
             this.pnlMessageDialog.Controls.Add(this.mlbxMessages);
             this.pnlMessageDialog.Controls.Add(this.label3);
@@ -296,16 +300,64 @@
             this.pnlMessageDialog.Size = new System.Drawing.Size(685, 407);
             this.pnlMessageDialog.TabIndex = 5;
             // 
-            // button1
+            // btnSelectUser
             // 
-            this.button1.Image = global::ClientApp.Properties.Resources.edit16;
-            this.button1.Location = new System.Drawing.Point(536, 5);
-            this.button1.Margin = new System.Windows.Forms.Padding(0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(24, 24);
-            this.button1.TabIndex = 9;
-            this.button1.Text = " ";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnSelectUser.Image = global::ClientApp.Properties.Resources.icon_logOut32;
+            this.btnSelectUser.Location = new System.Drawing.Point(71, 151);
+            this.btnSelectUser.MinimumSize = new System.Drawing.Size(40, 40);
+            this.btnSelectUser.Name = "btnSelectUser";
+            this.btnSelectUser.Size = new System.Drawing.Size(45, 45);
+            this.btnSelectUser.TabIndex = 14;
+            this.btnSelectUser.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnSelectUser.UseVisualStyleBackColor = true;
+            this.btnSelectUser.Click += new System.EventHandler(this.btnSelectUser_Click);
+            // 
+            // btnCloseConversation
+            // 
+            this.btnCloseConversation.Image = global::ClientApp.Properties.Resources.icon_logOut32;
+            this.btnCloseConversation.Location = new System.Drawing.Point(566, 32);
+            this.btnCloseConversation.MinimumSize = new System.Drawing.Size(55, 55);
+            this.btnCloseConversation.Name = "btnCloseConversation";
+            this.btnCloseConversation.Size = new System.Drawing.Size(55, 55);
+            this.btnCloseConversation.TabIndex = 13;
+            this.btnCloseConversation.Text = "Close";
+            this.btnCloseConversation.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnCloseConversation.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnCloseConversation.UseVisualStyleBackColor = true;
+            this.btnCloseConversation.Click += new System.EventHandler(this.btnCloseConversation_Click);
+            // 
+            // btnEditMessage
+            // 
+            this.btnEditMessage.Image = global::ClientApp.Properties.Resources.edit16;
+            this.btnEditMessage.Location = new System.Drawing.Point(482, 5);
+            this.btnEditMessage.Margin = new System.Windows.Forms.Padding(0);
+            this.btnEditMessage.Name = "btnEditMessage";
+            this.btnEditMessage.Size = new System.Drawing.Size(24, 24);
+            this.btnEditMessage.TabIndex = 11;
+            this.btnEditMessage.Text = " ";
+            this.btnEditMessage.UseVisualStyleBackColor = true;
+            // 
+            // btnDeleteMessage
+            // 
+            this.btnDeleteMessage.Image = global::ClientApp.Properties.Resources.edit16;
+            this.btnDeleteMessage.Location = new System.Drawing.Point(509, 5);
+            this.btnDeleteMessage.Margin = new System.Windows.Forms.Padding(0);
+            this.btnDeleteMessage.Name = "btnDeleteMessage";
+            this.btnDeleteMessage.Size = new System.Drawing.Size(24, 24);
+            this.btnDeleteMessage.TabIndex = 10;
+            this.btnDeleteMessage.Text = " ";
+            this.btnDeleteMessage.UseVisualStyleBackColor = true;
+            // 
+            // btnDeleteConversation
+            // 
+            this.btnDeleteConversation.Image = global::ClientApp.Properties.Resources.edit16;
+            this.btnDeleteConversation.Location = new System.Drawing.Point(536, 5);
+            this.btnDeleteConversation.Margin = new System.Windows.Forms.Padding(0);
+            this.btnDeleteConversation.Name = "btnDeleteConversation";
+            this.btnDeleteConversation.Size = new System.Drawing.Size(24, 24);
+            this.btnDeleteConversation.TabIndex = 9;
+            this.btnDeleteConversation.Text = " ";
+            this.btnDeleteConversation.UseVisualStyleBackColor = true;
             // 
             // lblNotification
             // 
@@ -316,21 +368,10 @@
             this.lblNotification.TabIndex = 8;
             this.lblNotification.Text = "lblNotification";
             // 
-            // mlbxMessages
-            // 
-            this.mlbxMessages.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.mlbxMessages.FormattingEnabled = true;
-            this.mlbxMessages.Location = new System.Drawing.Point(127, 32);
-            this.mlbxMessages.Name = "mlbxMessages";
-            this.mlbxMessages.ScrollAlwaysVisible = true;
-            this.mlbxMessages.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.mlbxMessages.Size = new System.Drawing.Size(433, 318);
-            this.mlbxMessages.TabIndex = 7;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 136);
+            this.label3.Location = new System.Drawing.Point(0, 183);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(37, 13);
             this.label3.TabIndex = 3;
@@ -339,9 +380,10 @@
             // btnLogOut
             // 
             this.btnLogOut.Image = global::ClientApp.Properties.Resources.icon_logOut32;
-            this.btnLogOut.Location = new System.Drawing.Point(607, 334);
+            this.btnLogOut.Location = new System.Drawing.Point(627, 348);
+            this.btnLogOut.MinimumSize = new System.Drawing.Size(55, 55);
             this.btnLogOut.Name = "btnLogOut";
-            this.btnLogOut.Size = new System.Drawing.Size(75, 71);
+            this.btnLogOut.Size = new System.Drawing.Size(55, 55);
             this.btnLogOut.TabIndex = 5;
             this.btnLogOut.Text = "Log Out";
             this.btnLogOut.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -351,22 +393,28 @@
             // 
             // lbxUsers
             // 
+            this.lbxUsers.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.lbxUsers.FormattingEnabled = true;
-            this.lbxUsers.Location = new System.Drawing.Point(3, 155);
+            this.lbxUsers.ItemHeight = 20;
+            this.lbxUsers.Location = new System.Drawing.Point(3, 199);
             this.lbxUsers.Name = "lbxUsers";
-            this.lbxUsers.Size = new System.Drawing.Size(95, 251);
+            this.lbxUsers.Size = new System.Drawing.Size(113, 204);
             this.lbxUsers.TabIndex = 1;
             this.lbxUsers.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbxUsers_MouseClick);
+            this.lbxUsers.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbxUsers_DrawItem);
             this.lbxUsers.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxUsers_KeyDown);
             // 
             // lbxChannels
             // 
+            this.lbxChannels.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.lbxChannels.FormattingEnabled = true;
+            this.lbxChannels.ItemHeight = 20;
             this.lbxChannels.Location = new System.Drawing.Point(3, 32);
             this.lbxChannels.Name = "lbxChannels";
-            this.lbxChannels.Size = new System.Drawing.Size(95, 95);
+            this.lbxChannels.Size = new System.Drawing.Size(113, 104);
             this.lbxChannels.TabIndex = 2;
             this.lbxChannels.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbxChannels_MouseClick);
+            this.lbxChannels.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbxChannels_DrawItem);
             this.lbxChannels.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxChannels_KeyDown);
             // 
             // cbxEnterSendsMessage
@@ -383,7 +431,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 16);
+            this.label2.Location = new System.Drawing.Point(0, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(54, 13);
             this.label2.TabIndex = 0;
@@ -565,27 +613,16 @@
             this.label10.TabIndex = 0;
             this.label10.Text = "Welcome to ChatApp!";
             // 
-            // button2
+            // mlbxMessages
             // 
-            this.button2.Image = global::ClientApp.Properties.Resources.edit16;
-            this.button2.Location = new System.Drawing.Point(509, 5);
-            this.button2.Margin = new System.Windows.Forms.Padding(0);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(24, 24);
-            this.button2.TabIndex = 10;
-            this.button2.Text = " ";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // btnEditMessage
-            // 
-            this.btnEditMessage.Image = global::ClientApp.Properties.Resources.edit16;
-            this.btnEditMessage.Location = new System.Drawing.Point(482, 5);
-            this.btnEditMessage.Margin = new System.Windows.Forms.Padding(0);
-            this.btnEditMessage.Name = "btnEditMessage";
-            this.btnEditMessage.Size = new System.Drawing.Size(24, 24);
-            this.btnEditMessage.TabIndex = 11;
-            this.btnEditMessage.Text = " ";
-            this.btnEditMessage.UseVisualStyleBackColor = true;
+            this.mlbxMessages.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.mlbxMessages.FormattingEnabled = true;
+            this.mlbxMessages.Location = new System.Drawing.Point(127, 32);
+            this.mlbxMessages.Name = "mlbxMessages";
+            this.mlbxMessages.ScrollAlwaysVisible = true;
+            this.mlbxMessages.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.mlbxMessages.Size = new System.Drawing.Size(433, 318);
+            this.mlbxMessages.TabIndex = 7;
             // 
             // Form1
             // 
@@ -598,8 +635,11 @@
             this.Controls.Add(this.pnlRegistration);
             this.Controls.Add(this.lblRegistering);
             this.Controls.Add(this.pbrRegistering);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ChatApp";
             this.pnlRegistration.ResumeLayout(false);
             this.pnlRegistration.PerformLayout();
@@ -661,9 +701,11 @@
         private System.Windows.Forms.Button btnLogOut;
         private MultiLineListBox mlbxMessages;
         private System.Windows.Forms.Label lblNotification;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnDeleteConversation;
         private System.Windows.Forms.Button btnEditMessage;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnDeleteMessage;
+        private System.Windows.Forms.Button btnCloseConversation;
+        private System.Windows.Forms.Button btnSelectUser;
     }
 }
 

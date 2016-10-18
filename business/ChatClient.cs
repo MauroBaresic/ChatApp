@@ -59,6 +59,7 @@ namespace Business
                     case RegistrationEnum.Successful:
                         Username = username;
                         _isRegistered = true;
+                        clearCache();
                         return true;
                     case RegistrationEnum.UsernameAlreadyExists:
                         chatDialog.ShowErrorDialog("Username already exists!");
@@ -110,6 +111,7 @@ namespace Business
                     case LoginEnum.Successful:
                         Username = username;
                         _isRegistered = true;
+                        clearCache();
                         return true;
                     case LoginEnum.AlreadyLoggedIn:
                         chatDialog.ShowErrorDialog($"User {username} is already logged in!");
@@ -143,10 +145,20 @@ namespace Business
             }
         }
 
+        private void clearCache()
+        {
+            _directMessages = new Dictionary<string, MessageContainer>();
+            _channelMessages = new Dictionary<long, MessageContainer>();
+            sendToChannel = true;
+            _endUsername = "";
+            _endChannel = 0L;
+        }
+
         public void LogOut()
         {
             CloseConnection();
             _isRegistered = false;
+            clearCache();
         }
 
         public void CloseConnection()
@@ -192,20 +204,30 @@ namespace Business
 
         public List<MessageVM> GetUserMessages(string usernameOther)
         {
-            if (!_directMessages.ContainsKey(usernameOther))
-            {
-                _directMessages.Add(usernameOther, new MessageContainer(getDirectMessages(usernameOther)));
-            }
-            return _directMessages[usernameOther].Messages;
+            //if (!_directMessages.ContainsKey(usernameOther))
+            //{
+            //    _directMessages.Add(usernameOther, new MessageContainer(getDirectMessages(usernameOther)));
+            //}
+            //else
+            //{
+            //    _directMessages[usernameOther] = new MessageContainer(getDirectMessages(usernameOther));
+            //}
+            //return _directMessages[usernameOther].Messages;
+            return getDirectMessages(usernameOther);
         }
 
         public List<MessageVM> GetChannelMessages(long channelId)
         {
-            if (!_channelMessages.ContainsKey(channelId))
-            {
-                _channelMessages.Add(channelId, new MessageContainer(getMessagesInChannel(channelId)));
-            }
-            return _channelMessages[channelId].Messages;
+            //if (!_channelMessages.ContainsKey(channelId))
+            //{
+            //    _channelMessages.Add(channelId, new MessageContainer(getMessagesInChannel(channelId)));
+            //}
+            //else
+            //{
+            //    _channelMessages[channelId] = new MessageContainer(getMessagesInChannel(channelId));
+            //}
+            //return _channelMessages[channelId].Messages;
+            return getMessagesInChannel(channelId);
         }
 
         private List<MessageVM> getDirectMessages(string usernameOther)
@@ -261,6 +283,10 @@ namespace Business
 
         private void sendUserMessage(string message)
         {
+            if (_endUsername == "")
+            {
+                chatDialog.ShowErrorDialog("Please select a channel or an user first!");
+            }
             try
             {
                 remoteProxy.ReceiveUserMessage(Username, _endUsername, message);
@@ -273,6 +299,10 @@ namespace Business
 
         private void sendChannelMessage(string message)
         {
+            if (_endChannel == 0L)
+            {
+                chatDialog.ShowErrorDialog("Please select a channel or an user first!");
+            }
             try
             {
                 remoteProxy.ReceiveChannelMessage(_endChannel, Username, message);
@@ -285,19 +315,19 @@ namespace Business
 
         public void NotifyUser(string usernameOther, MessageVM message)
         {
-            lock (_directMessages)
-            {
-                if (_directMessages.ContainsKey(usernameOther))
-                {
-                    _directMessages[usernameOther].AddMessage(message);
-                    //TODO notify new message
-                }
-                else // get existing messages
-                {
-                    _directMessages.Add(usernameOther, new MessageContainer(getDirectMessages(usernameOther)));
-                    //TODO noitfy new conversation
-                }
-            }
+            //lock (_directMessages)
+            //{
+            //    if (_directMessages.ContainsKey(usernameOther))
+            //    {
+            //        _directMessages[usernameOther].AddMessage(message);
+            //        //TODO notify new message
+            //    }
+            //    else // get existing messages
+            //    {
+            //        _directMessages.Add(usernameOther, new MessageContainer(getDirectMessages(usernameOther)));
+            //        //TODO noitfy new conversation
+            //    }
+            //}
             if (!sendToChannel && _endUsername == usernameOther)
             {
                 chatDialog.ShowMessage(message);
@@ -310,19 +340,19 @@ namespace Business
 
         public void NotifyAllChannelUsers(long channelId, MessageVM message)
         {
-            lock (_channelMessages)
-            {
-                if (_channelMessages.ContainsKey(channelId))
-                {
-                    _channelMessages[channelId].AddMessage(message);
-                    //TODO notify new message
-                }
-                else // get existing messages
-                {
-                    _channelMessages.Add(channelId, new MessageContainer(getMessagesInChannel(channelId)));
-                    //TODO noitfy new conversation
-                }
-            }
+            //lock (_channelMessages)
+            //{
+            //    if (_channelMessages.ContainsKey(channelId))
+            //    {
+            //        _channelMessages[channelId].AddMessage(message);
+            //        //TODO notify new message
+            //    }
+            //    else // get existing messages
+            //    {
+            //        _channelMessages.Add(channelId, new MessageContainer(getMessagesInChannel(channelId)));
+            //        //TODO noitfy new conversation
+            //    }
+            //}
             if (sendToChannel && _endChannel == channelId)
             {
                 chatDialog.ShowMessage(message);

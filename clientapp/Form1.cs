@@ -19,6 +19,8 @@ namespace ClientApp
 
         private ChatClient chatClient;
 
+        private BindingList<UserVM> userList = new BindingList<UserVM>(); 
+
         public Form1()
         {
             InitializeComponent();
@@ -39,7 +41,7 @@ namespace ClientApp
             var foreColor = ChatAppColors.ForeColor;
             setForeColor(foreColor, lblNotification, lblRegistering, label1, label2, label3, label4, label5, label6, label7, label8, label9, label10, label11, label12, label13, label14, label15,
                 tbxRegisterPassword, tbxConfirmPassword, tbxFirstName, tbxLastName, tbxLoginPassword, tbxLoginUsername, tbxMessage, tbxRegisterUsername,
-                btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage, btnLogOut,
+                btnWelcomeSignUp, btnWelcomeLogIn, btnCancelSignUp, btnLogin, btnLoginCancel, btnRegister, btnSendMessage, btnLogOut,btnCloseConversation, btnSelectUser, btnEditMessage, btnDeleteConversation, btnDeleteMessage,
                 cbxEnterSendsMessage, lbxChannels, lbxUsers, mlbxMessages);
 
             var backColor = ChatAppColors.ControlBackColor;
@@ -138,7 +140,12 @@ namespace ClientApp
             btnSendMessage.Enabled = false;
 
             lbxUsers.DataSource = null;
-            lbxUsers.DataSource = chatClient.GetAllUsersList();
+            userList.Clear();
+            //foreach (var user in chatClient.GetAllUsersList())
+            //{
+            //    userList.Add(user);
+            //}
+            lbxUsers.DataSource = userList;
             lbxUsers.ClearSelected();
 
             lbxChannels.DataSource = null;
@@ -189,6 +196,7 @@ namespace ClientApp
             string message = tbxMessage.Text;
             if (string.IsNullOrEmpty(message)) return;
             tbxMessage.Text = "";
+            tbxMessage.Focus();
 
             await Task.Run(() =>
             {
@@ -320,6 +328,7 @@ namespace ClientApp
             chatClient.LogOut();
             pnlMessageDialog.Visible = false;
             pnlLogin.Visible = true;
+            userList = new BindingList<UserVM>();
         }
 
         private void lbxChannels_KeyDown(object sender, KeyEventArgs e)
@@ -334,15 +343,19 @@ namespace ClientApp
         
         private void lbxChannels_MouseClick(object sender, MouseEventArgs e)
         {
-            int index = this.lbxChannels.IndexFromPoint(e.X, e.Y);
-
-            if (index != ListBox.NoMatches &&
-                index != 65535)
+            if (e.Button == MouseButtons.Left)
             {
-                var channel = this.lbxChannels.Items[index] as ChannelVM;
-                if (channel != null)
+                int index = this.lbxChannels.IndexFromPoint(e.X, e.Y);
+
+                if (index != ListBox.NoMatches &&
+                    index != 65535)
                 {
-                    setMessages(channel.ChannelName, channel.ChannelId);
+                    var channel = this.lbxChannels.Items[index] as ChannelVM;
+                    if (channel != null)
+                    {
+                        lbxUsers.ClearSelected();
+                        setMessages(channel.ChannelName, channel.ChannelId);
+                    }
                 }
             }
         }
@@ -358,15 +371,19 @@ namespace ClientApp
 
         private void lbxUsers_MouseClick(object sender, MouseEventArgs e)
         {
-            int index = this.lbxUsers.IndexFromPoint(e.X, e.Y);
-
-            if (index != ListBox.NoMatches &&
-                index != 65535)
+            if (e.Button == MouseButtons.Left)
             {
-                var user = this.lbxUsers.Items[index] as UserVM;
-                if (user != null)
+                int index = this.lbxUsers.IndexFromPoint(e.X, e.Y);
+
+                if (index != ListBox.NoMatches &&
+                    index != 65535)
                 {
-                    setMessages(user.UserName);
+                    var user = this.lbxUsers.Items[index] as UserVM;
+                    if (user != null)
+                    {
+                        lbxChannels.ClearSelected();
+                        setMessages(user.UserName);
+                    }
                 }
             }
         }
@@ -388,6 +405,68 @@ namespace ClientApp
             {
                 this.mlbxMessages.Items.Add(message);
             }
+        }
+
+        private void btnSelectUser_Click(object sender, EventArgs e)
+        {
+            var frm = new StartDirectMessagingDialog(chatClient.GetAllUsersList());
+            frm.ShowDialog();
+            if (frm.SelectedUser != null)
+            {
+                var user = frm.SelectedUser;
+                if (!userList.ToList().Exists(x=>x.UserName.Equals(user.UserName)))
+                {
+                    userList.Add(user);
+                }
+                else
+                {
+                    user = userList.FirstOrDefault(x => x.UserName.Equals(user.UserName));
+                }
+
+                if (user != null)
+                {
+                    int index = lbxUsers.Items.IndexOf(user);
+                    lbxUsers.SelectedIndex = index;
+                    lbxChannels.ClearSelected();
+                    setMessages(user.UserName);
+                }
+            }
+        }
+
+        private void btnCloseConversation_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void lbxChannels_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            var listBox = sender as ListBox;
+            if(listBox == null) return;
+            e.DrawBackground();
+            Graphics g = e.Graphics;
+            Brush brush = ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+                ? new SolidBrush(ChatAppColors.ForeColor)
+                : new SolidBrush(ChatAppColors.ControlBackColor);
+            g.FillRectangle(brush, e.Bounds);
+            e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font,
+                     new SolidBrush(e.ForeColor), e.Bounds, StringFormat.GenericDefault);
+            e.DrawFocusRectangle();
+        }
+
+        private void lbxUsers_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            var listBox = sender as ListBox;
+            if (listBox == null) return;
+            e.DrawBackground();
+            Graphics g = e.Graphics;
+            Brush brush = ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+                ? new SolidBrush(ChatAppColors.ForeColor)
+                : new SolidBrush(ChatAppColors.ControlBackColor);
+            g.FillRectangle(brush, e.Bounds);
+            e.Graphics.DrawString(listBox.Items[e.Index].ToString(), e.Font,
+                     new SolidBrush(e.ForeColor), new RectangleF(e.Bounds.X + 20, e.Bounds.Y + 3, e.Bounds.Width - 20, e.Bounds.Height - 6), StringFormat.GenericDefault);
+            e.Graphics.DrawImage(Properties.Resources.online12, new Rectangle(e.Bounds.X + 4, e.Bounds.Y + 4, 12, 12));
+            e.DrawFocusRectangle();
         }
     }
 }
