@@ -13,6 +13,8 @@ namespace Common.ViewModels
 
         public int StateId { get; set; } = (int) UserStateEnum.Offline;
 
+        public bool NewMessageNotification { get; set; } = false;
+
         public int CompareTo(UserVM other)
         {
             if (other == null) return 1;

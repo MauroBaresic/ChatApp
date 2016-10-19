@@ -12,5 +12,9 @@ namespace Common
         void ShowMessage(MessageVM message);
 
         void ShowErrorDialog(string message);
+
+        void NotifyChannelMessage(long channelId);
+
+        void NotifyUserMessage(string usernameOther);
     }
 }

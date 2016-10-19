@@ -5,12 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using Business;
+using Common.ViewModels;
 
 namespace ClientApp
 {
     public class MultiLineListBox : ListBox
     {
         private EditTextBox editTextBox;
+        private ChatClient chatClient;
 
         public MultiLineListBox()
         {
@@ -21,7 +24,6 @@ namespace ClientApp
             editTextBox.Hide();
             editTextBox.MultiLineListBoxParent = this;
             Controls.Add(editTextBox);
-
         }
 
         protected override void OnMeasureItem(MeasureItemEventArgs e)
@@ -63,57 +65,117 @@ namespace ClientApp
 
         protected override void OnMouseUp(System.Windows.Forms.MouseEventArgs e)
         {
-            int index = IndexFromPoint(e.X, e.Y);
+            //int index = IndexFromPoint(e.X, e.Y);
 
-            if (index != ListBox.NoMatches &&
-                index != 65535)
-            {
-                if (e.Button == MouseButtons.Right)
-                {
-                    string s = Items[index].ToString();
-                    Rectangle rect = GetItemRectangle(index);
+            //if (index != ListBox.NoMatches &&
+            //    index != 65535)
+            //{
+            //    if (e.Button == MouseButtons.Right)
+            //    {
+            //        string s = Items[index].ToString();
+            //        Rectangle rect = GetItemRectangle(index);
 
-                    editTextBox.Location = new Point(rect.X, rect.Y);
-                    editTextBox.Size = new Size(rect.Width, rect.Height);
-                    editTextBox.Text = s;
-                    editTextBox.Index = index;
-                    editTextBox.SelectAll();
-                    editTextBox.Show();
-                    editTextBox.Focus();
-                }
-            }
+            //        editTextBox.Location = new Point(rect.X, rect.Y);
+            //        editTextBox.Size = new Size(rect.Width, rect.Height);
+            //        editTextBox.Text = s;
+            //        editTextBox.Index = index;
+            //        editTextBox.SelectAll();
+            //        editTextBox.Show();
+            //        editTextBox.Focus();
+            //    }
+            //}
 
-            base.OnMouseUp(e);
+            //base.OnMouseUp(e);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (e.KeyData == Keys.F2)
+            //if (e.KeyData == Keys.F2)
+            //{
+            //    int index = SelectedIndex;
+            //    if (index == ListBox.NoMatches ||
+            //        index == 65535)
+            //    {
+            //        if (Items.Count > 0)
+            //            index = 0;
+            //    }
+            //    if (index != ListBox.NoMatches &&
+            //        index != 65535)
+            //    {
+
+            //        string s = Items[index].ToString();
+            //        Rectangle rect = GetItemRectangle(index);
+
+            //        editTextBox.Location = new Point(rect.X, rect.Y);
+            //        editTextBox.Size = new Size(rect.Width, rect.Height);
+            //        editTextBox.Text = s;
+            //        editTextBox.Index = index;
+            //        editTextBox.SelectAll();
+            //        editTextBox.Show();
+            //        editTextBox.Focus();
+            //    }
+            //}
+            //base.OnKeyDown(e);
+        }
+
+        public void EditSelectedMessage(string username)
+        {
+            int index = SelectedIndex;
+
+            if (index != ListBox.NoMatches && index != 65535)
             {
-                int index = SelectedIndex;
-                if (index == ListBox.NoMatches ||
-                    index == 65535)
+                var message = Items[index] as MessageVM;
+                if (message != null)
                 {
-                    if (Items.Count > 0)
-                        index = 0;
-                }
-                if (index != ListBox.NoMatches &&
-                    index != 65535)
-                {
+                    if (message.SenderUsername.Equals(username))
+                    {
+                        string s = message.Content;
+                        Rectangle rect = GetItemRectangle(index);
 
-                    string s = Items[index].ToString();
-                    Rectangle rect = GetItemRectangle(index);
-
-                    editTextBox.Location = new Point(rect.X, rect.Y);
-                    editTextBox.Size = new Size(rect.Width, rect.Height);
-                    editTextBox.Text = s;
-                    editTextBox.Index = index;
-                    editTextBox.SelectAll();
-                    editTextBox.Show();
-                    editTextBox.Focus();
+                        editTextBox.Location = new Point(rect.X, rect.Y);
+                        editTextBox.Size = new Size(rect.Width, rect.Height);
+                        editTextBox.Text = s;
+                        editTextBox.Index = index;
+                        editTextBox.SelectAll();
+                        editTextBox.Show();
+                        editTextBox.Focus();
+                    }
+                    else
+                    {
+                        MessageBox.Show(this, "You can edit your messages only!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
             }
-            base.OnKeyDown(e);
+        }
+
+        public void DeleteSelectedMessage(string username)
+        {
+            int index = SelectedIndex;
+
+            if (index != ListBox.NoMatches && index != 65535)
+            {
+                var message = Items[index] as MessageVM;
+                if (message != null)
+                {
+                    if (message.SenderUsername.Equals(username))
+                    {
+                        string s = message.Content;
+                        Rectangle rect = GetItemRectangle(index);
+
+                        editTextBox.Location = new Point(rect.X, rect.Y);
+                        editTextBox.Size = new Size(rect.Width, rect.Height);
+                        editTextBox.Text = s;
+                        editTextBox.Index = index;
+                        editTextBox.SelectAll();
+                        editTextBox.Show();
+                        editTextBox.Focus();
+                    }
+                    else
+                    {
+                        MessageBox.Show(this, "You can delete your messages only!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
         }
 
 
@@ -160,11 +222,13 @@ namespace ClientApp
                 if (!string.IsNullOrEmpty(Text.Trim()))
                 {
                     MultiLineListBoxParent.Items[Index] = Text;
+
                     Hide();
                 }
                 else
                 {
                     Text = MultiLineListBoxParent.Items[Index].ToString();
+
                     Hide();
                     MultiLineListBoxParent.SelectedIndex = Index;
                 }

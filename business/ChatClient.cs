@@ -18,10 +18,7 @@ namespace Business
 
         private bool _isRegistered = false;
         private string _username = "";
-
-        private Dictionary<string, MessageContainer> _directMessages = new Dictionary<string, MessageContainer>();
-        private Dictionary<long, MessageContainer> _channelMessages = new Dictionary<long, MessageContainer>();
-
+        
         public string Username
         {
             get
@@ -147,8 +144,6 @@ namespace Business
 
         private void clearCache()
         {
-            _directMessages = new Dictionary<string, MessageContainer>();
-            _channelMessages = new Dictionary<long, MessageContainer>();
             sendToChannel = true;
             _endUsername = "";
             _endChannel = 0L;
@@ -204,34 +199,6 @@ namespace Business
 
         public List<MessageVM> GetUserMessages(string usernameOther)
         {
-            //if (!_directMessages.ContainsKey(usernameOther))
-            //{
-            //    _directMessages.Add(usernameOther, new MessageContainer(getDirectMessages(usernameOther)));
-            //}
-            //else
-            //{
-            //    _directMessages[usernameOther] = new MessageContainer(getDirectMessages(usernameOther));
-            //}
-            //return _directMessages[usernameOther].Messages;
-            return getDirectMessages(usernameOther);
-        }
-
-        public List<MessageVM> GetChannelMessages(long channelId)
-        {
-            //if (!_channelMessages.ContainsKey(channelId))
-            //{
-            //    _channelMessages.Add(channelId, new MessageContainer(getMessagesInChannel(channelId)));
-            //}
-            //else
-            //{
-            //    _channelMessages[channelId] = new MessageContainer(getMessagesInChannel(channelId));
-            //}
-            //return _channelMessages[channelId].Messages;
-            return getMessagesInChannel(channelId);
-        }
-
-        private List<MessageVM> getDirectMessages(string usernameOther)
-        {
             try
             {
                 return remoteProxy.GetDirectMessages(Username, usernameOther);
@@ -242,7 +209,7 @@ namespace Business
             }
         }
 
-        private List<MessageVM> getMessagesInChannel(long channelId)
+        public List<MessageVM> GetChannelMessages(long channelId)
         {
             try
             {
@@ -315,51 +282,25 @@ namespace Business
 
         public void NotifyUser(string usernameOther, MessageVM message)
         {
-            //lock (_directMessages)
-            //{
-            //    if (_directMessages.ContainsKey(usernameOther))
-            //    {
-            //        _directMessages[usernameOther].AddMessage(message);
-            //        //TODO notify new message
-            //    }
-            //    else // get existing messages
-            //    {
-            //        _directMessages.Add(usernameOther, new MessageContainer(getDirectMessages(usernameOther)));
-            //        //TODO noitfy new conversation
-            //    }
-            //}
             if (!sendToChannel && _endUsername == usernameOther)
             {
                 chatDialog.ShowMessage(message);
             }
             else
             {
-                //TODO notify
+                chatDialog.NotifyUserMessage(usernameOther);
             }
         }
 
         public void NotifyAllChannelUsers(long channelId, MessageVM message)
         {
-            //lock (_channelMessages)
-            //{
-            //    if (_channelMessages.ContainsKey(channelId))
-            //    {
-            //        _channelMessages[channelId].AddMessage(message);
-            //        //TODO notify new message
-            //    }
-            //    else // get existing messages
-            //    {
-            //        _channelMessages.Add(channelId, new MessageContainer(getMessagesInChannel(channelId)));
-            //        //TODO noitfy new conversation
-            //    }
-            //}
             if (sendToChannel && _endChannel == channelId)
             {
                 chatDialog.ShowMessage(message);
             }
             else
             {
-                //TODO notify
+                chatDialog.NotifyChannelMessage(channelId);
             }
         }
 

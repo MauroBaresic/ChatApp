@@ -9,7 +9,10 @@ namespace Common.ViewModels
     public class ChannelVM
     {
         public long ChannelId { get; set; }
+
         public string ChannelName { get; set; }
+
+        public bool NewMessageNotification { get; set; } = false;
 
         public override string ToString()
         {
