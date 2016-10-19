@@ -46,6 +46,7 @@ namespace Business
             _repository.RegisterUser(user);
 
             _registeredUsers.Add(new UserVM() {UserName = user.UserName, FirstName = user.FirstName, LastName = user.LastName, StateId = (int)UserStateEnum.Online});
+            userChangedState(user.UserName, (int)UserStateEnum.Online);
             _userCallbacks.Add(user, OperationContext.Current.GetCallbackChannel<IChatServiceCallback>());
 
             var message = new MessageVM() { Content = $"{user.UserName} joined #ChatApp!", SenderUsername = "", MessageId = 0, TimeSent = DateTime.UtcNow };
@@ -91,6 +92,7 @@ namespace Business
                 authUser.StateId = (int) UserStateEnum.Online;
                 user.FirstName = authUser.FirstName;
                 user.LastName = authUser.LastName;
+                userChangedState(authUser.UserName, authUser.StateId);
                 _userCallbacks.Add(user, OperationContext.Current.GetCallbackChannel<IChatServiceCallback>());
             }
             else
@@ -135,8 +137,18 @@ namespace Business
                 }
                 user.StateId = stateId;
 
-                //NotifyAllUsers($"{user.UserName} left the conversation.");
-                
+                userChangedState(username, stateId);
+            }
+        }
+
+        private void userChangedState(string username, int stateId)
+        {
+            foreach (var userCallback in _userCallbacks)
+            {
+                //if (userCallback.Key.UserName != username)
+                //{
+                    userCallback.Value.NotifyUserChangedState(username, stateId);
+                //}
             }
         }
 

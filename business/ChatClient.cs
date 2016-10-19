@@ -306,7 +306,19 @@ namespace Business
 
         public void NotifyUserChangedState(string username, int stateId)
         {
-            throw new NotImplementedException();
+            chatDialog.NotifyUserStateChanged(username, stateId);
+        }
+
+        public void ChangeUserState(int stateId)
+        {
+            try
+            {
+                remoteProxy.UserStateChanged(Username, stateId);
+            }
+            catch (Exception exception)
+            {
+                chatDialog.ShowErrorDialog(exception.Message);
+            }
         }
     }
 }

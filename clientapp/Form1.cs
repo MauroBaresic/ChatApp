@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Threading;
 using Business;
 using Common;
+using Common.Enums;
 using Common.ViewModels;
 
 namespace ClientApp
@@ -138,6 +139,7 @@ namespace ClientApp
             tbxMessage.Text = "";
             tbxMessage.Enabled = false;
             btnSendMessage.Enabled = false;
+            cbxEnterSendsMessage.Enabled = false;
 
             lbxUsers.DataSource = null;
             userList.Clear();
@@ -217,6 +219,27 @@ namespace ClientApp
             if (user != null)
             {
                 user.NewMessageNotification = true;
+                lbxUsers.RefreshIAlltems();
+                lbxUsers.ClearSelected();
+            }
+        }
+
+        public void NotifyUserStateChanged(string username, int stateId)
+        {
+            var user = userList.FirstOrDefault(x => x.UserName.Equals(username));
+            if (user == null)
+            {
+                user = chatClient.GetAllUsersList().FirstOrDefault(x => x.UserName.Equals(username));
+                if (user != null)
+                {
+                    user.StateId = stateId;
+                    userList.Add(user);
+                }
+            }
+
+            if (user != null)
+            {
+                user.StateId = stateId;
                 lbxUsers.RefreshIAlltems();
                 lbxUsers.ClearSelected();
             }
@@ -415,6 +438,7 @@ namespace ClientApp
             lblNotification.Text = channelName;
             tbxMessage.Enabled = true;
             btnSendMessage.Enabled = true;
+            cbxEnterSendsMessage.Enabled = true;
             chatClient.SetEndChannel(channelId);
             var channel = channelList.FirstOrDefault(x => x.ChannelId.Equals(channelId));
             if (channel != null)
@@ -449,6 +473,7 @@ namespace ClientApp
             lblNotification.Text = usernameOther;
             tbxMessage.Enabled = true;
             btnSendMessage.Enabled = true;
+            cbxEnterSendsMessage.Enabled = true;
             chatClient.SetEndUser(usernameOther);
             var user = userList.FirstOrDefault(x => x.UserName.Equals(usernameOther));
             if (user != null)
@@ -495,7 +520,10 @@ namespace ClientApp
 
         private void btnCloseConversation_Click(object sender, EventArgs e)
         {
-            
+            lblNotification.Text = "";
+            tbxMessage.Enabled = false;
+            btnSendMessage.Enabled = false;
+            cbxEnterSendsMessage.Enabled = false;
         }
 
         private void lbxChannels_DrawItem(object sender, DrawItemEventArgs e)
@@ -528,6 +556,21 @@ namespace ClientApp
                 : new SolidBrush(ChatAppColors.ControlBackColor);
             g.FillRectangle(brush, e.Bounds);
             var user = listBox.Items[e.Index] as UserVM;
+            Image statusImage = Properties.Resources.offline12;
+            switch ((UserStateEnum)user.StateId)
+            {
+                case UserStateEnum.Away:
+                    statusImage = Properties.Resources.away12;
+                    break;
+                case UserStateEnum.Busy:
+                    statusImage = Properties.Resources.busy12;
+                    break;
+                case UserStateEnum.Online:
+                    statusImage = Properties.Resources.online12;
+                    break;
+                default:
+                    break;
+            }
             e.Graphics.DrawString(user.ToString(),
                 user.NewMessageNotification
                     ? new Font(e.Font.FontFamily, e.Font.Size, FontStyle.Bold)
@@ -535,7 +578,7 @@ namespace ClientApp
                 new SolidBrush(e.ForeColor),
                 new RectangleF(e.Bounds.X + 20, e.Bounds.Y + 3, e.Bounds.Width - 20, e.Bounds.Height - 6),
                 StringFormat.GenericDefault);
-            e.Graphics.DrawImage(Properties.Resources.online12, new Rectangle(e.Bounds.X + 4, e.Bounds.Y + 4, 12, 12));
+            e.Graphics.DrawImage(statusImage, new Rectangle(e.Bounds.X + 4, e.Bounds.Y + 4, 12, 12));
             e.DrawFocusRectangle();
         }
     }
