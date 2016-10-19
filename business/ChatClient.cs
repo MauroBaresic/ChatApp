@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using System.ServiceModel;
 using System.Threading;
 using Common;
@@ -18,7 +20,8 @@ namespace Business
 
         private bool _isRegistered = false;
         private string _username = "";
-        
+        DateTime _lastReceived;
+
         public string Username
         {
             get
@@ -33,6 +36,15 @@ namespace Business
         public ChatClient(IChatDialog inChatDialog)
         {
             this.chatDialog = inChatDialog;
+            try
+            {
+                Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+                _lastReceived = DateTime.Parse(config.AppSettings.Settings["LastReceived"].Value);
+            }
+            catch (Exception)
+            {
+                _lastReceived = DateTime.UtcNow;
+            }
         }
 
         public bool Register(string username, string password, string firstName, string lastName)
@@ -168,6 +180,27 @@ namespace Business
                 {
                     //
                 }
+
+                try
+                {
+                    Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+                    var settings = config.AppSettings.Settings;
+                    var key = "LastReceived";
+                    if (settings[key] == null)
+                    {
+                        settings.Add(key, _lastReceived.ToString());
+                    }
+                    else
+                    {
+                        settings[key].Value = _lastReceived.ToString();
+                    }
+                    config.Save(ConfigurationSaveMode.Modified);
+                    ConfigurationManager.RefreshSection(config.AppSettings.SectionInformation.Name);
+                }
+                catch (Exception)
+                {
+                    //
+                }
             }
         }
 
@@ -290,6 +323,7 @@ namespace Business
             {
                 chatDialog.NotifyUserMessage(usernameOther);
             }
+            _lastReceived = message.TimeSent;
         }
 
         public void NotifyAllChannelUsers(long channelId, MessageVM message)
@@ -302,6 +336,7 @@ namespace Business
             {
                 chatDialog.NotifyChannelMessage(channelId);
             }
+            _lastReceived = message.TimeSent;
         }
 
         public void NotifyUserChangedState(string username, int stateId)
@@ -323,11 +358,10 @@ namespace Business
 
         public void CheckForNewMessages()
         {
-            DateTime lastReceived = DateTime.UtcNow;
             try
             {
-                var users = remoteProxy.GetUserMessageNotifications(Username, lastReceived);
-                var channels = remoteProxy.GetChannelMessageNotifications(Username, lastReceived);
+                var users = remoteProxy.GetUserMessageNotifications(Username, _lastReceived);
+                var channels = remoteProxy.GetChannelMessageNotifications(Username, _lastReceived);
 
                 chatDialog.NotifyNewUserMessages(users);
                 chatDialog.NotifyNewChannelMessages(channels);
