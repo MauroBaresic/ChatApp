@@ -57,6 +57,9 @@
       <DependentUpon>AboutChatApp.cs</DependentUpon>
     </Compile>
     <Compile Include="ChatAppColors.cs" />
+    <Compile Include="CustomListBoxControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -185,12 +185,19 @@ namespace ClientApp
             var channel = channelList.FirstOrDefault(x => x.ChannelId.Equals(channelId));
             if (channel == null)
             {
-                //
+                channel = chatClient.GetAllChannelsList().FirstOrDefault(x => x.ChannelId.Equals(channelId));
+                if (channel != null)
+                {
+                    channel.NewMessageNotification = true;
+                    channelList.Add(channel);
+                }
             }
 
             if (channel != null)
             {
                 channel.NewMessageNotification = true;
+                lbxChannels.RefreshIAlltems();
+                lbxChannels.ClearSelected();
             }
         }
 
@@ -199,12 +206,19 @@ namespace ClientApp
             var user = userList.FirstOrDefault(x => x.UserName.Equals(usernameOther));
             if (user == null)
             {
-                //
+                user = chatClient.GetAllUsersList().FirstOrDefault(x => x.UserName.Equals(usernameOther));
+                if (user != null)
+                {
+                    user.NewMessageNotification = true;
+                    userList.Add(user);
+                }
             }
 
             if (user != null)
             {
                 user.NewMessageNotification = true;
+                lbxUsers.RefreshIAlltems();
+                lbxUsers.ClearSelected();
             }
         }
 
@@ -389,6 +403,7 @@ namespace ClientApp
                     {
                         lbxUsers.ClearSelected();
                         setMessages(channel.ChannelName, channel.ChannelId);
+                        lbxChannels.RefreshItemAt(index);
                     }
                 }
             }
@@ -422,6 +437,7 @@ namespace ClientApp
                     {
                         lbxChannels.ClearSelected();
                         setMessages(user.UserName);
+                        lbxUsers.RefreshItemAt(index);
                     }
                 }
             }
@@ -484,7 +500,7 @@ namespace ClientApp
 
         private void lbxChannels_DrawItem(object sender, DrawItemEventArgs e)
         {
-            var listBox = sender as ListBox;
+            var listBox = sender as CustomListBoxControl;
             if(listBox == null) return;
             e.DrawBackground();
             Graphics g = e.Graphics;
@@ -503,7 +519,7 @@ namespace ClientApp
 
         private void lbxUsers_DrawItem(object sender, DrawItemEventArgs e)
         {
-            var listBox = sender as ListBox;
+            var listBox = sender as CustomListBoxControl;
             if (listBox == null) return;
             e.DrawBackground();
             Graphics g = e.Graphics;

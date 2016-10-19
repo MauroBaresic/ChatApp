@@ -10,7 +10,7 @@ using Model;
 
 namespace Business
 {
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Single, UseSynchronizationContext = false)]
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant, UseSynchronizationContext = false)]
     public class ChatClient : IChatServiceCallback
     {
         private IChatService remoteProxy;

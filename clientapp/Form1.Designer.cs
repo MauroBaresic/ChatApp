@@ -57,8 +57,8 @@
             this.lblNotification = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnLogOut = new System.Windows.Forms.Button();
-            this.lbxUsers = new System.Windows.Forms.ListBox();
-            this.lbxChannels = new System.Windows.Forms.ListBox();
+            this.lbxUsers = new CustomListBoxControl();
+            this.lbxChannels = new CustomListBoxControl();
             this.cbxEnterSendsMessage = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.pbrRegistering = new System.Windows.Forms.ProgressBar();
@@ -664,8 +664,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnlMessageDialog;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ListBox lbxChannels;
-        private System.Windows.Forms.ListBox lbxUsers;
+        private CustomListBoxControl lbxChannels;
+        private CustomListBoxControl lbxUsers;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox cbxEnterSendsMessage;
         private System.Windows.Forms.ProgressBar pbrRegistering;
