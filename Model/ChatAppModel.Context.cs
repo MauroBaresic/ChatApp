@@ -208,5 +208,31 @@ namespace Model
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("StoreChannelMessage", contentParameter, usernameParameter, channelIdParameter, timeSentParameter);
         }
+    
+        public virtual ObjectResult<Nullable<long>> GetChannelMessageNotifications(string username, Nullable<System.DateTime> lastReceived)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var lastReceivedParameter = lastReceived.HasValue ?
+                new ObjectParameter("lastReceived", lastReceived) :
+                new ObjectParameter("lastReceived", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("GetChannelMessageNotifications", usernameParameter, lastReceivedParameter);
+        }
+    
+        public virtual ObjectResult<string> GetUserMessageNotifications(string username, Nullable<System.DateTime> lastReceived)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var lastReceivedParameter = lastReceived.HasValue ?
+                new ObjectParameter("lastReceived", lastReceived) :
+                new ObjectParameter("lastReceived", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("GetUserMessageNotifications", usernameParameter, lastReceivedParameter);
+        }
     }
 }

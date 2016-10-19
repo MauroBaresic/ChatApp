@@ -159,6 +159,8 @@ namespace ClientApp
             lbxChannels.DataSource = channelList;
             lbxChannels.ClearSelected();
 
+            chatClient.CheckForNewMessages();
+
             lblNotification.Text = "Select a channel or a user to start the conversation.";
             lblNotification.Visible = true;
         }
@@ -242,6 +244,23 @@ namespace ClientApp
                 user.StateId = stateId;
                 lbxUsers.RefreshIAlltems();
                 lbxUsers.ClearSelected();
+            }
+        }
+
+        public void NotifyNewUserMessages(List<UserVM> users)
+        {
+            foreach (var user in users)
+            {
+                NotifyUserMessage(user.UserName);
+            }
+        }
+
+        public void NotifyNewChannelMessages(List<ChannelVM> channels)
+        {
+            foreach (var channel in channels)
+            {
+                if(channel.ChannelId == 0L) continue;
+                NotifyChannelMessage(channel.ChannelId);
             }
         }
 

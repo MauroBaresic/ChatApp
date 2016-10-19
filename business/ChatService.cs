@@ -177,6 +177,16 @@ namespace Business
             return _repository.GetDirectMessages(username, usernameOther);
         }
 
+        public List<UserVM> GetUserMessageNotifications(string username, DateTime lastReceived)
+        {
+            return _repository.GetUserMessageNotifications(username, lastReceived);
+        }
+
+        public List<ChannelVM> GetChannelMessageNotifications(string username, DateTime lastReceived)
+        {
+            return _repository.GetChannelMessageNotifications(username, lastReceived);
+        }
+
         public void NotifyUser(MessageVM message, string username, string usernameOther)
         {
             foreach (var userCallback in _userCallbacks)

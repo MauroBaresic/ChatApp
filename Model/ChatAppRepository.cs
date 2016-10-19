@@ -104,5 +104,29 @@ namespace Model
                 return context.StoreChannelMessage(userMessage, username, channelId, timeSent).FirstOrDefault() ?? 0;
             }
         }
+
+        public List<ChannelVM> GetChannelMessageNotifications(string username, DateTime lastReceived)
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                return
+                    context.GetChannelMessageNotifications(username, lastReceived)
+                        .ToList()
+                        .Select(x => new ChannelVM() {ChannelId = x ?? 0})
+                        .ToList();
+            }
+        }
+
+        public List<UserVM> GetUserMessageNotifications(string username, DateTime lastReceived)
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                return
+                    context.GetUserMessageNotifications(username, lastReceived)
+                        .ToList()
+                        .Select(x => new UserVM() {UserName = x})
+                        .ToList();
+            }
+        }
     }
 }

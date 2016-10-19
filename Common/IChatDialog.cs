@@ -18,5 +18,7 @@ namespace Common
         void NotifyUserMessage(string usernameOther);
 
         void NotifyUserStateChanged(string username, int stateId);
+        void NotifyNewUserMessages(List<UserVM> users);
+        void NotifyNewChannelMessages(List<ChannelVM> channels);
     }
 }

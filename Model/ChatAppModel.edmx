@@ -176,12 +176,20 @@
         <Function Name="GetChannelMembers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="channelId" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="GetChannelMessageNotifications" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
+          <Parameter Name="lastReceived" Type="datetime" Mode="In" />
+        </Function>
         <Function Name="GetChannelMessages" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="channelId" Type="bigint" Mode="In" />
           <Parameter Name="topN" Type="int" Mode="In" />
         </Function>
         <Function Name="GetUserCredentials" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="username" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GetUserMessageNotifications" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
+          <Parameter Name="lastReceived" Type="datetime" Mode="In" />
         </Function>
         <Function Name="RegisterUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="username" Type="nvarchar" Mode="In" />
@@ -358,6 +366,14 @@
             <Parameter Name="username" Mode="In" Type="String" />
             <Parameter Name="channelId" Mode="In" Type="Int64" />
             <Parameter Name="timeSent" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="GetChannelMessageNotifications" ReturnType="Collection(Int64)">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="lastReceived" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="GetUserMessageNotifications" ReturnType="Collection(String)">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="lastReceived" Mode="In" Type="DateTime" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="Message">
@@ -589,6 +605,8 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="StoreUserMessage" FunctionName="ChatAppDBModel.Store.StoreUserMessage" />
           <FunctionImportMapping FunctionImportName="StoreChannelMessage" FunctionName="ChatAppDBModel.Store.StoreChannelMessage" />
+          <FunctionImportMapping FunctionImportName="GetChannelMessageNotifications" FunctionName="ChatAppDBModel.Store.GetChannelMessageNotifications" />
+          <FunctionImportMapping FunctionImportName="GetUserMessageNotifications" FunctionName="ChatAppDBModel.Store.GetUserMessageNotifications" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

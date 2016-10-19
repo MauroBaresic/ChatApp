@@ -42,5 +42,11 @@ namespace Business
 
         [OperationContract]
         List<MessageVM> GetDirectMessages(string username, string usernameOther);
+
+        [OperationContract]
+        List<UserVM> GetUserMessageNotifications(string username, DateTime lastReceived);
+
+        [OperationContract]
+        List<ChannelVM> GetChannelMessageNotifications(string username, DateTime lastReceived);
     }
 }

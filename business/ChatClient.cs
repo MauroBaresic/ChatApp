@@ -320,5 +320,22 @@ namespace Business
                 chatDialog.ShowErrorDialog(exception.Message);
             }
         }
+
+        public void CheckForNewMessages()
+        {
+            DateTime lastReceived = DateTime.UtcNow;
+            try
+            {
+                var users = remoteProxy.GetUserMessageNotifications(Username, lastReceived);
+                var channels = remoteProxy.GetChannelMessageNotifications(Username, lastReceived);
+
+                chatDialog.NotifyNewUserMessages(users);
+                chatDialog.NotifyNewChannelMessages(channels);
+            }
+            catch (Exception exception)
+            {
+                chatDialog.ShowErrorDialog(exception.Message);
+            }
+        }
     }
 }
