@@ -12,13 +12,16 @@ BEGIN
 
 	IF @userId is not null AND @otherUserId is not null
 	BEGIN
+		DELETE FROM [dbo].[UserMessages]
+		WHERE [dbo].[UserMessages].[UserId] = @userId AND [dbo].[UserMessages].[OtherUserId] = @otherUserId;
+
 		DELETE FROM [dbo].[Messages]
 		WHERE [dbo].[Messages].[MessageId] IN (
 		SELECT [dbo].[Messages].[MessageId] 
 		FROM [dbo].[UserMessages]
 		JOIN [dbo].[Messages] ON [dbo].[UserMessages].[MessageId] = [dbo].[Messages].[MessageId]
 		WHERE [dbo].[Messages].[SenderUserId] = @userId AND ([dbo].[UserMessages].[UserId] = @userId AND [dbo].[UserMessages].[OtherUserId] = @otherUserId) 
-			OR ([dbo].[UserMessages].[UserId] = @otherUserId AND [dbo].[UserMessages].[OtherUserId] = @userId))
+			OR ([dbo].[UserMessages].[UserId] = @otherUserId AND [dbo].[UserMessages].[OtherUserId] = @userId));
 	END
 RETURN 0
 END

@@ -10,11 +10,14 @@ BEGIN
 
 	IF @userId is not null
 	BEGIN
+		DELETE FROM [dbo].[UserMessages]
+		WHERE [dbo].[UserMessages].[UserId] = @userId AND [dbo].[UserMessages].[MessageId] = @messageId;
+
+		DELETE FROM [dbo].[ChannelMessages]
+		WHERE [dbo].[ChannelMessages].[MessageId] = @messageId;
+
 		DELETE FROM [dbo].[Messages]
-		WHERE [dbo].[Messages].[MessageId] = (
-		SELECT TOP(1) [dbo].[Messages].[MessageId]
-		FROM [dbo].[Messages]
-		WHERE [dbo].[Messages].[MessageId] = @messageId AND [dbo].[Messages].[SenderUserId] = @userId )
+		WHERE [dbo].[Messages].[MessageId] = @messageId AND [dbo].[Messages].[SenderUserId] = @userId
 	END
 RETURN 0
 END

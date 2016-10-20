@@ -40,6 +40,7 @@ namespace Business
             {
                 Configuration config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
                 _lastReceived = DateTime.Parse(config.AppSettings.Settings["LastReceived"].Value);
+                if(_lastReceived == DateTime.MinValue) _lastReceived = DateTime.UtcNow;
             }
             catch (Exception)
             {
@@ -384,7 +385,7 @@ namespace Business
             }
         }
         
-        public void EditUserMessage(string usernameOther, long messageId, string content)
+        private void EditUserMessage(string usernameOther, long messageId, string content)
         {
             try
             {
@@ -396,19 +397,7 @@ namespace Business
             }
         }
         
-        public void DeleteUserMessage(string usernameOther, long messageId)
-        {
-            try
-            {
-                remoteProxy.DeleteUserMessage(Username, usernameOther, messageId);
-            }
-            catch (Exception exception)
-            {
-                chatDialog.ShowErrorDialog(exception.Message);
-            }
-        }
-
-        public void EditChannelMessage(long channelId, long messageId, string content)
+        private void EditChannelMessage(long channelId, long messageId, string content)
         {
             try
             {
@@ -420,7 +409,31 @@ namespace Business
             }
         }
 
-        public void DeleteChannelMessage(long channelID, long messageId)
+        public void DeleteMessage(MessageVM message)
+        {
+            if (sendToChannel)
+            {
+                DeleteChannelMessage(_endChannel, message.MessageId);
+            }
+            else
+            {
+                DeleteUserMessage(_endUsername, message.MessageId);
+            }
+        }
+
+        private void DeleteUserMessage(string usernameOther, long messageId)
+        {
+            try
+            {
+                remoteProxy.DeleteUserMessage(Username, usernameOther, messageId);
+            }
+            catch (Exception exception)
+            {
+                chatDialog.ShowErrorDialog(exception.Message);
+            }
+        }
+
+        private void DeleteChannelMessage(long channelID, long messageId)
         {
             try
             {
@@ -432,7 +445,7 @@ namespace Business
             }
         }
 
-        public void DeleteUserConversation(string usernameOther)
+        private void DeleteUserConversation(string usernameOther)
         {
             try
             {
@@ -444,7 +457,7 @@ namespace Business
             }
         }
 
-        public void DeleteChannelConversation(long channelId)
+        private void DeleteChannelConversation(long channelId)
         {
             try
             {

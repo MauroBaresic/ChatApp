@@ -12,60 +12,104 @@ namespace Model
     {
         public List<UserVM> GetAllUsers()
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                var listUsers = context.AllUsers().ToList();
-                return getUserVMs(listUsers);
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    var listUsers = context.AllUsers().ToList();
+                    return getUserVMs(listUsers);
+                }
+            }
+            catch (Exception exception)
+            {
+                return new List<UserVM>();
             }
         }
 
         public void RegisterUser(User user)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                context.RegisterUser(user.UserName, user.FirstName, user.LastName, user.Password, user.RegistrationDate);
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    context.RegisterUser(user.UserName, user.FirstName, user.LastName, user.Password, user.RegistrationDate);
 
-                //context.Users.Add(user);
-                //context.SaveChanges();
+                    //context.Users.Add(user);
+                    //context.SaveChanges();
+                }
             }
+            catch (Exception exception)
+            {
+                //
+            }
+            
         }
 
         public List<Channel> GetAllChannels()
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                var listChannels = context.AllChannels().ToList();
-                List<Channel> allChannels =
-                    listChannels.Select(x => new Channel() { ChannelId = x.ChannelId, ChannelName = x.ChannelName })
-                        .ToList();
-                return allChannels;
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    var listChannels = context.AllChannels().ToList();
+                    List<Channel> allChannels =
+                        listChannels.Select(x => new Channel() { ChannelId = x.ChannelId, ChannelName = x.ChannelName })
+                            .ToList();
+                    return allChannels;
+                }
+            }
+            catch (Exception exception)
+            {
+                return new List<Channel>();
             }
         }
 
         public List<UserVM> GetChannelMembers(long channelId)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                var membersList = context.GetChannelMembers(channelId).ToList();
-                return getUserVMs(membersList);
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    var membersList = context.GetChannelMembers(channelId).ToList();
+                    return getUserVMs(membersList);
+                }
             }
+            catch (Exception exception)
+            {
+                return new List<UserVM>();
+            }
+            
         }
 
         public List<MessageVM> GetChannelMessages(long channelId)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                var listMessages = context.GetChannelMessages(channelId, 100).ToList();
-                return getMessageVMs(listMessages);
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    var listMessages = context.GetChannelMessages(channelId, 100).ToList();
+                    return getMessageVMs(listMessages);
+                }
+            }
+            catch (Exception exception)
+            {
+                return new List<MessageVM>();
             }
         }
 
         public List<MessageVM> GetDirectMessages(string username, string usernameOther)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                var listMessages = context.DirectMessages(username, usernameOther, 100).ToList();
-                return getMessageVMs(listMessages);
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    var listMessages = context.DirectMessages(username, usernameOther, 100).ToList();
+                    return getMessageVMs(listMessages);
+                }
+            }
+            catch (Exception exception)
+            {
+                return  new List<MessageVM>();
             }
         }
 
@@ -91,74 +135,144 @@ namespace Model
 
         public long StoreUserMessage(string username, string usernameOther, string userMessage, DateTime timeSent)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                return context.StoreUserMessage(userMessage, username, usernameOther, timeSent).FirstOrDefault() ?? 0;
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    return context.StoreUserMessage(userMessage, username, usernameOther, timeSent).FirstOrDefault() ?? 0;
+                }
+            }
+            catch (Exception exception)
+            {
+                return 0L;
             }
         }
 
         public long StoreChannelMessage(long channelId, string username, string userMessage, DateTime timeSent)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                return context.StoreChannelMessage(userMessage, username, channelId, timeSent).FirstOrDefault() ?? 0;
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    return context.StoreChannelMessage(userMessage, username, channelId, timeSent).FirstOrDefault() ?? 0;
+                }
             }
+            catch (Exception exception)
+            {
+                //
+                return 0L;
+            }
+            
         }
 
         public List<ChannelVM> GetChannelMessageNotifications(string username, DateTime lastReceived)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                return
-                    context.GetChannelMessageNotifications(username, lastReceived)
-                        .ToList()
-                        .Select(x => new ChannelVM() {ChannelId = x ?? 0})
-                        .ToList();
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    return
+                        context.GetChannelMessageNotifications(username, lastReceived)
+                            .ToList()
+                            .Select(x => new ChannelVM() { ChannelId = x ?? 0 })
+                            .ToList();
+                }
             }
+            catch (Exception exception)
+            {
+                return new List<ChannelVM>();
+            }
+            
         }
 
         public List<UserVM> GetUserMessageNotifications(string username, DateTime lastReceived)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                return
-                    context.GetUserMessageNotifications(username, lastReceived)
-                        .ToList()
-                        .Select(x => new UserVM() {UserName = x})
-                        .ToList();
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    var notifications = context.GetUserMessageNotifications(username, lastReceived).ToList();
+                    if (notifications.Any())
+                    {
+                        return notifications.Where(x => x != null).Select(x => new UserVM() { UserName = x }).ToList();
+                    }
+                    //return
+                    //    context.GetUserMessageNotifications(username, lastReceived)
+                    //        .ToList()
+                    //        .Select(x => new UserVM() {UserName = x})
+                    //        .ToList();
+                    return new List<UserVM>();
+                }
             }
+            catch (Exception exception)
+            {
+                return new List<UserVM>();
+            }
+            
         }
 
         public void EditMessage(string username, long messageId, string content)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                context.UpdateMessage(username, messageId, content);
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    context.UpdateMessage(username, messageId, content);
+                }
             }
+            catch (Exception exception)
+            {
+                //
+            }
+            
         }
 
         public void DeleteMessage(string username, long messageId)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                context.DeleteMessage(username, messageId);
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    context.DeleteMessage(username, messageId);
+                }
             }
+            catch (Exception exception)
+            {
+                //
+            }
+            
         }
 
         public void DeleteUserConversation(string username, string usernameOther)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                context.DeleteUserMessages(username, usernameOther);
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    context.DeleteUserMessages(username, usernameOther);
+                }
             }
+            catch (Exception exception)
+            {
+                //
+            }
+            
         }
 
         public void DeleteChannelConversation(string username, long channelId)
         {
-            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            try
             {
-                context.DeleteChannelUserMessages(channelId, username);
+                using (ChatAppDBEntities context = new ChatAppDBEntities())
+                {
+                    context.DeleteChannelUserMessages(channelId, username);
+                }
             }
+            catch (Exception exception)
+            {
+                //
+            }
+            
         }
     }
 }

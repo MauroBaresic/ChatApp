@@ -47,11 +47,12 @@ namespace Business
 
             _registeredUsers.Add(new UserVM() {UserName = user.UserName, FirstName = user.FirstName, LastName = user.LastName, StateId = (int)UserStateEnum.Online});
             userChangedState(user.UserName, (int)UserStateEnum.Online);
-            _userCallbacks.Add(user, OperationContext.Current.GetCallbackChannel<IChatServiceCallback>());
 
             var message = new MessageVM() { Content = $"{user.UserName} joined #ChatApp!", SenderUsername = "", MessageId = 0, TimeSent = DateTime.UtcNow };
             _repository.StoreChannelMessage(1L, message.SenderUsername, message.Content, message.TimeSent);
             NotifyChannelUsers(message, 1L);
+
+            _userCallbacks.Add(user, OperationContext.Current.GetCallbackChannel<IChatServiceCallback>());
 
             return (int)RegistrationEnum.Successful;
         }

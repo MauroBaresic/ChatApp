@@ -186,6 +186,15 @@ namespace ClientApp
                     this.mlbxMessages.Items.Add(message);
                     break;
                 case MessageStateEnum.Modified:
+                    this.mlbxMessages.EditMessage(message);
+                    break;
+                case MessageStateEnum.Deleted:
+                    this.mlbxMessages.DeleteMessage(message);
+                    break;
+                case MessageStateEnum.DeleteAll:
+                    this.mlbxMessages.DeleteAllMesages(message);
+                    break;
+                default:
                     break;
             }
         }

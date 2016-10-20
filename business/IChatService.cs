@@ -19,13 +19,13 @@ namespace Business
         [OperationContract]
         int LoginUser(User user);
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void ReceiveUserMessage(string username, string usernameOther, string userMessage);
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void ReceiveChannelMessage(long channelId, string username, string userMessage);
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void UserStateChanged(string username, int stateId);
 
         [OperationContract]
@@ -49,22 +49,22 @@ namespace Business
         [OperationContract]
         List<ChannelVM> GetChannelMessageNotifications(string username, DateTime lastReceived);
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void EditUserMessage(string username, string usernameOther, long messageId, string content);
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void EditChannelMessage(string username, long channelId, long messageId, string content);
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void DeleteUserMessage(string username, string usernameOther, long messageId);
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void DeleteChannelMessage(string username, long channelId, long messageId);
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void DeleteUserConversation(string username, string usernameOther);
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void DeleteChannelConversation(string username, long channelId);
     }
 }

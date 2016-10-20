@@ -85,45 +85,6 @@ namespace Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetUserCredentials_Result>("GetUserCredentials", usernameParameter);
         }
     
-        public virtual int DeleteChannelUserMessages(Nullable<long> channelId, string username)
-        {
-            var channelIdParameter = channelId.HasValue ?
-                new ObjectParameter("channelId", channelId) :
-                new ObjectParameter("channelId", typeof(long));
-    
-            var usernameParameter = username != null ?
-                new ObjectParameter("username", username) :
-                new ObjectParameter("username", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteChannelUserMessages", channelIdParameter, usernameParameter);
-        }
-    
-        public virtual int DeleteMessage(string username, Nullable<long> messageId)
-        {
-            var usernameParameter = username != null ?
-                new ObjectParameter("username", username) :
-                new ObjectParameter("username", typeof(string));
-    
-            var messageIdParameter = messageId.HasValue ?
-                new ObjectParameter("messageId", messageId) :
-                new ObjectParameter("messageId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteMessage", usernameParameter, messageIdParameter);
-        }
-    
-        public virtual int DeleteUserMessages(string username, string usernameOther)
-        {
-            var usernameParameter = username != null ?
-                new ObjectParameter("username", username) :
-                new ObjectParameter("username", typeof(string));
-    
-            var usernameOtherParameter = usernameOther != null ?
-                new ObjectParameter("usernameOther", usernameOther) :
-                new ObjectParameter("usernameOther", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteUserMessages", usernameParameter, usernameOtherParameter);
-        }
-    
         public virtual ObjectResult<DirectMessages_Result> DirectMessages(string username, string usernameOther, Nullable<int> topN)
         {
             var usernameParameter = username != null ?
@@ -237,6 +198,45 @@ namespace Model
                 new ObjectParameter("content", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateMessage", usernameParameter, messageIdParameter, contentParameter);
+        }
+    
+        public virtual int DeleteChannelUserMessages(Nullable<long> channelId, string username)
+        {
+            var channelIdParameter = channelId.HasValue ?
+                new ObjectParameter("channelId", channelId) :
+                new ObjectParameter("channelId", typeof(long));
+    
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteChannelUserMessages", channelIdParameter, usernameParameter);
+        }
+    
+        public virtual int DeleteMessage(string username, Nullable<long> messageId)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var messageIdParameter = messageId.HasValue ?
+                new ObjectParameter("messageId", messageId) :
+                new ObjectParameter("messageId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteMessage", usernameParameter, messageIdParameter);
+        }
+    
+        public virtual int DeleteUserMessages(string username, string usernameOther)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var usernameOtherParameter = usernameOther != null ?
+                new ObjectParameter("usernameOther", usernameOther) :
+                new ObjectParameter("usernameOther", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteUserMessages", usernameParameter, usernameOtherParameter);
         }
     }
 }

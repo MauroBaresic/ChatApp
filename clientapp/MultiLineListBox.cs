@@ -67,62 +67,7 @@ namespace ClientApp
                 }
             }
         }
-
-        protected override void OnMouseUp(System.Windows.Forms.MouseEventArgs e)
-        {
-            //int index = IndexFromPoint(e.X, e.Y);
-
-            //if (index != ListBox.NoMatches &&
-            //    index != 65535)
-            //{
-            //    if (e.Button == MouseButtons.Right)
-            //    {
-            //        string s = Items[index].ToString();
-            //        Rectangle rect = GetItemRectangle(index);
-
-            //        editTextBox.Location = new Point(rect.X, rect.Y);
-            //        editTextBox.Size = new Size(rect.Width, rect.Height);
-            //        editTextBox.Text = s;
-            //        editTextBox.Index = index;
-            //        editTextBox.SelectAll();
-            //        editTextBox.Show();
-            //        editTextBox.Focus();
-            //    }
-            //}
-
-            //base.OnMouseUp(e);
-        }
-
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            //if (e.KeyData == Keys.F2)
-            //{
-            //    int index = SelectedIndex;
-            //    if (index == ListBox.NoMatches ||
-            //        index == 65535)
-            //    {
-            //        if (Items.Count > 0)
-            //            index = 0;
-            //    }
-            //    if (index != ListBox.NoMatches &&
-            //        index != 65535)
-            //    {
-
-            //        string s = Items[index].ToString();
-            //        Rectangle rect = GetItemRectangle(index);
-
-            //        editTextBox.Location = new Point(rect.X, rect.Y);
-            //        editTextBox.Size = new Size(rect.Width, rect.Height);
-            //        editTextBox.Text = s;
-            //        editTextBox.Index = index;
-            //        editTextBox.SelectAll();
-            //        editTextBox.Show();
-            //        editTextBox.Focus();
-            //    }
-            //}
-            //base.OnKeyDown(e);
-        }
-
+        
         public void EditSelectedMessage(string username)
         {
             int index = SelectedIndex;
@@ -164,16 +109,7 @@ namespace ClientApp
                 {
                     if (message.SenderUsername.Equals(username))
                     {
-                        string s = message.Content;
-                        Rectangle rect = GetItemRectangle(index);
-
-                        editTextBox.Location = new Point(rect.X, rect.Y);
-                        editTextBox.Size = new Size(rect.Width, rect.Height);
-                        editTextBox.Text = s;
-                        editTextBox.Index = index;
-                        editTextBox.SelectAll();
-                        editTextBox.Show();
-                        editTextBox.Focus();
+                        ChatClient.DeleteMessage(message);
                     }
                     else
                     {
@@ -188,9 +124,52 @@ namespace ClientApp
             string username = message.SenderUsername;
             long id = message.MessageId;
 
-            foreach (var VARIABLE in Items)
+            for (int i = 0; i < Items.Count; i++)
             {
-                
+                var m = Items[i] as MessageVM;
+                if (m?.MessageId == id && username == m.SenderUsername)
+                {
+                    m.Content = message.Content;
+                    this.RefreshItem(i);
+                    break;
+                }
+            }
+        }
+
+        public void DeleteMessage(MessageVM message)
+        {
+            string username = message.SenderUsername;
+            long id = message.MessageId;
+
+            for (int i = 0; i < Items.Count; i++)
+            {
+                var m = Items[i] as MessageVM;
+                if (m?.MessageId == id && username == m.SenderUsername)
+                {
+                    this.Items.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+        public void DeleteAllMesages(MessageVM message)
+        {
+            string username = message.SenderUsername;
+
+            var newList = new List<MessageVM>();
+            for (int i = 0; i < Items.Count; i++)
+            {
+                var m = Items[i] as MessageVM;
+                if (m?.SenderUsername != username)
+                {
+                    newList.Add(m);
+                }
+            }
+
+            Items.Clear();
+            foreach (var messageVm in newList)
+            {
+                Items.Add(messageVm);
             }
         }
 
@@ -241,7 +220,6 @@ namespace ClientApp
                 {
                     if (message.Content != Text)
                     {
-                        //message.Content = Text;
                         MultiLineListBoxParent.ChatClient.EditMessage(message, Text);
                     }
                     Hide();
