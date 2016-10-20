@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\LoginEnum.cs" />
+    <Compile Include="Enums\MessageStateEnum.cs" />
     <Compile Include="IChatClient.cs" />
     <Compile Include="IChatDialog.cs" />
     <Compile Include="IRepository.cs" />

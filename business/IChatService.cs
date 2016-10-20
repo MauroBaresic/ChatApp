@@ -48,5 +48,23 @@ namespace Business
 
         [OperationContract]
         List<ChannelVM> GetChannelMessageNotifications(string username, DateTime lastReceived);
+
+        [OperationContract]
+        void EditUserMessage(string username, string usernameOther, long messageId, string content);
+
+        [OperationContract]
+        void EditChannelMessage(string username, long channelId, long messageId, string content);
+
+        [OperationContract]
+        void DeleteUserMessage(string username, string usernameOther, long messageId);
+
+        [OperationContract]
+        void DeleteChannelMessage(string username, long channelId, long messageId);
+
+        [OperationContract]
+        void DeleteUserConversation(string username, string usernameOther);
+
+        [OperationContract]
+        void DeleteChannelConversation(string username, long channelId);
     }
 }

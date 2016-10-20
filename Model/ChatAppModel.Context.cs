@@ -124,19 +124,6 @@ namespace Model
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteUserMessages", usernameParameter, usernameOtherParameter);
         }
     
-        public virtual int UpdateMessage(Nullable<long> messageId, string content)
-        {
-            var messageIdParameter = messageId.HasValue ?
-                new ObjectParameter("messageId", messageId) :
-                new ObjectParameter("messageId", typeof(long));
-    
-            var contentParameter = content != null ?
-                new ObjectParameter("content", content) :
-                new ObjectParameter("content", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateMessage", messageIdParameter, contentParameter);
-        }
-    
         public virtual ObjectResult<DirectMessages_Result> DirectMessages(string username, string usernameOther, Nullable<int> topN)
         {
             var usernameParameter = username != null ?
@@ -233,6 +220,23 @@ namespace Model
                 new ObjectParameter("lastReceived", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("GetUserMessageNotifications", usernameParameter, lastReceivedParameter);
+        }
+    
+        public virtual int UpdateMessage(string username, Nullable<long> messageId, string content)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("username", username) :
+                new ObjectParameter("username", typeof(string));
+    
+            var messageIdParameter = messageId.HasValue ?
+                new ObjectParameter("messageId", messageId) :
+                new ObjectParameter("messageId", typeof(long));
+    
+            var contentParameter = content != null ?
+                new ObjectParameter("content", content) :
+                new ObjectParameter("content", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateMessage", usernameParameter, messageIdParameter, contentParameter);
         }
     }
 }

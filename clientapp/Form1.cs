@@ -26,6 +26,7 @@ namespace ClientApp
         {
             InitializeComponent();
             chatClient = new ChatClient(this);
+            this.mlbxMessages.SetChatClient(chatClient);
 
             this.FormClosing += OnFormClosing;
             
@@ -169,13 +170,23 @@ namespace ClientApp
         {
             if (this.InvokeRequired)
             {
-                this.BeginInvoke(new MethodInvoker(() => {
-                    this.mlbxMessages.Items.Add(message);
-                }));
+                this.BeginInvoke(new MethodInvoker(() => { ReceiveMessage(message); }));
             }
             else
             {
-                this.mlbxMessages.Items.Add(message);
+                ReceiveMessage(message);
+            }
+        }
+
+        private void ReceiveMessage(MessageVM message)
+        {
+            switch ((MessageStateEnum)message.MessageStateId)
+            {
+                case MessageStateEnum.New:
+                    this.mlbxMessages.Items.Add(message);
+                    break;
+                case MessageStateEnum.Modified:
+                    break;
             }
         }
 
@@ -599,6 +610,21 @@ namespace ClientApp
                 StringFormat.GenericDefault);
             e.Graphics.DrawImage(statusImage, new Rectangle(e.Bounds.X + 4, e.Bounds.Y + 4, 12, 12));
             e.DrawFocusRectangle();
+        }
+
+        private void btnEditMessage_Click(object sender, EventArgs e)
+        {
+            this.mlbxMessages.EditSelectedMessage(chatClient.Username);
+        }
+
+        private void btnDeleteMessage_Click(object sender, EventArgs e)
+        {
+            this.mlbxMessages.DeleteSelectedMessage(chatClient.Username);
+        }
+
+        private void btnDeleteConversation_Click(object sender, EventArgs e)
+        {
+            chatClient.DeleteConversation();
         }
     }
 }

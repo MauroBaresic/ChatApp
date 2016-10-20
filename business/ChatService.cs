@@ -187,6 +187,42 @@ namespace Business
             return _repository.GetChannelMessageNotifications(username, lastReceived);
         }
 
+        public void EditUserMessage(string username, string usernameOther, long messageId, string content)
+        {
+            _repository.EditMessage(username, messageId, content);
+            NotifyUser(new MessageVM() {Content = content, MessageId = messageId, SenderUsername = username, MessageStateId = (int)MessageStateEnum.Modified}, username, usernameOther);
+        }
+
+        public void EditChannelMessage(string username, long channelId, long messageId, string content)
+        {
+            _repository.EditMessage(username, messageId, content);
+            NotifyChannelUsers(new MessageVM() { Content = content, MessageId = messageId, SenderUsername = username, MessageStateId = (int)MessageStateEnum.Modified }, channelId);
+        }
+
+        public void DeleteUserMessage(string username, string usernameOther, long messageId)
+        {
+            _repository.DeleteMessage(username, messageId);
+            NotifyUser(new MessageVM() { Content = "", MessageId = messageId, SenderUsername = username, MessageStateId = (int)MessageStateEnum.Deleted }, username, usernameOther);
+        }
+
+        public void DeleteChannelMessage(string username, long channelId, long messageId)
+        {
+            _repository.DeleteMessage(username, messageId);
+            NotifyChannelUsers(new MessageVM() { Content = "", MessageId = messageId, SenderUsername = username, MessageStateId = (int)MessageStateEnum.Deleted }, channelId);
+        }
+
+        public void DeleteUserConversation(string username, string usernameOther)
+        {
+            _repository.DeleteUserConversation(username, usernameOther);
+            NotifyUser(new MessageVM() { Content = "", MessageId = 0L, SenderUsername = username, MessageStateId = (int)MessageStateEnum.DeleteAll }, username, usernameOther);
+        }
+
+        public void DeleteChannelConversation(string username, long channelId)
+        {
+            _repository.DeleteChannelConversation(username, channelId);
+            NotifyChannelUsers(new MessageVM() { Content = "", MessageId = 0L, SenderUsername = username, MessageStateId = (int)MessageStateEnum.DeleteAll }, channelId);
+        }
+        
         public void NotifyUser(MessageVM message, string username, string usernameOther)
         {
             foreach (var userCallback in _userCallbacks)

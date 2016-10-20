@@ -336,6 +336,7 @@
             this.btnEditMessage.TabIndex = 11;
             this.btnEditMessage.Text = " ";
             this.btnEditMessage.UseVisualStyleBackColor = true;
+            this.btnEditMessage.Click += new System.EventHandler(this.btnEditMessage_Click);
             // 
             // btnDeleteMessage
             // 
@@ -347,6 +348,7 @@
             this.btnDeleteMessage.TabIndex = 10;
             this.btnDeleteMessage.Text = " ";
             this.btnDeleteMessage.UseVisualStyleBackColor = true;
+            this.btnDeleteMessage.Click += new System.EventHandler(this.btnDeleteMessage_Click);
             // 
             // btnDeleteConversation
             // 
@@ -358,6 +360,7 @@
             this.btnDeleteConversation.TabIndex = 9;
             this.btnDeleteConversation.Text = " ";
             this.btnDeleteConversation.UseVisualStyleBackColor = true;
+            this.btnDeleteConversation.Click += new System.EventHandler(this.btnDeleteConversation_Click);
             // 
             // lblNotification
             // 

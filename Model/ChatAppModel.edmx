@@ -211,6 +211,7 @@
           <Parameter Name="timeSent" Type="datetime" Mode="In" />
         </Function>
         <Function Name="UpdateMessage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
           <Parameter Name="messageId" Type="bigint" Mode="In" />
           <Parameter Name="content" Type="nvarchar(max)" Mode="In" />
         </Function>
@@ -342,10 +343,6 @@
             <Parameter Name="username" Mode="In" Type="String" />
             <Parameter Name="usernameOther" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="UpdateMessage">
-            <Parameter Name="messageId" Mode="In" Type="Int64" />
-            <Parameter Name="content" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="DirectMessages" ReturnType="Collection(ChatAppDBModel.DirectMessages_Result)">
             <Parameter Name="username" Mode="In" Type="String" />
             <Parameter Name="usernameOther" Mode="In" Type="String" />
@@ -374,6 +371,11 @@
           <FunctionImport Name="GetUserMessageNotifications" ReturnType="Collection(String)">
             <Parameter Name="username" Mode="In" Type="String" />
             <Parameter Name="lastReceived" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateMessage">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="messageId" Mode="In" Type="Int64" />
+            <Parameter Name="content" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="Message">
@@ -582,7 +584,6 @@
           <FunctionImportMapping FunctionImportName="DeleteChannelUserMessages" FunctionName="ChatAppDBModel.Store.DeleteChannelUserMessages" />
           <FunctionImportMapping FunctionImportName="DeleteMessage" FunctionName="ChatAppDBModel.Store.DeleteMessage" />
           <FunctionImportMapping FunctionImportName="DeleteUserMessages" FunctionName="ChatAppDBModel.Store.DeleteUserMessages" />
-          <FunctionImportMapping FunctionImportName="UpdateMessage" FunctionName="ChatAppDBModel.Store.UpdateMessage" />
           <FunctionImportMapping FunctionImportName="DirectMessages" FunctionName="ChatAppDBModel.Store.DirectMessages">
             <ResultMapping>
               <ComplexTypeMapping TypeName="ChatAppDBModel.DirectMessages_Result">
@@ -607,6 +608,7 @@
           <FunctionImportMapping FunctionImportName="StoreChannelMessage" FunctionName="ChatAppDBModel.Store.StoreChannelMessage" />
           <FunctionImportMapping FunctionImportName="GetChannelMessageNotifications" FunctionName="ChatAppDBModel.Store.GetChannelMessageNotifications" />
           <FunctionImportMapping FunctionImportName="GetUserMessageNotifications" FunctionName="ChatAppDBModel.Store.GetUserMessageNotifications" />
+          <FunctionImportMapping FunctionImportName="UpdateMessage" FunctionName="ChatAppDBModel.Store.UpdateMessage" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Enums;
 
 namespace Common.ViewModels
 {
@@ -11,6 +12,8 @@ namespace Common.ViewModels
         public string SenderUsername { get; set; }
 
         public DateTime TimeSent { get; set; }
+
+        public int MessageStateId { get; set; } = (int)MessageStateEnum.New;
 
         public int CompareTo(MessageVM other)
         {

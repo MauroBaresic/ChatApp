@@ -13,7 +13,7 @@ namespace ClientApp
     public class MultiLineListBox : ListBox
     {
         private EditTextBox editTextBox;
-        private ChatClient chatClient;
+        public ChatClient ChatClient;
 
         public MultiLineListBox()
         {
@@ -24,6 +24,11 @@ namespace ClientApp
             editTextBox.Hide();
             editTextBox.MultiLineListBoxParent = this;
             Controls.Add(editTextBox);
+        }
+
+        public void SetChatClient(ChatClient client)
+        {
+            this.ChatClient = client;
         }
 
         protected override void OnMeasureItem(MeasureItemEventArgs e)
@@ -178,6 +183,17 @@ namespace ClientApp
             }
         }
 
+        public void EditMessage(MessageVM message)
+        {
+            string username = message.SenderUsername;
+            long id = message.MessageId;
+
+            foreach (var VARIABLE in Items)
+            {
+                
+            }
+        }
+
 
         class EditTextBox : TextBox
         {
@@ -219,15 +235,20 @@ namespace ClientApp
 
             private void Validate()
             {
+                var message = MultiLineListBoxParent.Items[Index] as MessageVM;
+                if(message == null) return;
                 if (!string.IsNullOrEmpty(Text.Trim()))
                 {
-                    MultiLineListBoxParent.Items[Index] = Text;
-
+                    if (message.Content != Text)
+                    {
+                        //message.Content = Text;
+                        MultiLineListBoxParent.ChatClient.EditMessage(message, Text);
+                    }
                     Hide();
                 }
                 else
                 {
-                    Text = MultiLineListBoxParent.Items[Index].ToString();
+                    Text = message.Content;
 
                     Hide();
                     MultiLineListBoxParent.SelectedIndex = Index;

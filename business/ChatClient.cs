@@ -319,7 +319,7 @@ namespace Business
             {
                 chatDialog.ShowMessage(message);
             }
-            else
+            else if(message.MessageStateId == (int)MessageStateEnum.New)
             {
                 chatDialog.NotifyUserMessage(usernameOther);
             }
@@ -332,7 +332,7 @@ namespace Business
             {
                 chatDialog.ShowMessage(message);
             }
-            else
+            else if (message.MessageStateId == (int)MessageStateEnum.New)
             {
                 chatDialog.NotifyChannelMessage(channelId);
             }
@@ -369,6 +369,102 @@ namespace Business
             catch (Exception exception)
             {
                 chatDialog.ShowErrorDialog(exception.Message);
+            }
+        }
+
+        public void EditMessage(MessageVM message, string content)
+        {
+            if (sendToChannel)
+            {
+                EditChannelMessage(_endChannel, message.MessageId, content);
+            }
+            else
+            {
+                EditUserMessage(_endUsername, message.MessageId, content);
+            }
+        }
+        
+        public void EditUserMessage(string usernameOther, long messageId, string content)
+        {
+            try
+            {
+                remoteProxy.EditUserMessage(Username, usernameOther, messageId, content);
+            }
+            catch (Exception exception)
+            {
+                chatDialog.ShowErrorDialog(exception.Message);
+            }
+        }
+        
+        public void DeleteUserMessage(string usernameOther, long messageId)
+        {
+            try
+            {
+                remoteProxy.DeleteUserMessage(Username, usernameOther, messageId);
+            }
+            catch (Exception exception)
+            {
+                chatDialog.ShowErrorDialog(exception.Message);
+            }
+        }
+
+        public void EditChannelMessage(long channelId, long messageId, string content)
+        {
+            try
+            {
+                remoteProxy.EditChannelMessage(Username, channelId, messageId, content);
+            }
+            catch (Exception exception)
+            {
+                chatDialog.ShowErrorDialog(exception.Message);
+            }
+        }
+
+        public void DeleteChannelMessage(long channelID, long messageId)
+        {
+            try
+            {
+                remoteProxy.DeleteChannelMessage(Username, channelID, messageId);
+            }
+            catch (Exception exception)
+            {
+                chatDialog.ShowErrorDialog(exception.Message);
+            }
+        }
+
+        public void DeleteUserConversation(string usernameOther)
+        {
+            try
+            {
+                remoteProxy.DeleteUserConversation(Username, usernameOther);
+            }
+            catch (Exception exception)
+            {
+                chatDialog.ShowErrorDialog(exception.Message);
+            }
+        }
+
+        public void DeleteChannelConversation(long channelId)
+        {
+            try
+            {
+                remoteProxy.DeleteChannelConversation(Username, channelId);
+            }
+            catch (Exception exception)
+            {
+                chatDialog.ShowErrorDialog(exception.Message);
+            }
+        }
+
+        public void DeleteConversation()
+        {
+            if (sendToChannel)
+            {
+                DeleteChannelConversation(_endChannel);
+            }
+            else
+            {
+                DeleteUserConversation(_endUsername);
             }
         }
     }

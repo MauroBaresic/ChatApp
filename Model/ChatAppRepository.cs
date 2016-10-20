@@ -128,5 +128,37 @@ namespace Model
                         .ToList();
             }
         }
+
+        public void EditMessage(string username, long messageId, string content)
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                context.UpdateMessage(username, messageId, content);
+            }
+        }
+
+        public void DeleteMessage(string username, long messageId)
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                context.DeleteMessage(username, messageId);
+            }
+        }
+
+        public void DeleteUserConversation(string username, string usernameOther)
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                context.DeleteUserMessages(username, usernameOther);
+            }
+        }
+
+        public void DeleteChannelConversation(string username, long channelId)
+        {
+            using (ChatAppDBEntities context = new ChatAppDBEntities())
+            {
+                context.DeleteChannelUserMessages(channelId, username);
+            }
+        }
     }
 }
