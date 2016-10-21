@@ -480,5 +480,10 @@ namespace Business
                 DeleteUserConversation(_endUsername);
             }
         }
+
+        public void CloseConversation()
+        {
+            clearCache();
+        }
     }
 }

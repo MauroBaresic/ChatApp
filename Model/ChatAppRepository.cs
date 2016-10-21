@@ -191,17 +191,11 @@ namespace Model
             {
                 using (ChatAppDBEntities context = new ChatAppDBEntities())
                 {
-                    var notifications = context.GetUserMessageNotifications(username, lastReceived).ToList();
-                    if (notifications.Any())
-                    {
-                        return notifications.Where(x => x != null).Select(x => new UserVM() { UserName = x }).ToList();
-                    }
-                    //return
-                    //    context.GetUserMessageNotifications(username, lastReceived)
-                    //        .ToList()
-                    //        .Select(x => new UserVM() {UserName = x})
-                    //        .ToList();
-                    return new List<UserVM>();
+                    return
+                        context.GetUserMessageNotifications(username, lastReceived)
+                            .ToList()
+                            .Select(x => new UserVM() { UserName = x })
+                            .ToList();
                 }
             }
             catch (Exception exception)

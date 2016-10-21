@@ -29,7 +29,13 @@ namespace ClientApp
             this.mlbxMessages.SetChatClient(chatClient);
 
             this.FormClosing += OnFormClosing;
-            
+
+            ToolTip ToolTip1 = new ToolTip();
+            ToolTip1.SetToolTip(this.btnEditMessage, "Edit selected message");
+            ToolTip1.SetToolTip(this.btnCloseConversation, "Close current conversation.");
+            ToolTip1.SetToolTip(this.btnDeleteMessage, "Delete selected message");
+            ToolTip1.SetToolTip(this.btnDeleteConversation, "Delete your messages in current conversation");
+
             pnlMessageDialog.Visible = false;
             pnlLogin.Visible = false;
             pnlRegistration.Visible = false;
@@ -559,10 +565,13 @@ namespace ClientApp
 
         private void btnCloseConversation_Click(object sender, EventArgs e)
         {
-            lblNotification.Text = "";
+            lblNotification.Text = "Select a channel or a user to start the conversation.";
             tbxMessage.Enabled = false;
             btnSendMessage.Enabled = false;
             cbxEnterSendsMessage.Enabled = false;
+            this.mlbxMessages.Items.Clear();
+
+            chatClient.CloseConversation();
         }
 
         private void lbxChannels_DrawItem(object sender, DrawItemEventArgs e)

@@ -57,8 +57,6 @@
             this.lblNotification = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnLogOut = new System.Windows.Forms.Button();
-            this.lbxUsers = new CustomListBoxControl();
-            this.lbxChannels = new CustomListBoxControl();
             this.cbxEnterSendsMessage = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.pbrRegistering = new System.Windows.Forms.ProgressBar();
@@ -79,6 +77,8 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.mlbxMessages = new ClientApp.MultiLineListBox();
+            this.lbxUsers = new ClientApp.CustomListBoxControl();
+            this.lbxChannels = new ClientApp.CustomListBoxControl();
             this.pnlRegistration.SuspendLayout();
             this.pnlMessageDialog.SuspendLayout();
             this.pnlLogin.SuspendLayout();
@@ -93,7 +93,7 @@
             this.btnRegister.MinimumSize = new System.Drawing.Size(75, 23);
             this.btnRegister.Name = "btnRegister";
             this.btnRegister.Size = new System.Drawing.Size(75, 23);
-            this.btnRegister.TabIndex = 0;
+            this.btnRegister.TabIndex = 12;
             this.btnRegister.Text = "Sign Up";
             this.btnRegister.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnRegister.UseVisualStyleBackColor = true;
@@ -197,7 +197,7 @@
             this.tbxFirstName.MaxLength = 50;
             this.tbxFirstName.Name = "tbxFirstName";
             this.tbxFirstName.Size = new System.Drawing.Size(120, 20);
-            this.tbxFirstName.TabIndex = 9;
+            this.tbxFirstName.TabIndex = 7;
             // 
             // label9
             // 
@@ -205,7 +205,7 @@
             this.label9.Location = new System.Drawing.Point(226, 220);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(60, 13);
-            this.label9.TabIndex = 8;
+            this.label9.TabIndex = 3;
             this.label9.Text = "First Name:";
             // 
             // tbxLastName
@@ -214,7 +214,7 @@
             this.tbxLastName.MaxLength = 50;
             this.tbxLastName.Name = "tbxLastName";
             this.tbxLastName.Size = new System.Drawing.Size(120, 20);
-            this.tbxLastName.TabIndex = 7;
+            this.tbxLastName.TabIndex = 8;
             // 
             // label8
             // 
@@ -231,7 +231,7 @@
             this.tbxConfirmPassword.MaxLength = 14;
             this.tbxConfirmPassword.Name = "tbxConfirmPassword";
             this.tbxConfirmPassword.Size = new System.Drawing.Size(120, 20);
-            this.tbxConfirmPassword.TabIndex = 5;
+            this.tbxConfirmPassword.TabIndex = 11;
             this.tbxConfirmPassword.UseSystemPasswordChar = true;
             // 
             // label7
@@ -249,7 +249,7 @@
             this.tbxRegisterPassword.MaxLength = 14;
             this.tbxRegisterPassword.Name = "tbxRegisterPassword";
             this.tbxRegisterPassword.Size = new System.Drawing.Size(120, 20);
-            this.tbxRegisterPassword.TabIndex = 3;
+            this.tbxRegisterPassword.TabIndex = 10;
             this.tbxRegisterPassword.UseSystemPasswordChar = true;
             // 
             // label4
@@ -267,7 +267,7 @@
             this.tbxRegisterUsername.MaxLength = 50;
             this.tbxRegisterUsername.Name = "tbxRegisterUsername";
             this.tbxRegisterUsername.Size = new System.Drawing.Size(120, 20);
-            this.tbxRegisterUsername.TabIndex = 1;
+            this.tbxRegisterUsername.TabIndex = 9;
             // 
             // label1
             // 
@@ -302,19 +302,21 @@
             // 
             // btnSelectUser
             // 
-            this.btnSelectUser.Image = global::ClientApp.Properties.Resources.icon_logOut32;
-            this.btnSelectUser.Location = new System.Drawing.Point(71, 151);
+            this.btnSelectUser.Image = global::ClientApp.Properties.Resources.add32;
+            this.btnSelectUser.Location = new System.Drawing.Point(62, 142);
             this.btnSelectUser.MinimumSize = new System.Drawing.Size(40, 40);
             this.btnSelectUser.Name = "btnSelectUser";
-            this.btnSelectUser.Size = new System.Drawing.Size(45, 45);
+            this.btnSelectUser.Size = new System.Drawing.Size(54, 54);
             this.btnSelectUser.TabIndex = 14;
+            this.btnSelectUser.Text = "Add";
+            this.btnSelectUser.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnSelectUser.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnSelectUser.UseVisualStyleBackColor = true;
             this.btnSelectUser.Click += new System.EventHandler(this.btnSelectUser_Click);
             // 
             // btnCloseConversation
             // 
-            this.btnCloseConversation.Image = global::ClientApp.Properties.Resources.icon_logOut32;
+            this.btnCloseConversation.Image = global::ClientApp.Properties.Resources.closeChat32;
             this.btnCloseConversation.Location = new System.Drawing.Point(566, 32);
             this.btnCloseConversation.MinimumSize = new System.Drawing.Size(55, 55);
             this.btnCloseConversation.Name = "btnCloseConversation";
@@ -340,7 +342,7 @@
             // 
             // btnDeleteMessage
             // 
-            this.btnDeleteMessage.Image = global::ClientApp.Properties.Resources.edit16;
+            this.btnDeleteMessage.Image = global::ClientApp.Properties.Resources.bin16;
             this.btnDeleteMessage.Location = new System.Drawing.Point(509, 5);
             this.btnDeleteMessage.Margin = new System.Windows.Forms.Padding(0);
             this.btnDeleteMessage.Name = "btnDeleteMessage";
@@ -352,7 +354,7 @@
             // 
             // btnDeleteConversation
             // 
-            this.btnDeleteConversation.Image = global::ClientApp.Properties.Resources.edit16;
+            this.btnDeleteConversation.Image = global::ClientApp.Properties.Resources.trash16;
             this.btnDeleteConversation.Location = new System.Drawing.Point(536, 5);
             this.btnDeleteConversation.Margin = new System.Windows.Forms.Padding(0);
             this.btnDeleteConversation.Name = "btnDeleteConversation";
@@ -393,32 +395,6 @@
             this.btnLogOut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnLogOut.UseVisualStyleBackColor = true;
             this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
-            // 
-            // lbxUsers
-            // 
-            this.lbxUsers.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lbxUsers.FormattingEnabled = true;
-            this.lbxUsers.ItemHeight = 20;
-            this.lbxUsers.Location = new System.Drawing.Point(3, 199);
-            this.lbxUsers.Name = "lbxUsers";
-            this.lbxUsers.Size = new System.Drawing.Size(113, 204);
-            this.lbxUsers.TabIndex = 1;
-            this.lbxUsers.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbxUsers_MouseClick);
-            this.lbxUsers.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbxUsers_DrawItem);
-            this.lbxUsers.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxUsers_KeyDown);
-            // 
-            // lbxChannels
-            // 
-            this.lbxChannels.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.lbxChannels.FormattingEnabled = true;
-            this.lbxChannels.ItemHeight = 20;
-            this.lbxChannels.Location = new System.Drawing.Point(3, 32);
-            this.lbxChannels.Name = "lbxChannels";
-            this.lbxChannels.Size = new System.Drawing.Size(113, 104);
-            this.lbxChannels.TabIndex = 2;
-            this.lbxChannels.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbxChannels_MouseClick);
-            this.lbxChannels.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbxChannels_DrawItem);
-            this.lbxChannels.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxChannels_KeyDown);
             // 
             // cbxEnterSendsMessage
             // 
@@ -627,15 +603,41 @@
             this.mlbxMessages.Size = new System.Drawing.Size(433, 318);
             this.mlbxMessages.TabIndex = 7;
             // 
+            // lbxUsers
+            // 
+            this.lbxUsers.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lbxUsers.FormattingEnabled = true;
+            this.lbxUsers.ItemHeight = 20;
+            this.lbxUsers.Location = new System.Drawing.Point(3, 199);
+            this.lbxUsers.Name = "lbxUsers";
+            this.lbxUsers.Size = new System.Drawing.Size(113, 204);
+            this.lbxUsers.TabIndex = 1;
+            this.lbxUsers.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbxUsers_MouseClick);
+            this.lbxUsers.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbxUsers_DrawItem);
+            this.lbxUsers.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxUsers_KeyDown);
+            // 
+            // lbxChannels
+            // 
+            this.lbxChannels.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lbxChannels.FormattingEnabled = true;
+            this.lbxChannels.ItemHeight = 20;
+            this.lbxChannels.Location = new System.Drawing.Point(3, 32);
+            this.lbxChannels.Name = "lbxChannels";
+            this.lbxChannels.Size = new System.Drawing.Size(113, 104);
+            this.lbxChannels.TabIndex = 2;
+            this.lbxChannels.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbxChannels_MouseClick);
+            this.lbxChannels.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbxChannels_DrawItem);
+            this.lbxChannels.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbxChannels_KeyDown);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(709, 431);
+            this.Controls.Add(this.pnlRegistration);
             this.Controls.Add(this.pnlMessageDialog);
             this.Controls.Add(this.pnlLogin);
             this.Controls.Add(this.pnlWelcome);
-            this.Controls.Add(this.pnlRegistration);
             this.Controls.Add(this.lblRegistering);
             this.Controls.Add(this.pbrRegistering);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
